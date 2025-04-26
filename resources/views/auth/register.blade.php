@@ -62,7 +62,7 @@
                   <input type="text" hidden name="role" value="patient">
 
                   <div class="pt-4 d-flex flex-column flex-md-row gap-3">
-                     <a href="#" class="btn cancel-btn w-100 p-2 rounded-pill fw-bold text-center">Cancel</a>
+                     <a href=" {{ route('login') }}" class="btn cancel-btn w-100 p-2 rounded-pill fw-bold text-center">Cancel</a>
                      <button type="submit"
                         class="btn log-reg w-100 p-2 rounded-pill fw-bold text-white">Register</button>
                   </div>
