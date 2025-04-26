@@ -169,15 +169,19 @@
 
                   <div class="row gap-2 mb-2">
                      <div class="col">
-                        <select style="background-color: #d9d9d9" name="services" id="services" class="form-select">
-                           <option value="" disabled selected>Select a service</option>
-                           {{-- @foreach ($services as $service)
-                           <option value="{{ $servece->id }}">{{ $service->name }}</option>
-                           @endforeach --}}
+                        <select style="background-color: #d9d9d9" name="service_id" id="services" class="form-select" required>
+                            @if ($services->isEmpty())
+                                <option value="" disabled>No services available</option>
+                            @else
+                                <option value="" disabled selected>Select a service</option>
+                                @foreach ($services as $service)
+                                    <option value="{{ $service->id }}">{{ $service->service_name }}</option>
+                                @endforeach
+                            @endif
                         </select>
                      </div>
                      <div class="col">
-                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control"
+                        <input type="date" id="appointmentDate" name="appointment_date" class="form-control"
                            style="background-color: #d9d9d9" required>
                      </div>
                   </div>

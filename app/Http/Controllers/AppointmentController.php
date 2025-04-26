@@ -30,8 +30,8 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'service_id' => 'required|integer',
-            'appointment_date' => 'required|date',
+            'service_id' => 'required|exists:services,id',
+            'appointment_date' => 'required|date|after_or_equal:today',
         ]);
 
         Appointment::create([

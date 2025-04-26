@@ -20,8 +20,8 @@ class PatientController extends Controller
 
     public function index()
     {
-        $services = Service::all();
-        return view('patient.main', ['services' => $services]);
+        $services = Service::all(); // Fetch all available services
+        return view('patient.main', compact('services'));
     }
 
     /**
