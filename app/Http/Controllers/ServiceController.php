@@ -1,19 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use App\Http\Requests\ServiceRequest;
+
 class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {   
+    public function staff_service()
+    {
         $services = Service::all();
-        return view ('layout.service_crud', ['services'=>$services]);
+        return view('staff.service', ['services' => $services]);
+    }
+
+    public function admin_service()
+    {
+        $services = Service::all();
+        return view('admin.service', ['services' => $services]);
     }
 
     /**
@@ -21,7 +27,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -32,7 +38,7 @@ class ServiceController extends Controller
         $newService = $request->validated();
         Service::create($newService);
 
-        return redirect(route('layout.service_crud'));
+        return redirect($request->input('redirect_to', route('staff.service')));
     }
 
     /**
@@ -59,14 +65,15 @@ class ServiceController extends Controller
         $newService = $request->validated();
         $service->update($newService);
 
-        return redirect();
+        return redirect($request->input('redirect_to', route('staff.service')));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service)
+    public function destroy(Request $request, Service $service)
     {
-        //
+        $service->delete();
+        return redirect($request->input('redirect_to', route('staff.service')));
     }
 }

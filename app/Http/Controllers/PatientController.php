@@ -3,16 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function profile()
+    {
+        $patient = Patient::where('user_id', Auth::id())->first();
+        return view('patient.profile', ['patient'=>$patient]);
+    }
+
     public function index()
     {
-        return view('patient.main');
+        $services = Service::all();
+        return view('patient.main', ['services' => $services]);
     }
 
     /**

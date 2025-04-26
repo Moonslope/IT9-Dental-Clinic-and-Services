@@ -38,7 +38,7 @@
          </div>
 
          <div class="pb-3 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-card-list fs-5 me-2"></i>Services</a>
+            <a class="admin-btn" href="{{route('admin.service')}}"><i class="bi bi-card-list fs-5 me-2"></i>Services</a>
          </div>
 
          <div class="pb-3 pt-2 px-2">

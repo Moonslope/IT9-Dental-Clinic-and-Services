@@ -18,7 +18,7 @@ class AdminUserSeeder extends Seeder
             'first_name' => 'Admin',
             'last_name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin123'), // Change to a secure password
+            'password' => Hash::make('admin123'),
             'contact_number' => '09689578454',
             'address' => '123 Dental St, Smile City',
             'role' => 'admin',
