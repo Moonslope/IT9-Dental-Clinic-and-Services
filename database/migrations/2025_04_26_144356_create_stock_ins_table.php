@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('stock_ins', function (Blueprint $table) {
             $table->id();
-            $table->string('supply_name');
+            $table->unsignedBigInteger('supply_id');
+            $table->foreign('supply_id')->references('id')->on('supplies')->onDelete('cascade');
+
             $table->integer('quantity_received');
             $table->date('date_received');
             $table->unsignedBigInteger('user_id');

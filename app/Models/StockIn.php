@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class StockIn extends Model
 {
     protected $fillable = [
-        'supply_name',
+        'supply_id',
         'quantity_received',
         'date_received',
         'user_id',
         'supplier_id',
     ];
 
-    public function supplies()
+    public function supply()
     {
-        return $this->hasMany(Supply::class, 'stock_in_id', 'id');
+        return $this->belongsTo(Supply::class, 'supply_id', 'id');
     }
 
     public function supplier()
