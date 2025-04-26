@@ -48,7 +48,7 @@
    <div class="card">
       <div class="card-body p-1">
 
-         {{-- @if($users->isEmpty())
+         @if($users->isEmpty())
          <p class="alert text-center text-secondary">No Dentists available.</p>
          @else
          @foreach ($users as $user)
@@ -61,7 +61,8 @@
                         <span><strong>Name: </strong>{{$user->first_name}} {{$user->last_name}}</span><br>
                         <span><strong>Email: </strong>{{$user->email}}</span><br>
                         <span><strong>Address: </strong>{{$user->address}}</span><br>
-                        <span><strong>Contact Number: </strong>{{$user->contact_number}}</span>
+                        <span><strong>Contact Number: </strong>{{$user->contact_number}}</span><br>
+                        <span><strong>Specialization: </strong>{{$user->dentist->specialization}}</span>
                      </div>
 
                      <div class="d-flex gap-3">
@@ -85,7 +86,7 @@
          </div>
 
          {{-- Modal to Edit Dentist --}}
-         {{-- <div class="modal fade" id="editDentistModal{{$user->id}}" tabindex="-1"
+         <div class="modal fade" id="editDentistModal{{$user->id}}" tabindex="-1"
             aria-labelledby="editDentistModalLabel{{$user->id}}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                <div class="modal-content">
@@ -123,6 +124,13 @@
                                  class="form-control p-2" value="{{ $user->address }}">
                            </div>
                         </div>
+                        <div class="row mb-3 gap-2">
+                           <div class="col">
+                              <input style="background-color: #d9d9d9" type="text" id="specialization"
+                                 name="specialization" placeholder="Specialization" class="form-control p-2 "
+                                 value="{{ $user->dentist->specialization }}">
+                           </div>
+                        </div>
 
                         <div class="row mb-3 gap-2">
                            <div class="col">
@@ -156,7 +164,7 @@
          </div>
 
          @endforeach
-         @endif --}}
+         @endif
 
       </div>
    </div>
@@ -201,6 +209,13 @@
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="address" name="address"
                         placeholder="Address" class="form-control p-2">
+                  </div>
+               </div>
+
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="text" id="specialization" name="specialization"
+                        placeholder="Specialization" class="form-control p-2">
                   </div>
                </div>
 

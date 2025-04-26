@@ -39,19 +39,7 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|string',
-            'address' => 'required|string',
-            'contact_number' => 'required|string',
-            'password' => 'required|min:8'
-        ]);
-
-        $data['password'] = Hash::make($data['password']);
-
-        User::create($data);
-        return redirect(route('admin.staff'));
+        
     }
 
     /**

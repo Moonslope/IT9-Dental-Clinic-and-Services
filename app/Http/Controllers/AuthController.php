@@ -17,7 +17,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Handle login
+    // login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -47,16 +47,15 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Invalid credentials.']);
     }
 
-    // Show registration form
+    // show register form
     public function showRegistrationForm()
     {
         return view('auth.register');
     }
 
-    // Handle registration
     public function register(Request $request)
     {
-        $data = $request->validate([
+        $baseValidation = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -64,8 +63,14 @@ class AuthController extends Controller
             'contact_number' => 'required|string',
             'address' => 'required|string',
             'role' => 'required|in:patient,dentist,staff,admin',
-        ]);
-
+        ];
+    
+        if ($request->role === 'dentist') {
+            $baseValidation['specialization'] = 'required|string';
+        }
+    
+        $data = $request->validate($baseValidation);
+    
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -75,29 +80,31 @@ class AuthController extends Controller
             'address' => $data['address'],
             'role' => $data['role'],
         ]);
-
-        // Create corresponding record based on role
+    
         if ($user->role === 'patient') {
             Patient::create([
                 'user_id' => $user->id,
                 'age' => null, 
                 'gender' => null, 
-            ]); 
+            ]);
             Auth::login($user);
+
             return redirect()->route('patient.main');
+
         } elseif ($user->role === 'dentist') {
             Dentist::create([
                 'user_id' => $user->id,
-                'specialization' => null, 
+                'specialization' => $data['specialization'], 
             ]);
-            return redirect()->route('dentist.dashboard');
-        } 
-        else{
-            return redirect()->route('admin.staff');
-        } 
-    }
 
-    // Handle logout
+            return redirect()->route('admin.dentist');
+
+        } else {
+            return redirect()->route('admin.staff');
+        }
+    }
+    
+    // logout
     public function logout(Request $request)
     {
         Auth::logout();

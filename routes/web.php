@@ -30,10 +30,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/service', [ServiceController::class, 'admin_service'])->name('service');
     Route::get('/dentist', [DentistController::class, 'admin_dentist'])->name('dentist');
 
-    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
-});
+
+    Route::delete('/dentist/{user}/delete', [DentistController::class, 'destroy'])->name('dentist.destroy');
+    Route::put('/dentist/{user}/update', [DentistController::class, 'update'])->name('dentist.update');
+}); 
 
 // STAFF
 Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
