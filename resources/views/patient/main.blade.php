@@ -164,7 +164,7 @@
             <h2>Schedule your visit with ease</h2>
 
             <div class="modal-body mt-3">
-               <form action="" method="POST">
+               <form action="{{ route('appointments.store') }}" method="POST">
                   @csrf
 
                   <div class="row gap-2 mb-2">
@@ -183,18 +183,18 @@
                   </div>
 
                   <div class="row mb-2">
-                     <input type="text" id="name" name="name" placeholder="Name" class="form-control"
+                     <input type="text" id="name" name="name" placeholder="Name" class="form-control" value="{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}"
                         style="background-color: #d9d9d9" required>
                   </div>
 
                   <div class="row mb-2">
-                     <input type="email" id="email" name="email" placeholder="Email" class="form-control"
+                     <input type="email" id="email" name="email" placeholder="Email" class="form-control" value="{{ Auth::user()->email }}"
                         style="background-color: #d9d9d9" required>
                   </div>
 
                   <div class="row mb-2">
                      <input type="tel" id="phone" name="phone" placeholder="Phone number: +63 9XXXXXXXXX"
-                        class="form-control" style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required>
+                        class="form-control" style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required value="{{ Auth::user()->contact_number }}">
                   </div>
 
                   <div class="row mb-3">

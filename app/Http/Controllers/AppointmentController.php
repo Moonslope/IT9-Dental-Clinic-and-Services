@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
@@ -28,7 +29,20 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'service_id' => 'required|integer',
+            'appointment_date' => 'required|date',
+        ]);
+
+        Appointment::create([
+            'service_id' => $request->service_id,
+            'patient_id' => Auth::id(),
+            'dentist_id' => null,
+            'appointment_date' => $request->appointment_date,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Appointment booked successfully!');
     }
 
     /**
