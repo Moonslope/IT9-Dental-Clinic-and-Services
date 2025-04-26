@@ -17,11 +17,12 @@ Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// after login
 Route::prefix('/')->name('patient.')->middleware(['auth', 'role:patient'])->group(function () {
     Route::get('home', [PatientController::class, 'index'])->name('main');
-  
 });
 
+// admin after login
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/staff', [StaffController::class, 'admin_staff'])->name('staff');
@@ -29,16 +30,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::delete('/staff/{user}/destroy', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
-  
 });
 
+// staff after login
 Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/dashboard', [StaffController::class, 'index'])->name('dashboard');
-  
 });
 
+// dentist after login
 Route::prefix('/dentist')->name('dentist.')->middleware(['auth', 'role:dentist'])->group(function () {
     Route::get('/dashboard', [DentistController::class, 'index'])->name('dashboard');
-  
 });
-
