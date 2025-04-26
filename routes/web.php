@@ -41,8 +41,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 // STAFF
 Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/dashboard', [StaffController::class, 'index'])->name('dashboard');
-    Route::get('/service', [ServiceController::class, 'staff_service'])->name('service');
-  
+    Route::get('/service', [ServiceController::class, 'staff_service'])->name('service'); 
 });
 
 // DENTIST

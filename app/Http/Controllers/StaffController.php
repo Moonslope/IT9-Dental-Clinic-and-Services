@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class StaffController extends Controller
 {
@@ -20,8 +21,8 @@ class StaffController extends Controller
 
     public function index()
     {
-       
-        return view('staff.dashboard');
+        $staff = User::where('id', Auth::id())->first();
+        return view('staff.dashboard',  ['staff'=>$staff]);
     }
 
     /**

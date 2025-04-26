@@ -2,6 +2,8 @@
 
 @section('title', 'Staff Dashboard')
 
+@section('user_type', 'Hi, ' . $staff->first_name . ' ' .$staff->last_name)
+
 @section('breadcrumb')
 
 <div class="px-4 py-2 text-secondary" style="font-size: 0.95rem;">

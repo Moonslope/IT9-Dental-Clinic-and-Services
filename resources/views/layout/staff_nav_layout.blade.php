@@ -24,7 +24,8 @@
    <div class="row">
       <div style="background-color: #1e466b !important;" class="col-2">
          <div class="p-3">
-            <a class="admin-btn" href=""><i class="bi bi-house-door fs-5 me-2"></i>Dashboard</a>
+            <a class="admin-btn" href="{{route('staff.dashboard')}}"><i
+                  class="bi bi-house-door fs-5 me-2"></i>Dashboard</a>
          </div>
 
          <div class="p-3">
