@@ -10,6 +10,11 @@ class DentistController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function admin_dentist()
+    {
+        return view('admin.dentist');
+    }
+     
     public function index()
     {
         return view('dentist.dashboard');

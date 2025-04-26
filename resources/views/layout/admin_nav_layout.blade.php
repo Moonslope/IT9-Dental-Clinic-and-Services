@@ -30,7 +30,8 @@
          </div>
 
          <div class="pb-3 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-people-fill fs-5 me-2"></i>Dentists</a>
+            <a class="admin-btn" href="{{route('admin.dentist')}}"><i
+                  class="bi bi-people-fill fs-5 me-2"></i>Dentists</a>
          </div>
 
          <div class="pb-3 pt-2 px-2">

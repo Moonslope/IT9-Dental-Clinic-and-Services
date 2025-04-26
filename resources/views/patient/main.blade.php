@@ -124,12 +124,14 @@
 
                   <div class="d-flex justify-content-center gap-3">
                      @guest
-                     <a class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" href="{{ route('login') }}">Book an
+                     <a class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" href="{{ route('login') }}">Book
+                        an
                         appointment</a>
                      @endguest
-                    
+
                      @auth
-                     <button class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">Book an Appointment</button>
+                     <button class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" data-bs-toggle="modal"
+                        data-bs-target="#bookAppointmentModal">Book an Appointment</button>
                      @endauth
 
                      <a class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" href="">Browse
@@ -150,16 +152,17 @@
    {{-- Home --}}
 
    {{-- Modal for booking an appointment --}}
-   <div class="modal fade" id="bookAppointmentModal" tabindex="-1" aria-labelledby="bookAppointmentModalLabel" aria-hidden="true">
+   <div class="modal fade" id="bookAppointmentModal" tabindex="-1" aria-labelledby="bookAppointmentModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" style="max-width: 800px">
 
-         
+
          <div class="modal-content">
             <div class="modal-header justify-content-end">
                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
-            <h2>Schedule your visit with ease</h2> 
-            
+            <h2>Schedule your visit with ease</h2>
+
             <div class="modal-body mt-3">
                <form action="" method="POST">
                   @csrf
@@ -169,29 +172,34 @@
                         <select style="background-color: #d9d9d9" name="services" id="services" class="form-select">
                            <option value="" disabled selected>Select a service</option>
                            {{-- @foreach ($services as $service)
-                               <option value="{{ $servece->id }}">{{ $service->name }}</option>
+                           <option value="{{ $servece->id }}">{{ $service->name }}</option>
                            @endforeach --}}
                         </select>
                      </div>
                      <div class="col">
-                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control" style="background-color: #d9d9d9" required>
+                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control"
+                           style="background-color: #d9d9d9" required>
                      </div>
                   </div>
 
                   <div class="row mb-2">
-                     <input type="text" id="name" name="name" placeholder="Name" class="form-control" style="background-color: #d9d9d9" required>
+                     <input type="text" id="name" name="name" placeholder="Name" class="form-control"
+                        style="background-color: #d9d9d9" required>
                   </div>
 
                   <div class="row mb-2">
-                     <input type="email" id="email" name="email" placeholder="Email" class="form-control" style="background-color: #d9d9d9" required>
+                     <input type="email" id="email" name="email" placeholder="Email" class="form-control"
+                        style="background-color: #d9d9d9" required>
                   </div>
 
                   <div class="row mb-2">
-                     <input type="tel" id="phone" name="phone" placeholder="Phone number: +63 9XXXXXXXXX" class="form-control" style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required>
+                     <input type="tel" id="phone" name="phone" placeholder="Phone number: +63 9XXXXXXXXX"
+                        class="form-control" style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required>
                   </div>
-                  
+
                   <div class="row mb-3">
-                     <textarea name="Message" id="message" class="form-control" placeholder="Message(optional)" style="background-color: #d9d9d9"></textarea>
+                     <textarea name="Message" id="message" class="form-control" placeholder="Message(optional)"
+                        style="background-color: #d9d9d9"></textarea>
                   </div>
 
                   <div class="row">

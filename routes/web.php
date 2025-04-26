@@ -8,9 +8,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DentistController;
 use App\Http\Controllers\ServiceController;
 
-Route::get('/', function () {
-    return view('patient.main');
-});
+Route::get('/', [PatientController::class, 'index']);
 
 // LOGIN / REGISTER / LOGOUT
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -30,6 +28,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/staff', [StaffController::class, 'admin_staff'])->name('staff');
     Route::get('/service', [ServiceController::class, 'admin_service'])->name('service');
+    Route::get('/dentist', [DentistController::class, 'admin_dentist'])->name('dentist');
 
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
