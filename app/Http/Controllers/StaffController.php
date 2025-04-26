@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -74,7 +75,7 @@ class StaffController extends Controller
      */
     public function update(Request $request, User $user)
     {
-      
+
         $data = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -83,17 +84,17 @@ class StaffController extends Controller
             'contact_number' => 'required|string',
             'password' => 'nullable|min:8'
         ]);
-    
+
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
-    
+
         $user->update($data);
         return redirect(route('admin.staff'));
     }
-    
+
 
     /**
      * Remove the specified resource from storage.

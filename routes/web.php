@@ -23,7 +23,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('/')->name('patient.')->middleware(['auth', 'role:patient'])->group(function () {
     Route::get('home', [PatientController::class, 'index'])->name('main');
     Route::get('home/profile', [PatientController::class, 'profile'])->name('profile');
-  
 });
 
 // ADMIN
@@ -35,7 +34,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
-  
 });
 
 // STAFF
@@ -47,8 +45,6 @@ Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->gro
 // DENTIST
 Route::prefix('/dentist')->name('dentist.')->middleware(['auth', 'role:dentist'])->group(function () {
     Route::get('/dashboard', [DentistController::class, 'index'])->name('dashboard');
-  
-  
 });
 
 
@@ -58,4 +54,3 @@ Route::prefix('service')->name('service.')->group(function () {
     Route::put('/{service}/update', [ServiceController::class, 'update'])->name('update');
     Route::delete('/{service}/delete', [ServiceController::class, 'destroy'])->name('destroy');
 });
-
