@@ -56,7 +56,7 @@
 
                      </button>
                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{route('patient.profile')}}">Profile</a></li>
                         <li>
                            <form action="{{ route('logout') }}" method="POST">
                               @csrf
@@ -162,7 +162,7 @@
       <h1 style="color: #1e466b;" class="text-center pb-5">SERVICES</h1>
 
       <div class="row row-cols-1 row-cols-md-3 p-3">
-         {{-- @foreach ($services as $service)
+         @foreach ($services as $service)
          <div class="col text-center mb-4">
             <div style="border: solid 1.5px #009fde" class="p-4 ms-3 rounded shadow-sm h-100 me-3">
                <h5 class="fw-bold mb-3">{{ $service->service_name }}</h5>
@@ -172,7 +172,7 @@
                </button>
             </div>
          </div>
-         @endforeach --}}
+         @endforeach
       </div>
       {{-- Services --}}
    </div>
