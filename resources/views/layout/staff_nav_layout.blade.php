@@ -21,34 +21,39 @@
       </div>
    </div>
 
-   <div class="row">
+   <div style="min-height: 525px !important;" class="row">
       <div style="background-color: #1e466b !important;" class="col-2">
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2 ">
             <a class="admin-btn" href="{{route('staff.dashboard')}}"><i
                   class="bi bi-house-door fs-5 me-2"></i>Dashboard</a>
          </div>
 
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href=""><i class="bi bi-box-seam fs-5 me-2"></i>Supplies</a>
          </div>
 
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2">
+            <a class="admin-btn" href="{{route('staff.supplier')}}"><i
+                  class="bi bi-people-fill me-2 fs-5"></i>Suppliers</a>
+         </div>
+
+         <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href="{{route('staff.service')}}"><i class="bi bi-card-list fs-5 me-2"></i>Services</a>
          </div>
 
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href=""><i class="bi bi-person-lines-fill fs-5 me-2"></i>Patients</a>
          </div>
 
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href=""><i class="bi bi-calendar-week fs-5 me-2"></i>Appointments</a>
          </div>
 
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href=""><i class="bi bi-clock-history fs-5 me-2"></i>Treatment Records</a>
          </div>
 
-         <div class="p-3">
+         <div class="pb-2 pt-2 px-2">
             <form action="{{ route('logout') }}" method="POST">
                @csrf
 

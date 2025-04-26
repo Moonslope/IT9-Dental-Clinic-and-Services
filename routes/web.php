@@ -7,6 +7,8 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DentistController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SupplyController;
+use App\Http\Controllers\SupplierController;
 
 Route::get('/', [PatientController::class, 'index']);
 
@@ -29,6 +31,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/staff', [StaffController::class, 'admin_staff'])->name('staff');
     Route::get('/service', [ServiceController::class, 'admin_service'])->name('service');
     Route::get('/dentist', [DentistController::class, 'admin_dentist'])->name('dentist');
+    Route::get('/supply', [SupplyController::class, 'admin_supply'])->name('supply');
+    Route::get('/supplier', [SupplierController::class, 'admin_supplier'])->name('supplier');
+    
 
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
@@ -41,6 +46,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/dashboard', [StaffController::class, 'index'])->name('dashboard');
     Route::get('/service', [ServiceController::class, 'staff_service'])->name('service'); 
+    Route::get('/supplier', [SupplierController::class, 'staff_supplier'])->name('supplier'); 
 });
 
 // DENTIST
@@ -54,4 +60,10 @@ Route::prefix('service')->name('service.')->group(function () {
     Route::post('/', [ServiceController::class, 'store'])->name('store');
     Route::put('/{service}/update', [ServiceController::class, 'update'])->name('update');
     Route::delete('/{service}/delete', [ServiceController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('supplier')->name('supplier.')->group(function () {
+    Route::post('/', [SupplierController::class, 'store'])->name('store');
+    Route::put('/{supplier}/update', [SupplierController::class, 'update'])->name('update');
+    Route::delete('/{supplier}/delete', [SupplierController::class, 'destroy'])->name('destroy');
 });

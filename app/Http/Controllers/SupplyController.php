@@ -10,9 +10,14 @@ class SupplyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function admin_supply()
     {
-        //
+        return view('admin.supply');
+    }
+
+    public function staff_supply()
+    {
+        return view();
     }
 
     /**
