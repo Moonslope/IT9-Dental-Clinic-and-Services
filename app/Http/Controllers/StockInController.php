@@ -3,63 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\StockIn;
+use App\Models\Supply;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Http\Controllers\SupplyController;
 
 class StockInController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+            $validated = $request->validate([
+                'supply_id' => 'required|exists:supplies,id',
+                'quantity_received' => 'required|integer|min:1',
+                'supplier_id' => 'required|exists:suppliers,id',
+                'user_id' => 'required|exists:users,id',
+            ]);
+    
+            StockIn::create([
+                'supply_id' => $validated['supply_id'],
+                'quantity_received' => $validated['quantity_received'],
+                'date_received' => Carbon::now()->format('Y-m-d'),
+                'user_id' => $validated['user_id'],
+                'supplier_id' => $validated['supplier_id'],
+            ]);
+    
+          
+            $supply = Supply::findOrFail($validated['supply_id']);
+            $supply->supply_quantity += $validated['quantity_received'];
+            $supply->save();
+    
+            return redirect()->back();
+        
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(StockIn $stockIn)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StockIn $stockIn)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, StockIn $stockIn)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(StockIn $stockIn)
-    {
-        //
-    }
+   
 }

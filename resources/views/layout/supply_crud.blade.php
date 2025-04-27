@@ -32,7 +32,7 @@
 <div class="row m-2">
    <div class="card">
       <div class="card-body p-1">
-         {{-- @if($supplies->isEmpty())
+         @if($supplies->isEmpty())
          <p class="alert text-center text-secondary">No supplies available.</p>
          @else
          <div style="max-height: 420px !important; overflow-y: auto;">
@@ -43,11 +43,18 @@
                      <div class="d-flex justify-content-between align-items-center w-100 px-2">
                         <div>
                            <span><strong>Name: </strong>{{$supply->supply_name}}</span><br>
-                           <span><strong>Price: </strong>{{$supply->supply_price}}</span><br>
+                           <span><strong>Quantity: </strong>{{$supply->supply_quantity}}</span><br>
                            <span><strong>Description: </strong>{{$supply->supply_description}}</span>
                         </div>
 
                         <div class="d-flex gap-3">
+                           <div>
+                              <button class="btn btn-dark w-100 px-2 py-1" data-bs-toggle="modal"
+                                 data-bs-target="#stockInSupplyModal{{$supply->id}}">
+                                 Stock In</i>
+                              </button>
+                           </div>
+
                            <div>
                               <button class="btn btn-dark w-100 px-2 py-1" data-bs-toggle="modal"
                                  data-bs-target="#editSupplyModal{{$supply->id}}">
@@ -71,8 +78,73 @@
                </ul>
             </div>
 
+            {{-- Stock in modal --}}
+            <div class="modal fade" id="stockInSupplyModal{{$supply->id}}" tabindex="-1"
+               aria-labelledby="stockInSupplyModalLabel{{$supply->id}}" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+                  <div class="modal-content">
+                     <div class="modal-header fw-semibold d-flex justify-content-between">
+                        <h5 class="modal-title" id="stockInSupplyModalLabel{{$supply->id}}">Stock In</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+
+                     <div class="modal-body mt-3">
+                        <form action="{{ route('supply.stockin') }}" method="POST">
+                           @csrf
+
+                           <input type="text" name="supply_id" value="{{$supply->id}}" hidden>
+                           <input type="text" name="user_id" value="{{$user->id}}" hidden>
+
+                           <div class="row mb-3 gap-2">
+                              <div class="col">
+                                 <input style="background-color: #d9d9d9" type="text" name="supply_name"
+                                    class="form-control p-2" value="{{$supply->supply_name}}">
+                              </div>
+                           </div>
+
+                           <div class="row mb-3">
+                              <div class="col">
+                                 <select name="supplier_id" class="form-select p-2" style="background-color: #d9d9d9"
+                                    required>
+                                    <option value="" disabled selected>Select Supplier</option>
+                                    @foreach($suppliers as $supplier)
+                                    <option value="{{$supplier->id}}" name="supplier_id">
+                                       {{$supplier->supplier_name}}
+                                    </option>
+                                    @endforeach
+                                 </select>
+                              </div>
+                           </div>
+
+                           <div class="row mb-3 gap-2">
+                              <div class="col">
+                                 <input style="background-color: #d9d9d9" type="number" name="quantity_received" min="1"
+                                    class="form-control p-2" placeholder="Quantity Received">
+                              </div>
+
+                           </div>
+
+
+
+                           <div class="modal-footer row mt-3 gap-2 pt-3">
+                              <div class="col">
+                                 <button class="btn btn-outline-info text-black fw-bold w-100 p-1" type="button"
+                                    data-bs-dismiss="modal">Cancel</button>
+                              </div>
+                              <div class="col">
+
+                                 <button class="btn w-100 fw-bold text-white p-1" style="background-color: #00a1df"
+                                    type="submit">ADD</button>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
             {{-- Edit Modal --}}
-            {{-- <div class="modal fade" id="editSupplyModal{{$supply->id}}" tabindex="-1"
+            <div class="modal fade" id="editSupplyModal{{$supply->id}}" tabindex="-1"
                aria-labelledby="editSupplyModalLabel{{$supply->id}}" aria-hidden="true">
                <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                   <div class="modal-content">
@@ -91,8 +163,8 @@
                                     class="form-control p-2" value="{{$supply->supply_name}}">
                               </div>
                               <div class="col">
-                                 <input style="background-color: #d9d9d9" type="number" name="supply_price" min="1"
-                                    class="form-control p-2" value="{{$supply->supply_price}}">
+                                 <input style="background-color: #d9d9d9" type="number" name="supply_quantity" min="1"
+                                    class="form-control p-2" value="{{$supply->supply_quantity}}">
                               </div>
                            </div>
 
@@ -119,7 +191,7 @@
             </div>
             @endforeach
          </div>
-         @endif --}}
+         @endif
       </div>
    </div>
 </div>
@@ -134,8 +206,8 @@
          </div>
 
          <div class="modal-body mt-3">
-            {{-- {{ route('supply.store') }} --}}
-            <form action="" method="POST">
+
+            <form action="{{ route('supply.store') }}" method="POST">
                @csrf
                @method('POST')
                <div class="row mb-3 gap-2">
@@ -160,8 +232,8 @@
                         data-bs-dismiss="modal">Cancel</button>
                   </div>
                   <div class="col">
-                     {{-- {{ $redirect_route }} --}}
-                     <input type="hidden" name="redirect_to" value="">
+
+                     <input type="hidden" name="redirect_to" value=" {{ $redirect_route }}">
                      <button class="btn w-100 fw-bold text-white p-1" style="background-color: #00a1df"
                         type="submit">Add</button>
                   </div>

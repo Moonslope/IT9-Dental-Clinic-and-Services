@@ -9,6 +9,7 @@ use App\Http\Controllers\DentistController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\StockInController;
 
 Route::get('/', [PatientController::class, 'index']);
 
@@ -46,7 +47,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/dashboard', [StaffController::class, 'index'])->name('dashboard');
     Route::get('/service', [ServiceController::class, 'staff_service'])->name('service'); 
-    Route::get('/supplier', [SupplierController::class, 'staff_supplier'])->name('supplier'); 
+    Route::get('/supplier', [SupplierController::class, 'staff_supplier'])->name('supplier');
+    Route::get('/supply', [SupplyController::class, 'staff_supply'])->name('supply'); 
 });
 
 // DENTIST
@@ -62,8 +64,19 @@ Route::prefix('service')->name('service.')->group(function () {
     Route::delete('/{service}/delete', [ServiceController::class, 'destroy'])->name('destroy');
 });
 
+//supplier crud para sa admin ug staff
 Route::prefix('supplier')->name('supplier.')->group(function () {
     Route::post('/', [SupplierController::class, 'store'])->name('store');
     Route::put('/{supplier}/update', [SupplierController::class, 'update'])->name('update');
     Route::delete('/{supplier}/delete', [SupplierController::class, 'destroy'])->name('destroy');
 });
+
+//supply crud para sa admin ug staff
+Route::prefix('supply')->name('supply.')->group(function () {
+    Route::post('/', [SupplyController::class, 'store'])->name('store');
+    Route::put('/{supply}/update', [SupplyController::class, 'update'])->name('update');
+    Route::delete('/{supply}/delete', [SupplyController::class, 'destroy'])->name('destroy');
+});
+
+// para sa stock in
+Route::post('/', [StockInController::class, 'store'])->name('supply.stockin');

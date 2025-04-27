@@ -29,7 +29,7 @@
          </div>
 
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-box-seam fs-5 me-2"></i>Supplies</a>
+            <a class="admin-btn" href="{{route('staff.supply')}}"><i class="bi bi-box-seam fs-5 me-2"></i>Supplies</a>
          </div>
 
          <div class="pb-2 pt-2 px-2">
