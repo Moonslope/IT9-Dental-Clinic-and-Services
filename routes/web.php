@@ -9,9 +9,9 @@ use App\Http\Controllers\DentistController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\StockInController;
 use App\Http\Controllers\AppointmentController;
 
+use App\Http\Controllers\StockInController;
 
 Route::get('/', [PatientController::class, 'index']);
 
