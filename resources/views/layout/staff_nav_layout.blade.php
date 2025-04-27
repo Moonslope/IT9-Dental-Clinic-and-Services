@@ -50,6 +50,10 @@
          </div>
 
          <div class="pb-2 pt-2 px-2">
+            <a class="admin-btn" href=""><i class="bi bi-journal-text fs-5 me-2"></i></i>Prescriptions</a>
+         </div>
+
+         <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href=""><i class="bi bi-clock-history fs-5 me-2"></i>Treatment Records</a>
          </div>
 

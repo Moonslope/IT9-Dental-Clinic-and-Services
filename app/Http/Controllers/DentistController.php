@@ -21,7 +21,8 @@ class DentistController extends Controller
      
     public function index()
     {
-        return view('dentist.dashboard');
+        $dentist = User::where('id', Auth::id())->first();
+        return view('dentist.dashboard',  ['dentist'=>$dentist]);
     }
 
     /**

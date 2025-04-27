@@ -15,7 +15,8 @@ class PatientController extends Controller
     public function profile()
     {
         $patient = Patient::where('user_id', Auth::id())->first();
-        return view('patient.profile', ['patient'=>$patient]);
+        $services = Service::all();
+        return view('patient.profile', ['patient'=>$patient, 'services'=>$services]);
     }
 
     public function index()
