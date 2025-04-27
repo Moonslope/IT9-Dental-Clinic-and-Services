@@ -10,6 +10,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StockInController;
+use App\Http\Controllers\AppointmentController;
+
 
 Route::get('/', [PatientController::class, 'index']);
 
@@ -70,6 +72,14 @@ Route::prefix('supplier')->name('supplier.')->group(function () {
     Route::put('/{supplier}/update', [SupplierController::class, 'update'])->name('update');
     Route::delete('/{supplier}/delete', [SupplierController::class, 'destroy'])->name('destroy');
 });
+
+//Appointment
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
+
+//Appointment
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
 
 //supply crud para sa admin ug staff
 Route::prefix('supply')->name('supply.')->group(function () {
