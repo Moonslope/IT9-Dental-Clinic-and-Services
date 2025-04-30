@@ -28,20 +28,19 @@
                   class="bi bi-house-door fs-5 me-2"></i>Dashboard</a>
          </div>
 
-         <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-person-lines-fill fs-5 me-2"></i>Patients</a>
+         <div class="w-100 mt-3 border border-start-0 border-bottom-0 border-end-0 border-secondary pt-2">
+            <p class="text-start ps-1 text-white fw-semibold">PATIENT MANAGEMENT</p>
          </div>
 
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-calendar-week fs-5 me-2"></i>Appointments</a>
+            <a class="admin-btn" href=""><i class="bi bi-calendar-week fs-5 me-2 ms-3"></i>Appointments</a>
          </div>
 
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-journal-text fs-5 me-2"></i></i>Prescriptions</a>
+            <a class="admin-btn" href=""><i class="bi bi-journal-text fs-5 me-2 ms-3"></i></i>Prescriptions</a>
          </div>
-
-         <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-clock-history fs-5 me-2"></i>Treatment Records</a>
+         <div class="pb-2 pt-2 px-2 border border-start-0 border-top-0 border-end-0 border-secondary">
+            <a class="admin-btn" href=""><i class="bi bi-clock-history fs-5 me-2 ms-3"></i>Treatment Records</a>
          </div>
 
          <div class="pb-2 pt-2 px-2">

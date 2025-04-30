@@ -3,6 +3,30 @@
     margin: 0 !important;
 }
 
+/* Admin and Staff Buttons*/
+.admin-staff-btn{
+    background-color: #1e456a !important;
+}
+
+.admin-staff-btn:hover{
+    background-color: #306ea8 !important;
+    transition: background-color 0.5s !important;
+}
+
+.admin-staff-cancel-btn{
+    background-color: white;
+    border:  solid 1px #1e456a !important;
+    color: black;
+}
+
+.admin-staff-cancel-btn:hover{
+    background-color: #1e456a !important;
+    color: white !important;
+    transition: background-color 0.5s, color 0.5s !important;
+}
+
+/* Admin and Staff Buttons*/
+
 /* Login and register */
 .log-reg{
     background-color:#009fde !important;

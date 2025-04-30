@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supply;
+use App\Models\StockIn;
 use App\Models\User;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class SupplyController extends Controller
     {
         $user = User::where('id', Auth::id())->first();
         $suppliers = Supplier::all();
-        $supplies = Supply::all();
+        $supplies = Supply::latest()->get();
         return view('admin.supply', ['supplies'=>$supplies, 'suppliers'=>$suppliers, 'user'=>$user]);
     }
 
@@ -28,7 +29,6 @@ class SupplyController extends Controller
         $suppliers = Supplier::all();
         $supplies = Supply::all();
         return view('staff.supply', ['supplies'=>$supplies, 'suppliers'=>$suppliers, 'user'=>$user]);
- 
     }
 
     /**

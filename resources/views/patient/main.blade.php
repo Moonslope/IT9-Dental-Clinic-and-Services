@@ -62,10 +62,13 @@
 
             @auth
             <div class="hideOnMobile">
-               <div class="d-flex ms-5 gap-2">
+               <div class="d-flex ms-3 gap-2 me-3">
                   <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-
+                        {{ Auth::user()->first_name
+                        }}
+                        {{ Auth::user()->last_name
+                        }}
                      </button>
                      <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{route('patient.profile')}}">Profile</a></li>
@@ -76,13 +79,6 @@
                            </form>
                         </li>
                      </ul>
-                  </div>
-                  <div class="me-3">
-                     <p class="fw-semibold">
-                        {{ Auth::user()->first_name
-                        }}
-                        {{ Auth::user()->last_name
-                        }}</p>
                   </div>
                </div>
             </div>

@@ -35,7 +35,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/dentist', [DentistController::class, 'admin_dentist'])->name('dentist');
     Route::get('/supply', [SupplyController::class, 'admin_supply'])->name('supply');
     Route::get('/supplier', [SupplierController::class, 'admin_supplier'])->name('supplier');
-    
+    Route::get('/stock in history', [StockInController::class, 'admin_stock_in_history'])->name('stock_in_history');
 
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
@@ -50,6 +50,7 @@ Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->gro
     Route::get('/service', [ServiceController::class, 'staff_service'])->name('service'); 
     Route::get('/supplier', [SupplierController::class, 'staff_supplier'])->name('supplier');
     Route::get('/supply', [SupplyController::class, 'staff_supply'])->name('supply'); 
+    Route::get('/stock in history', [StockInController::class, 'staff_stock_in_history'])->name('stock_in_history');
 });
 
 // DENTIST

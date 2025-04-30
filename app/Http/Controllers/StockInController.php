@@ -10,6 +10,15 @@ use App\Http\Controllers\SupplyController;
 
 class StockInController extends Controller
 {
+    public function admin_stock_in_history(){
+        $stock_ins = StockIn::latest()->get();
+        return view('admin.stock_in_history', ['stock_ins'=>$stock_ins]);
+    }
+
+    public function staff_stock_in_history(){
+        $stock_ins = StockIn::latest()->get();
+        return view('staff.stock_in_history', ['stock_ins'=>$stock_ins]);
+    }
 
     public function store(Request $request)
     {
@@ -27,7 +36,6 @@ class StockInController extends Controller
                 'user_id' => $validated['user_id'],
                 'supplier_id' => $validated['supplier_id'],
             ]);
-    
           
             $supply = Supply::findOrFail($validated['supply_id']);
             $supply->supply_quantity += $validated['quantity_received'];
