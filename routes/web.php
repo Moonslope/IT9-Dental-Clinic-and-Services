@@ -3,13 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DentistController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplyController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\StockInController;
 
 Route::get('/', [PatientController::class, 'index']);
@@ -25,6 +25,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('/')->name('patient.')->middleware(['auth', 'role:patient'])->group(function () {
     Route::get('home', [PatientController::class, 'index'])->name('main');
     Route::get('home/profile', [PatientController::class, 'profile'])->name('profile');
+
+    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 });
 
 // ADMIN
@@ -42,14 +44,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     Route::delete('/dentist/{user}/delete', [DentistController::class, 'destroy'])->name('dentist.destroy');
     Route::put('/dentist/{user}/update', [DentistController::class, 'update'])->name('dentist.update');
-}); 
+});
 
 // STAFF
 Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/dashboard', [StaffController::class, 'index'])->name('dashboard');
-    Route::get('/service', [ServiceController::class, 'staff_service'])->name('service'); 
+    Route::get('/service', [ServiceController::class, 'staff_service'])->name('service');
+    Route::get('/appointments', [StaffController::class, 'appointments'])->name('appointments');
+    Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::get('/supplier', [SupplierController::class, 'staff_supplier'])->name('supplier');
-    Route::get('/supply', [SupplyController::class, 'staff_supply'])->name('supply'); 
+    Route::get('/supply', [SupplyController::class, 'staff_supply'])->name('supply');
     Route::get('/stock in history', [StockInController::class, 'staff_stock_in_history'])->name('stock_in_history');
 });
 
@@ -92,3 +96,4 @@ Route::prefix('supply')->name('supply.')->group(function () {
 Route::post('/', [StockInController::class, 'store'])->name('supply.stockin');
 Route::put('/stock_in/{stock}', [StockInController::class, 'update'])->name('stock_in.update');
 Route::delete('/stock_in/{stock}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
+

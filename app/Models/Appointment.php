@@ -12,6 +12,7 @@ class Appointment extends Model
         'dentist_id',
         'appointment_date',
         'status',
+        'message',
     ];
 
     public function service()

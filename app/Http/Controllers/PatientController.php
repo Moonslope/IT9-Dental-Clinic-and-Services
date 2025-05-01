@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use function Pest\Laravel\get;
 
 class PatientController extends Controller
 {
@@ -15,14 +18,25 @@ class PatientController extends Controller
     public function profile()
     {
         $patient = Patient::where('user_id', Auth::id())->first();
+
+        $appointments = $patient ? $patient->appointments()->with('service')->get() : collect();
         $services = Service::all();
-        return view('patient.profile', ['patient'=>$patient, 'services'=>$services]);
+
+        return view('patient.profile', [
+            'patient' => $patient,
+            'appointments' => $appointments,
+            'services' => $services
+        ]);
     }
 
     public function index()
     {
-        $services = Service::all(); // Fetch all available services
-        return view('patient.main', compact('services'));
+        $services = Service::all();
+        $dentists = Dentist::all();
+        return view('patient.main', [
+            'services' => $services,
+            'dentists' => $dentists,
+        ]);
     }
 
     /**

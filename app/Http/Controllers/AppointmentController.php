@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class AppointmentController extends Controller
 {
@@ -31,18 +33,25 @@ class AppointmentController extends Controller
     {
         $request->validate([
             'service_id' => 'required|exists:services,id',
-            'appointment_date' => 'required|date|after_or_equal:today',
+            'appointment_date' => 'required|date|after:today',
+            'message' => 'nullable|string|max:255',
         ]);
+
+        $patient = Patient::where('user_id', Auth::id())->first();
+        if (!$patient) {
+            return redirect()->back()->withErrors(['error' => 'Patient record not found.']);
+        }
 
         Appointment::create([
             'service_id' => $request->service_id,
-            'patient_id' => Auth::id(),
-            'dentist_id' => null,
+            'patient_id' => $patient->id,
+            'dentist_id' => $request->dentist_id ?? null,
             'appointment_date' => $request->appointment_date,
-            'status' => 'pending',
+            'status' => 'Pending',
+            // 'message' => $request->message,
         ]);
 
-        return redirect()->back()->with('success', 'Appointment booked successfully!');
+        return redirect()->back();
     }
 
     /**
@@ -66,7 +75,17 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, Appointment $appointment)
     {
-        //
+        $request->validate([
+            'dentist_id' => 'required|exists:dentists,id',
+            'appointment_date' => 'required|date|after:today',
+        ]);
+
+        $appointment->dentist_id = $request->input('dentist_id');
+        $appointment->appointment_date = $request->input('appointment_date');
+        $appointment->status = 'Approved';
+        $appointment->save();
+
+        return redirect()->back();
     }
 
     /**

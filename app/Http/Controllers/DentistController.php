@@ -15,10 +15,10 @@ class DentistController extends Controller
      */
     public function admin_dentist()
     {
-        $users = User::with('dentist')->where('role', 'dentist')->get(); 
+        $users = User::with('dentist')->where('role', 'dentist')->get();
         return view('admin.dentist', ['users' => $users]);
     }
-     
+
     public function index()
     {
         $dentist = User::where('id', Auth::id())->first();
@@ -61,38 +61,38 @@ class DentistController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
-{
-    $validatedData = $request->validate([
-        'first_name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $user->id,
-        'contact_number' => 'required|string',
-        'address' => 'required|string',
-        'password' => 'nullable|min:8', 
-    ]);
-
-    if (!empty($validatedData['password'])) {
-        $validatedData['password'] = Hash::make($validatedData['password']);
-    } else {
-        unset($validatedData['password']);
-    }
-
-    $user->update($validatedData);
-
-    if ($user->role === 'dentist') {
-        $request->validate([
-            'specialization' => 'required|string',
+    {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'contact_number' => 'required|string',
+            'address' => 'required|string',
+            'password' => 'nullable|min:8',
         ]);
 
-        if ($user->dentist) {
-            $user->dentist->update([
-                'specialization' => $request->specialization,
-            ]);
+        if (!empty($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
         }
-    }
 
-    return redirect()->route('admin.dentist');
-}
+        $user->update($validatedData);
+
+        if ($user->role === 'dentist') {
+            $request->validate([
+                'specialization' => 'required|string',
+            ]);
+
+            if ($user->dentist) {
+                $user->dentist->update([
+                    'specialization' => $request->specialization,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.dentist');
+    }
 
 
     /**

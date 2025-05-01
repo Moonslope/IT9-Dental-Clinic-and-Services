@@ -160,6 +160,15 @@
                <form action="{{ route('appointments.store') }}" method="POST">
                   @csrf
 
+                  {{-- <div class="row mb-2">
+                     <select name="dentist_id" id="dentist_id" class="form-select" style="background-color: #d9d9d9">
+                         <option value="" disabled selected>Select a dentist</option>
+                         @foreach ($dentists as $dentist)
+                             <option value="{{ $dentist->id }}">{{ $dentist->name }}</option>
+                         @endforeach
+                     </select>
+                 </div> --}}
+
                   <div class="row gap-2 mb-2">
                      <div class="col">
                         <label for="services" class="mb-1  fw-semibold">Services</label>
@@ -175,6 +184,8 @@
                            @endif
                         </select>
                      </div>
+
+                     {{-- Appointment Date --}}
                      <div class="col">
                         <label for="appointmentDate" class="mb-1  fw-semibold">Date and Time</label>
                         <input type="datetime-local" id="appointmentDate" name="appointment_date"
@@ -215,6 +226,7 @@
                      </div>
                   </div>
 
+                  {{-- Optional Messege --}}
                   <div class="row mb-3">
                      <label for="message" class="mb-1  fw-semibold">Message</label>
                      <textarea name="message" id="message" class="form-control" cols="30" rows="4"
@@ -222,6 +234,7 @@
 
                   </div>
 
+                  {{-- Submit Button --}}
                   <div class="row">
                      <button class="btn w-100 fw-bold text-white p-1" style="background-color: #00a1df"
                         type="submit">Submit Appointment</button>

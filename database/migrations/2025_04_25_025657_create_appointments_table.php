@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
 
-            $table->unsignedBigInteger('dentist_id');
+            $table->unsignedBigInteger('dentist_id')->nullable();
             $table->foreign('dentist_id')->references('id')->on('dentists')->onDelete('cascade');
 
             $table->dateTime('appointment_date');
