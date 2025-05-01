@@ -157,7 +157,7 @@
             </div>
 
             <div class="modal-body mt-4">
-               <form action="{{ route('patient.appointments.store') }}" method="POST">
+               <form action="{{ route('appointments.store') }}" method="POST">
                   @csrf
 
                   {{-- <div class="row mb-2">
