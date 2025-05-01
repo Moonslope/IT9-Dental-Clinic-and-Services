@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
+use App\Models\Dentist;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +25,7 @@ class StaffController extends Controller
     public function index()
     {
         $staff = User::where('id', Auth::id())->first();
-        return view('staff.dashboard',  ['staff'=>$staff]);
+        return view('staff.dashboard',  ['staff' => $staff]);
     }
 
     /**
@@ -37,10 +39,7 @@ class StaffController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
@@ -91,5 +90,13 @@ class StaffController extends Controller
     {
         $user->delete();
         return redirect(route('admin.staff'));
+    }
+
+    public function appointments()
+    {
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
+        $dentists = Dentist::all();
+        // dd($appointments);
+        return view('staff.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
     }
 }

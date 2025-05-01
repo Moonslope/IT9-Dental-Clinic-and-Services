@@ -41,7 +41,7 @@
          </div>
 
          <div class="p-3">
-            <a class="admin-btn" href=""><i class="bi bi-calendar-week fs-5 me-2"></i>Appointments</a>
+            <a class="admin-btn" href="{{ route('staff.appointments') }}"><i class="bi bi-calendar-week fs-5 me-2"></i>Appointments</a>
          </div>
 
          <div class="p-3">

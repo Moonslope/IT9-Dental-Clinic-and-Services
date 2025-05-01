@@ -9,6 +9,7 @@ class Dentist extends Model
     protected $fillable = [
         'user_id',
         'specialization',
+        'contact_number'
     ];
 
     public function user()
@@ -19,4 +20,5 @@ class Dentist extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class, 'dentist_id', 'id');
-    }}
+    }
+}

@@ -90,6 +90,23 @@
             <p class="fw-semibold">Appointment</p>
 
             {{-- appointment sa patient --}}
+            @if ($appointments->isEmpty())
+                <p class="text-secondary">You have no appointments scheduled.</p>
+            @else
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                  @foreach ($appointments as $appointment)
+                      <div class="col">
+                        <div class="card shadow-sm">
+                           <div class="card-body">
+                              <h5 class="card-title"> {{ $appointment->service->service_name }}</h5>
+                              <p class="card-text"><strong>Date:</strong> {{ $appointment->appointment_date }}</p>
+                              <p class="card-text"><strong>Status:</strong> {{ ucfirst($appointment->status) }}</p>
+                           </div>
+                        </div>
+                      </div>
+                  @endforeach
+                </div>
+            @endif
          </div>
       </div>
    </div>

@@ -164,44 +164,58 @@
             <h2>Schedule your visit with ease</h2>
 
             <div class="modal-body mt-3">
-               <form action="" method="POST">
+               <form action="{{ route('patient.appointments.store') }}" method="POST">
                   @csrf
+
+                  {{-- <div class="row mb-2">
+                     <select name="dentist_id" id="dentist_id" class="form-select" style="background-color: #d9d9d9">
+                         <option value="" disabled selected>Select a dentist</option>
+                         @foreach ($dentists as $dentist)
+                             <option value="{{ $dentist->id }}">{{ $dentist->name }}</option>
+                         @endforeach
+                     </select>
+                 </div> --}}
 
                   <div class="row gap-2 mb-2">
                      <div class="col">
-                        <select style="background-color: #d9d9d9" name="services" id="services" class="form-select">
+                        <select style="background-color: #d9d9d9" name="service_id" id="service_id" class="form-select">
                            <option value="" disabled selected>Select a service</option>
-                           {{-- @foreach ($services as $service)
-                           <option value="{{ $servece->id }}">{{ $service->name }}</option>
-                           @endforeach --}}
+                           @foreach ($services as $service)
+                           <option style="color:black !important;" value="{{ $service->id }}">{{ $service->name }}</option>
+                           @endforeach
                         </select>
                      </div>
+
+                     {{-- Appointment Date --}}
                      <div class="col">
-                        <input type="date" id="appointmentDate" name="appointmentDate" class="form-control"
+                        <input type="datetime-local" id="appointment_date" name="appointment_date" class="form-control"
                            style="background-color: #d9d9d9" required>
                      </div>
                   </div>
 
+                  {{-- User Details --}}
                   <div class="row mb-2">
                      <input type="text" id="name" name="name" placeholder="Name" class="form-control"
-                        style="background-color: #d9d9d9" required>
+                        style="background-color: #d9d9d9" value="{{ Auth::user()->first_name ?? ''}} {{ Auth::user()->last_name ?? '' }}" required>
                   </div>
 
                   <div class="row mb-2">
                      <input type="email" id="email" name="email" placeholder="Email" class="form-control"
-                        style="background-color: #d9d9d9" required>
+                        style="background-color: #d9d9d9" value="{{ Auth::user()->email ?? '' }}" required>
                   </div>
 
                   <div class="row mb-2">
                      <input type="tel" id="phone" name="phone" placeholder="Phone number: +63 9XXXXXXXXX"
-                        class="form-control" style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required>
+                        class="form-control" style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" value="{{ Auth::user()->contact_number ?? '' }}" required>
                   </div>
 
+                  {{-- Optional Messege --}}
                   <div class="row mb-3">
-                     <textarea name="Message" id="message" class="form-control" placeholder="Message(optional)"
+                     <textarea name="message" id="message" class="form-control" placeholder="Message(optional)"
                         style="background-color: #d9d9d9"></textarea>
                   </div>
 
+                  {{-- Submit Button --}}
                   <div class="row">
                      <button class="btn w-100 fw-bold text-white p-1" style="background-color: #00a1df"
                         type="submit">Submit Appointment</button>
