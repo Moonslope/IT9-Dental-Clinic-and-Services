@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\SupplierRequest;
 class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function admin_supplier()
     {
-        //
+        $suppliers = Supplier::all();
+        return view('admin.supplier', ['suppliers'=>$suppliers]);
+    }
+
+    public function staff_supplier()
+    {
+        $suppliers = Supplier::all();
+        return view('staff.supplier', ['suppliers'=>$suppliers]);
     }
 
     /**
@@ -26,9 +33,12 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SupplierRequest $request)
     {
-        //
+        $newSupplier = $request->validated();
+        Supplier::create($newSupplier);
+
+        return redirect($request->input('redirect_to', route('staff.supplier')));
     }
 
     /**
@@ -50,16 +60,20 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(SupplierRequest $request, Supplier $supplier)
     {
-        //
+        $newSupplier = $request->validated();
+        $supplier->update($newSupplier);
+
+        return redirect($request->input('redirect_to', route('staff.supplier')));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplier $supplier)
+    public function destroy(Request $request, Supplier $supplier)
     {
-        //
+        $supplier->delete();
+        return redirect($request->input('redirect_to', route('staff.supplier')));
     }
 }

@@ -12,13 +12,13 @@ class ServiceController extends Controller
      */
     public function staff_service()
     {
-        $services = Service::all();
+        $services = Service::latest()->get();
         return view('staff.service', ['services' => $services]);
     }
 
     public function admin_service()
     {
-        $services = Service::all();
+        $services = Service::latest()->get();
         return view('admin.service', ['services' => $services]);
     }
 

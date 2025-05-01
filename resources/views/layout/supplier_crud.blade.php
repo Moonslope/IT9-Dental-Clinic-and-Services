@@ -1,19 +1,3 @@
-@extends('layout.admin_nav_layout')
-
-@section('title', 'Staff Lists')
-
-@section('breadcrumb')
-
-<div class="px-4 py-2 text-secondary" style="font-size: 0.95rem;">
-   <span><a href="" class="text-decoration-none text-dark">Home</a></span>
-   <span class="mx-2">></span>
-   <span class="text-muted">Staff</span>
-</div>
-
-@endsection
-
-@section('adminContent')
-
 <style>
    .modal-dialog {
       margin: auto !important;
@@ -32,12 +16,12 @@
 
          <div class="row w-100 p-3">
             <div class="col">
-               <h3>Staff Lists</h3>
+               <h3>Supplier Lists</h3>
             </div>
 
             <div class="col col-2">
-               <button class="btn  admin-staff-btn text-white w-100 p-1" data-bs-toggle="modal"
-                  data-bs-target="#addSuppliesModal">ADD <i class="ms-2 bi bi-plus-circle-fill"></i></button>
+               <button class="btn admin-staff-btn text-white w-100 p-1" data-bs-toggle="modal"
+                  data-bs-target="#addSupplierModal">ADD <i class="ms-2 bi bi-plus-circle-fill"></i></button>
             </div>
          </div>
       </div>
@@ -46,45 +30,45 @@
 
 <div class="row m-2">
    <div style="overflow: hidden;" class="card">
-      <div style="height: 425px !important; " class="card-body">
+      <div class="card-body">
          <div class="row">
             <table>
                <thead class="">
                   <tr style="font-size: 16px; background-color:#00a1df !important;" class="text-white">
                      <th class="p-2 col-2">Name</th>
-                     <th class="p-2 col-2">Email</th>
-                     <th class="p-2 col-2 text-center">Contact Number</th>
-                     <th class="p-2 col-3 text-center">Address</th>
+                     <th class="p-2 col-2">Contact Number</th>
+                     <th class="p-2 col-5">Address</th>
                      <th class="p-2 col-1">Action</th>
                   </tr>
                </thead>
             </table>
          </div>
 
-         @if($users->isEmpty())
-         <p class="alert text-center text-secondary">No Staff available.</p>
+         @if($suppliers->isEmpty())
+         <p class="alert text-center text-secondary">No supplies available.</p>
          @else
          <div style="max-height: 380px; overflow-y: auto; overflow-x: hidden;">
             <table class="table table-bordered">
                <tbody>
-                  @foreach ($users as $user)
+                  @foreach ($suppliers as $supplier)
                   <tr style="font-size: 16px;" class="bg-secondary">
-                     <td class="p-2 col-2 ">{{ $user->first_name }} {{ $user->last_name }}</td>
-                     <td class="p-2 col-2">{{ $user->email }}</td>
-                     <td class="p-2 col-2">{{ $user->contact_number }}</td>
-                     <td class="p-2 col-3">{{ $user->address }}</td>
+                     <td class="p-2 col-2 ">{{ $supplier->supplier_name }}</td>
+                     <td class="p-2 col-2">{{ $supplier->contact_number }}</td>
+                     <td class="p-2 col-5">{{ $supplier->address }}</td>
                      <td class="p-2 col-1">
                         <div class="d-flex justify-content-evenly gap-2">
                            <div>
                               <button class="btn admin-staff-btn text-white w-100 px-2 py-1" data-bs-toggle="modal"
-                                 data-bs-target="#editSuppliesModal{{$user->id}}"><i
+                                 data-bs-target="#editSupplierModal{{$supplier->id}}"><i
                                     class="bi bi-pencil-square"></i></button>
                            </div>
 
                            <div>
-                              <form action="{{route('admin.staff.destroy', ['user' => $user])}}" method="POST">
+                              <form action="{{route('supplier.destroy', ['supplier' => $supplier])}}" method="POST">
                                  @csrf
                                  @method('delete')
+
+                                 <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
                                  <button class="btn admin-staff-btn text-white w-100 px-2 py-1"><i
                                        class="bi bi-trash-fill"></i></button>
                               </form>
@@ -93,44 +77,33 @@
                      </td>
                   </tr>
 
-                  {{-- Modal to Edit supplies --}}
-                  <div class="modal fade" id="editSuppliesModal{{$user->id}}" tabindex="-1"
-                     aria-labelledby="editSuppliesModalLabel{{$user->id}}" aria-hidden="true">
+                  {{-- Modal to Edit supplier --}}
+                  <div class="modal fade" id="editSupplierModal{{$supplier->id}}" tabindex="-1"
+                     aria-labelledby="editSupplierModalLabel{{$supplier->id}}" aria-hidden="true">
                      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                         <div class="modal-content">
                            <div class="modal-header fw-semibold d-flex justify-content-between">
-                              <h5 class="modal-title" id="editSuppliesModalLabel{{$user->id}}">EDIT SUPPLIES</h5>
+                              <h5 class="modal-title" id="editSupplierModalLabel{{$supplier->id}}">EDIT SUPPLIER</h5>
                               <button class="btn-close" type="button" data-bs-dismiss="modal"
                                  aria-label="Close"></button>
                            </div>
 
                            <div class="modal-body mt-3">
-                              <form action="{{route('admin.staff.update', ['user' => $user->id])}}" method="POST">
+                              <form action="{{route('supplier.update', ['supplier' => $supplier->id])}}" method="POST">
                                  @csrf
                                  @method('PUT')
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
-                                       <input style="background-color: #d9d9d9" type="text" id="first_name"
-                                          name="first_name" class="form-control p-2" value="{{ $user->first_name }}">
-                                    </div>
-
-                                    <div class="col">
-                                       <input style="background-color: #d9d9d9" type="text" id="last_name"
-                                          name="last_name" class="form-control p-2" value="{{ $user->last_name }}">
-                                    </div>
-                                 </div>
-
-                                 <div class="row mb-3 gap-2">
-                                    <div class="col">
-                                       <input style="background-color: #d9d9d9" type="email" id="email" name="email"
-                                          class="form-control p-2" value="{{ $user->email }}">
+                                       <input style="background-color: #d9d9d9" type="text" id="supplier_name"
+                                          name="supplier_name" class="form-control p-2"
+                                          value="{{ $supplier->supplier_name }}">
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="address" name="address"
-                                          class="form-control p-2" value="{{ $user->address }}">
+                                          class="form-control p-2" value="{{ $supplier->address }}">
                                     </div>
                                  </div>
 
@@ -138,26 +111,18 @@
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="contact_number"
                                           name="contact_number" class="form-control p-2"
-                                          value="{{ $user->contact_number }}">
-                                    </div>
-                                 </div>
-
-                                 <div class="row mb-3 gap-2">
-                                    <div class="col">
-                                       <input style="background-color: #d9d9d9" type="password" id="password"
-                                          name="password" class="form-control p-2"
-                                          placeholder="Enter new password (optional)">
-
+                                          value="{{ $supplier->contact_number }}">
                                     </div>
                                  </div>
 
                                  <div class="modal-footer row mt-3 gap-2 pt-3">
                                     <div class="col">
-                                       <button class="btn  admin-staff-cancel-btn text-black fw-bold w-100 p-1"
+                                       <button class="btn admin-staff-cancel-btn text-black fw-bold w-100 p-1"
                                           type="button" data-bs-dismiss="modal">Cancel</button>
                                     </div>
                                     <div class="col">
-                                       <button class="btn w-100 fw-bold admin-staff-btn text-white p-1"
+                                       <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+                                       <button class="btn w-100 admin-staff-btn fw-bold text-white p-1"
                                           type="submit">Update</button>
                                     </div>
                                  </div>
@@ -166,41 +131,33 @@
                         </div>
                      </div>
                   </div>
-
                   @endforeach
                </tbody>
             </table>
             @endif
-
          </div>
       </div>
    </div>
 
-
-   {{-- Modal to Add supplies --}}
-   <div class="modal fade" id="addSuppliesModal" tabindex="-1" aria-labelledby="addSuppliesModalLabel"
+   {{-- Modal to Add supplier --}}
+   <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
 
          <div class="modal-content">
             <div class="modal-header fw-semibold d-flex justify-content-between">
-               <h5 class="modal-title" id="addSuppliesModalLabel">ADD STAFF</h5>
+               <h5 class="modal-title" id="addSupplierModalLabel">ADD SUPPLIER</h5>
                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body mt-3">
-               <form action="{{route('register')}}" method="POST">
+               <form action="{{route('supplier.store')}}" method="POST">
                   @csrf
                   @method('POST')
                   <div class="row mb-3 gap-2">
                      <div class="col">
-                        <input style="background-color: #d9d9d9" type="text" id="first_name" name="first_name"
-                           placeholder="First Name" class="form-control p-2">
-                     </div>
-
-                     <div class="col">
-                        <input style="background-color: #d9d9d9" type="text" id="last_name" name="last_name"
-                           placeholder="Last Name" class="form-control p-2">
+                        <input style="background-color: #d9d9d9" type="text" id="supplier_name" name="supplier_name"
+                           placeholder="Name" class="form-control p-2">
                      </div>
 
                   </div>
@@ -219,31 +176,14 @@
                      </div>
                   </div>
 
-                  <div class="row mb-3 gap-2">
-
-
-                     <div class="col">
-                        <input style="background-color: #d9d9d9" type="email" id="email" name="email"
-                           placeholder="Email" class="form-control p-2">
-                     </div>
-                  </div>
-
-                  <div class="row mb-3 gap-2">
-                     <div class="col">
-                        <input style="background-color: #d9d9d9" type="password" id="password" name="password"
-                           placeholder="Password" class="form-control p-2">
-                     </div>
-                  </div>
-
-                  <input type="text" hidden name="role" value="staff">
-
                   <div class="modal-footer row mt-3 gap-2 pt-3">
                      <div class="col">
-                        <button class="btn  admin-staff-cancel-btn text-black fw-bold w-100 p-1" type="button"
+                        <button class="btn admin-staff-cancel-btn text-black fw-bold w-100 p-1" type="button"
                            data-bs-dismiss="modal">Cancel</button>
                      </div>
                      <div class="col">
-                        <button class="btn w-100 fw-bold text-white p-1  admin-staff-btn" type="submit">Add</button>
+                        <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+                        <button class="btn w-100 fw-bold admin-staff-btn text-white p-1" type="submit">Add</button>
                      </div>
                   </div>
                </form>
@@ -251,5 +191,3 @@
          </div>
       </div>
    </div>
-
-   @endsection
