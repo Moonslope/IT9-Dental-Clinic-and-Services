@@ -9,7 +9,6 @@
    <span class="mx-2">></span>
    <span class="text-muted">Dashboard</span>
 </div>
-
 @endsection
 
 @section('adminContent')

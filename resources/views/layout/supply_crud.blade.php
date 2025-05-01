@@ -107,13 +107,13 @@
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" name="supply_name"
-                                          class="form-control p-2" value="{{$supply->supply_name}}">
+                                          class="form-control p-2" disabled value="{{$supply->supply_name}}">
                                     </div>
                                  </div>
 
                                  <div class="row mb-3">
                                     <div class="col">
-                                       <select name="supplier_id" class="form-select p-2"
+                                       <select required name="supplier_id" class="form-select p-2"
                                           style="background-color: #d9d9d9" required>
                                           <option value="" disabled selected>Select Supplier</option>
                                           @foreach($suppliers as $supplier)
@@ -127,8 +127,15 @@
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
-                                       <input style="background-color: #d9d9d9" type="number" name="quantity_received"
-                                          min="1" class="form-control p-2" placeholder="Quantity Received">
+                                       <input style="background-color: #d9d9d9" required type="number"
+                                          name="quantity_received" min="1" class="form-control p-2"
+                                          placeholder="Quantity Received">
+                                    </div>
+
+                                    <div class="col">
+                                       <input style="background-color: #d9d9d9" required type="date"
+                                          name="date_received" min="1" class="form-control p-2"
+                                          placeholder="Date Received">
                                     </div>
                                  </div>
 
@@ -182,9 +189,10 @@
 
                                  <div class="modal-footer row mt-3 gap-2 pt-3">
                                     <div class="col">
-                                       <button class="btn admin-staff-btn text-white fw-bold w-100 p-1" type="button"
+                                       <button class="btn admin-staff-cancel-btn fw-bold w-100 p-1" type="button"
                                           data-bs-dismiss="modal">Cancel</button>
                                     </div>
+
                                     <div class="col">
                                        <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
                                        <button class="btn w-100 fw-bold admin-staff-btn text-white p-1"

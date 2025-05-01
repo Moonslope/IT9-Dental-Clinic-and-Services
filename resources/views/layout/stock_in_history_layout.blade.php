@@ -1,3 +1,15 @@
+<style>
+   .modal-dialog {
+      margin: auto !important;
+   }
+
+   .modal,
+   .modal-dialog,
+   .modal-content {
+      padding: 15px !important;
+   }
+</style>
+
 <div class="row m-2">
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
@@ -40,11 +52,12 @@
                         <div class="d-flex justify-content-evenly">
                            <div>
                               <button class="btn admin-staff-btn text-white w-100 px-2 py-1" data-bs-toggle="modal"
-                                 data-bs-target="#editServiceModal"><i class="bi bi-pencil-square"></i></button>
+                                 data-bs-target="#editStockModal{{ $stock->id }}"><i
+                                    class="bi bi-pencil-square"></i></button>
                            </div>
 
                            <div>
-                              <form action="" method="POST">
+                              <form action="{{route('stock_in.destroy', ['stock' =>$stock])}}" method="POST">
                                  <input type="hidden" name="redirect_to">
                                  @csrf
                                  @method('delete')
@@ -55,6 +68,45 @@
                         </div>
                      </td>
                   </tr>
+                  <div class="modal fade" id="editStockModal{{ $stock->id }}" tabindex="-1">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+
+                           <form action="{{ route('stock_in.update', ['stock' =>$stock]) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <div class="modal-header d-flex justify-content-between">
+                                 <h5 class="modal-title">Edit Stock In</h5>
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+
+                              <div class="modal-body mt-3">
+                                 <div class="mb-3">
+                                    <label for="quantity " class="form-label fs-5 mb-2">Quantity</label>
+                                    <input style="background-color: #d9d9d9" type="number" class="form-control p-2"
+                                       name="quantity_received" value="{{ $stock->quantity_received }}" required>
+                                 </div>
+                                 <div class="mb-3">
+                                    <label for="date_received" class="form-label fs-5 mb-2">Date Received</label>
+                                    <input style="background-color: #d9d9d9" type="date" class="form-control p-2"
+                                       name="date_received" value="{{ $stock->date_received }}" required>
+                                 </div>
+
+                              </div>
+                              <div class="modal-footer d-flex gap-2 mt-3">
+                                 <div class="col">
+                                    <button class="btn admin-staff-cancel-btn  fw-bold w-100 p-1" type="button"
+                                       data-bs-dismiss="modal">Cancel</button>
+                                 </div>
+                                 <div class="col">
+                                    <button class="btn w-100 fw-bold admin-staff-btn text-white p-1"
+                                       type="submit">Update</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
                   @endforeach
                </tbody>
             </table>

@@ -90,3 +90,5 @@ Route::prefix('supply')->name('supply.')->group(function () {
 
 // para sa stock in
 Route::post('/', [StockInController::class, 'store'])->name('supply.stockin');
+Route::put('/stock_in/{stock}', [StockInController::class, 'update'])->name('stock_in.update');
+Route::delete('/stock_in/{stock}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
