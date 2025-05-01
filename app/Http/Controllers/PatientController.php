@@ -20,10 +20,12 @@ class PatientController extends Controller
         $patient = Patient::where('user_id', Auth::id())->first();
 
         $appointments = $patient ? $patient->appointments()->with('service')->get() : collect();
+        $services = Service::all();
 
         return view('patient.profile', [
             'patient' => $patient,
-            'appointments' => $appointments
+            'appointments' => $appointments,
+            'services' => $services
         ]);
     }
 
