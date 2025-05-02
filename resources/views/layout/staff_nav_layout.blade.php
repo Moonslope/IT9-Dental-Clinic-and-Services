@@ -22,7 +22,7 @@
    </div>
 
    <div style="min-height: 525px !important;" class="row">
-      <div style="background-color: #1e466b !important; max-height: 525px; overflow-y: auto; width: 250px;"
+      <div style="background-color: #1e466b !important; height: 615px; overflow-y: auto; width: 250px;"
          class="col-2">
          <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href="{{route('staff.dashboard')}}"><i

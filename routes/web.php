@@ -44,6 +44,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     Route::delete('/dentist/{user}/delete', [DentistController::class, 'destroy'])->name('dentist.destroy');
     Route::put('/dentist/{user}/update', [DentistController::class, 'update'])->name('dentist.update');
+    Route::get('/appointments', [StaffController::class, 'admin_appointments'])->name('appointments');
 });
 
 // STAFF
@@ -96,4 +97,3 @@ Route::prefix('supply')->name('supply.')->group(function () {
 Route::post('/', [StockInController::class, 'store'])->name('supply.stockin');
 Route::put('/stock_in/{stock}', [StockInController::class, 'update'])->name('stock_in.update');
 Route::delete('/stock_in/{stock}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
-

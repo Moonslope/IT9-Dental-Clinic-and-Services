@@ -99,4 +99,12 @@ class StaffController extends Controller
         // dd($appointments);
         return view('staff.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
     }
+
+    public function admin_appointments()
+    {
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
+        $dentists = Dentist::all();
+        // dd($appointments);
+        return view('admin.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
+    }
 }
