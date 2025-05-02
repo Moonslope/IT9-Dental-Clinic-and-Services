@@ -81,7 +81,6 @@ Route::prefix('supplier')->name('supplier.')->group(function () {
 //Appointment
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
-
 //Appointment
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 

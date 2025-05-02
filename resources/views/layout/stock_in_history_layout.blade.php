@@ -38,6 +38,10 @@
             </table>
          </div>
 
+         @if($stock_ins->isEmpty())
+         <p class="alert text-center text-secondary">No stock in available.</p>
+         @else
+
          <div class="row" style="max-height: 380px; overflow-y: auto;">
             <table class="table table-bordered">
                <tbody>
@@ -108,6 +112,7 @@
                      </div>
                   </div>
                   @endforeach
+                  @endif
                </tbody>
             </table>
          </div>
