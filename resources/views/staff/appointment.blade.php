@@ -14,52 +14,72 @@
 
 
 <style>
-   .modal-dialog {
-      margin: auto !important;
-   }
+    .modal-dialog {
+       margin: auto !important;
+    }
+ 
+    .modal,
+    .modal-dialog,
+    .modal-content {
+       padding: 15px !important;
+    }
+ </style>
 
-   .modal,
-   .modal-dialog,
-   .modal-content {
-      padding: 15px !important;
-   }
-</style>
+ <div class="row m-2">
+   <div class="card shadow">
+      <div class="card-body d-flex justify-content-between">
+         <div class="row w-100 p-3 gap-3">
+            <h3>Appointment lists</h3>
+         </div>
+      </div>
+   </div>
+ </div>
 
-<div class="container mt-4">
-   <h3>Appointments</h3>
-   <table class="table table-bordered">
-      <thead>
-         <tr>
-            <th>#</th>
-            <th>Service</th>
-            <th>Patient</th>
-            <th>Dentist</th>
-            <th>Appointment Date</th>
-            <th>Submitted Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-         </tr>
-      </thead>
-      <tbody>
-         @foreach ($appointments as $appointment)
-         <tr>
-            <td>{{ $appointment->id }}</td>
-            <td>{{ $appointment->service->service_name ?? 'N/A' }}</td>
-            <td>{{ $appointment->patient->user->first_name ?? 'N/A' }} {{ $appointment->patient->user->last_name }}</td>
-            <td>{{ $appointment->dentist->user->first_name ?? 'N/A' }}</td>
-            <td>{{ $appointment->appointment_date }}</td>
-            <td>{{ $appointment->created_at->format('F j, Y') }}</td>
-            <td>{{ $appointment->status }}</td>
-            <td>
-               <button class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" data-bs-toggle="modal"
-                  data-bs-target="#confirmAppointmentModal">Edit</button>
-               <a href="#" class="btn btn-danger btn-sm">Cancel</a>
-            </td>
-         </tr>
-         @endforeach
-      </tbody>
-   </table>
-</div>
+ <div class="row m-2">
+   <div class="card" style="overflow:hidden">
+      <div class="card-body">
+         <div class="row">
+            <table>
+               <thead>
+                  <tr style="background-color: #00a1df; color: white; font-size: 16px;" class="custom-header">
+                     <th class="p-2 col-1">#</th>
+                     <th class="p-2 col-1">Service</th>
+                     <th class="p-2 col-2">Patient</th>
+                     <th class="p-2 col-1">Dentist</th>
+                     <th class="p-2 col-2">Appointment date</th>
+                     <th class="p-2 col-2">Submitted date</th>
+                     <th class="p-2 col-1">Status</th>
+                     <th class="p-2 col-2">Actions</th>
+                  </tr>
+               </thead>
+
+               @if ($appointments->isEmpty())
+                   <p class="alert text-center text-secondary">No more appointments</p>
+               @else
+               <div style="max-height: 380px; overflow-y:auto; overflow-x:hidden">
+                  <table class="table table-bordered">
+                     <tbody>
+                        @foreach ($appointments as $appointment)
+                           <tr style="font-size: 16px;" class="bg-secondary">
+                              <td class="p-2 col-1">{{ $appointment->id }}</td>
+                              <td class="p-2 col-1">{{ $appointment->service->service_name ?? 'N/A' }}</td>
+                              <td class="p-2 col-2">{{ $appointment->patient->user->first_name ?? 'N/A' }} {{ $appointment->patient->user->last_name }}</td>
+                              <td class="p-2 col-1">{{ $appointment->dentist->user->first_name ?? 'N/A' }}</td>
+                              <td class="p-2 col-2">{{ $appointment->appointment_date }}</td>
+                              <td class="p-2 col-2">{{ $appointment->created_at->format('F j, Y') }}</td>
+                              <td class="p-2 col-1">{{ $appointment->status }}</td>
+                              <td class="p-2 col-2">
+                                 <div class="d-flex justify-content-evenly gap-2">
+                                    <div>
+                                       <button class="btn admin-staff-btn text-white w-100 px-2 py-1" data-bs-toggle="modal" data-bs-target="#confirmAppointmentModal{{ $appointment->id }}">Edit</button>
+                                    </div>
+                                    
+                                    <div>
+                                       <button class="btn admin-staff-btn text-white w-100 px-2 py-1" data-bs-toggle="modal" data-bs-target="#confirmAppointmentModal">Proceed to treatment</button>
+                                    </div>
+                                 </div>
+                              </td>
+                           </tr>
 
 {{-- Modal for Approving an appointment --}}
 <div class="modal fade" id="confirmAppointmentModal" tabindex="-1" aria-labelledby="confirmAppointmentModalLabel"
