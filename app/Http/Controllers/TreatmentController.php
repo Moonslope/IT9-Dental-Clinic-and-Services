@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Treatment;
+use App\Models\Supply;
 use Illuminate\Http\Request;
 
 class TreatmentController extends Controller
@@ -13,6 +14,20 @@ class TreatmentController extends Controller
     public function index()
     {
         //
+    }
+
+    public function staff_treatment()
+    {
+        $supplies = Supply::all();
+        $treatments = Treatment::latest()->get();
+        return view('staff.treatment', ['treatments'=>$treatments, 'supplies'=>$supplies]);
+    }
+
+    public function admin_treatment()
+    {
+        $supplies = Supply::all();
+        $treatments = Treatment::latest()->get();
+        return view('admin.treatment', ['treatments'=>$treatments, 'supplies'=>$supplies]);
     }
 
     /**

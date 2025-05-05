@@ -23,6 +23,7 @@ class SupplyRequest extends FormRequest
     {
         return [
             'supply_name' => 'required|string|max:255',
+            'supply_price' => 'nullable|numeric|min:0',
             'supply_description' => 'required|string',
             'supply_quantity' =>'nullable|integer'
         ];

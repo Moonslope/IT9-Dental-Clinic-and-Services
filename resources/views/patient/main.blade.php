@@ -129,7 +129,7 @@
                         data-bs-target="#bookAppointmentModal">Book an Appointment</button>
                      @endauth
 
-                     <a class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" href="">Browse
+                     <a class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" href="#section3">Browse
                         services</a>
 
                      <a class="btn btn-info px-2 py-1 btn-sm d-md-none" href="">Book</a>
@@ -162,12 +162,12 @@
 
                   {{-- <div class="row mb-2">
                      <select name="dentist_id" id="dentist_id" class="form-select" style="background-color: #d9d9d9">
-                         <option value="" disabled selected>Select a dentist</option>
-                         @foreach ($dentists as $dentist)
-                             <option value="{{ $dentist->id }}">{{ $dentist->name }}</option>
-                         @endforeach
+                        <option value="" disabled selected>Select a dentist</option>
+                        @foreach ($dentists as $dentist)
+                        <option value="{{ $dentist->id }}">{{ $dentist->name }}</option>
+                        @endforeach
                      </select>
-                 </div> --}}
+                  </div> --}}
 
                   <div class="row gap-2 mb-2">
                      <div class="col">

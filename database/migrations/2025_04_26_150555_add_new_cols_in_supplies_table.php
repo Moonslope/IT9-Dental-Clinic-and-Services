@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('supplies', function (Blueprint $table) {
+            $table->decimal('supply_price', 10, 2)->nullable()->after('supply_name');
             $table->integer('supply_quantity')->nullable()->after('supply_description');
         });
     }

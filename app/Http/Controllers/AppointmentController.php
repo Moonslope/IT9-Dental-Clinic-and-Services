@@ -2,14 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Treatment;
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\Dentist;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Nullable;
 
 class AppointmentController extends Controller
 {
+    public function staff_appointments()
+    {
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
+        $dentists = Dentist::all();
+        // dd($appointments);
+        return view('staff.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
+    }
+
+    public function admin_appointments()
+    {
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
+        $dentists = Dentist::all();
+        // dd($appointments);
+        return view('admin.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -85,7 +103,14 @@ class AppointmentController extends Controller
         $appointment->status = 'Approved';
         $appointment->save();
 
-        return redirect()->back();
+        // create treatment pag pindot sa proceed to treatment
+        $servicePrice = $appointment->service->service_price ?? 0.00;
+        Treatment::create([
+            'appointment_id' => $appointment->id,
+            'treatment_cost' => $servicePrice,
+        ]);
+    
+        return redirect($request->input('redirect_to', route('staff.appointment')));
     }
 
     /**

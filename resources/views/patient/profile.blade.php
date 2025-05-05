@@ -53,8 +53,12 @@
       </div>
 
       <div class="col">
-         <div class="border border-2 border-start-0 border-top-0 border-end-0 mx-4 py-3">
+         <div class="border border-2 border-start-0 border-top-0 border-end-0 mx-4 py-3 d-flex justify-content-between">
             <p class="fw-semibold">Information</p>
+
+            <button class="btn admin-staff-btn text-white px-2 py-1" data-bs-toggle="modal"
+               data-bs-target="#editPatientModal{{$user->id}}"><i class="bi bi-pencil-square"></i></button>
+
          </div>
 
          <div class="row mx-4 pt-5 mb-2">
@@ -77,36 +81,44 @@
          <div class="row mx-4 pt-5 border border-2 border-start-0 border-top-0 border-end-0 pb-3">
             <div class="col">
                <p class="fw-semibold">Age</p>
-               <p class="text-secondary">21</p>
+               <p class="text-secondary">{{$user->patient->age}}</p>
             </div>
 
             <div class="col pb-4">
                <p class="fw-semibold">Gender</p>
-               <p class="text-secondary">Male</p>
+               <p class="text-secondary">{{$user->patient->gender}}</p>
             </div>
          </div>
 
          <div class="row mx-4 pt-3">
-            <p class="fw-semibold">Appointment</p>
+            <p class="fw-semibold mb-2">Appointment</p>
+            <div style="overflow: hidden;" class="card shadow">
+               <div style="height: 230px !important;" class="card-body">
+                  <table class="table">
+                     <thead>
+                        <tr class="fs-5">
+                           <th style="background-color:#00a1df !important;" class="p-1 text-white">Service</th>
+                           <th style="background-color:#00a1df !important;" class="p-1 text-white">Date</th>
+                           <th style="background-color:#00a1df !important;" class="p-1 text-white">Status</th>
+                        </tr>
+                     </thead>
 
-            {{-- appointment sa patient --}}
-            @if ($appointments->isEmpty())
-                <p class="text-secondary">You have no appointments scheduled.</p>
-            @else
-                <div class="row row-cols-1 row-cols-md-2 g-4">
-                  @foreach ($appointments as $appointment)
-                      <div class="col">
-                        <div class="card shadow-sm">
-                           <div class="card-body">
-                              <h5 class="card-title"> {{ $appointment->service->service_name }}</h5>
-                              <p class="card-text"><strong>Date:</strong> {{ $appointment->appointment_date }}</p>
-                              <p class="card-text"><strong>Status:</strong> {{ ucfirst($appointment->status) }}</p>
-                           </div>
-                        </div>
-                      </div>
-                  @endforeach
-                </div>
-            @endif
+                     <tbody>
+                        @if ($appointments->isEmpty())
+                        <p class="text-secondary">You have no appointments scheduled.</p>
+                        @else
+                        @foreach ($appointments as $appointment)
+                        <tr>
+                           <td class="p-1">{{ $appointment->service->service_name }}</td>
+                           <td class="p-1">{{ $appointment->appointment_date }}</td>
+                           <td class="p-1">{{ ucfirst($appointment->status) }}</td>
+                        </tr>
+                        @endforeach
+                     </tbody>
+                  </table>
+                  @endif
+               </div>
+            </div>
          </div>
       </div>
    </div>
@@ -193,6 +205,91 @@
                <div class="row">
                   <button class="btn w-100 fw-bold text-white p-1" style="background-color: #00a1df"
                      type="submit">Submit Appointment</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+{{-- edit --}}
+<div class="modal fade" id="editPatientModal{{$user->id}}" tabindex="-1"
+   aria-labelledby="editPatientModalLabel{{$user->id}}" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+      <div class="modal-content">
+         <div class="modal-header fw-semibold d-flex justify-content-between">
+            <h5 class="modal-title" id="editPatientModalLabel{{$user->id}}">Update Information Details</h5>
+            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+
+         <div class="modal-body mt-3">
+
+            <form action="{{route('patient.update', ['user' => $user])}}" method="POST">
+               @csrf
+               @method('PUT')
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="text" id="first_name" name="first_name"
+                        class="form-control p-2" value="{{ $user->first_name }}">
+                  </div>
+
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="text" id="last_name" name="last_name"
+                        class="form-control p-2" value="{{ $user->last_name }}">
+                  </div>
+               </div>
+
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="numeric" id="age" name="age"
+                        class="form-control p-2" value="{{$user->patient->age}}" placeholder="Age">
+                  </div>
+
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="text" id="gender" name="gender"
+                        class="form-control p-2" value="{{$user->patient->gender}}" placeholder="Gender">
+                  </div>
+               </div>
+
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="email" id="email" name="email"
+                        class="form-control p-2" value="{{ $user->email }}">
+                  </div>
+               </div>
+
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="text" id="address" name="address"
+                        class="form-control p-2" value="{{ $user->address }}">
+                  </div>
+               </div>
+
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="text" id="contact_number" name="contact_number"
+                        class="form-control p-2" value="{{ $user->contact_number }}">
+                  </div>
+               </div>
+
+               <div class="row mb-3 gap-2">
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="password" id="password" name="password"
+                        class="form-control p-2" placeholder="Enter new password (optional)">
+                  </div>
+               </div>
+
+               <div class="modal-footer row mt-3 gap-2 pt-3">
+                  <div class="col">
+                     <button class="btn admin-staff-cancel-btn text-black fw-bold w-100 p-1" type="button"
+                        data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                  <div class="col">
+                     {{-- <input type="hidden" name="redirect_to" value="{{ $redirect_route }}"> --}}
+                     <button class="btn admin-staff-btn  w-100 fw-bold text-white p-1" type="submit">Save
+                        changes</button>
+                  </div>
                </div>
             </form>
          </div>

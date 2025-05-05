@@ -11,5 +11,7 @@
 @endsection
 
 @section('staffContent')
-@include('layout.appointment_crud')
+@include('layout.appointment_crud',[
+'redirect_route' => route('staff.appointment')
+])
 @endsection
