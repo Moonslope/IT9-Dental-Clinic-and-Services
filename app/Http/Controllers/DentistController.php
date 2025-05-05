@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\Dentist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
+use function Pest\Laravel\get;
 
 class DentistController extends Controller
 {
@@ -22,7 +25,7 @@ class DentistController extends Controller
     public function index()
     {
         $dentist = User::where('id', Auth::id())->first();
-        return view('dentist.dashboard',  ['dentist'=>$dentist]);
+        return view('dentist.dashboard',  ['dentist' => $dentist]);
     }
 
     /**
@@ -102,5 +105,19 @@ class DentistController extends Controller
     {
         $user->delete();
         return redirect(route('admin.dentist'));
+    }
+
+    public function appointments()
+    {
+        $userID = Auth::id();
+
+        $dentist = Dentist::where('user_id', $userID)->first();
+
+        $appointments = Appointment::with(['service', 'patient'])->where('dentist_id', $dentist->id)->get();
+
+        return view('dentist.appointments', [
+            'appointments' => $appointments,
+            'dentist' => $dentist
+        ]);
     }
 }

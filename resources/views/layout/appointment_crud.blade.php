@@ -50,7 +50,7 @@
                               <td class="p-2 col-1">{{ $appointment->id }}</td>
                               <td class="p-2 col-1">{{ $appointment->service->service_name ?? 'N/A' }}</td>
                               <td class="p-2 col-2">{{ $appointment->patient->user->first_name ?? 'N/A' }} {{ $appointment->patient->user->last_name }}</td>
-                              <td class="p-2 col-1">{{ $appointment->dentist->user->first_name ?? 'N/A' }}</td>
+                              <td class="p-2 col-1">{{ $appointment->dentist->user->first_name ?? 'N/A' }} {{ $appointment->dentist->user->last_name ?? 'N/A' }}</td>
                               <td class="p-2 col-2">{{ $appointment->appointment_date }}</td>
                               <td class="p-2 col-2">{{ $appointment->created_at->format('F j, Y') }}</td>
                               <td class="p-2 col-1">{{ $appointment->status }}</td>
