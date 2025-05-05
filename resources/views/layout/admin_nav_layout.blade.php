@@ -58,7 +58,7 @@
          </div>
 
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href="{{ route('admin.appointments') }}"><i
+            <a class="admin-btn" href="{{ route('admin.appointment') }}"><i
                   class="bi bi-calendar-week fs-5 me-2 ms-3"></i>Appointments</a>
          </div>
 
@@ -66,7 +66,8 @@
             <a class="admin-btn" href=""><i class="bi bi-journal-text fs-5 me-2 ms-3"></i></i>Prescriptions</a>
          </div>
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-clock-history fs-5 me-2 ms-3"></i>Treatment Records</a>
+            <a class="admin-btn" href="{{route('admin.treatment')}}"><i
+                  class="bi bi-clock-history fs-5 me-2 ms-3"></i>Treatments</a>
          </div>
 
          <div class="w-100 mt-3 border border-start-0 border-bottom-0 border-end-0 border-secondary pt-2">
@@ -105,4 +106,5 @@
    </div>
 
 </div>
+
 @endsection

@@ -38,9 +38,10 @@
                <thead class="">
                   <tr style="font-size: 16px; background-color:#00a1df !important;" class="text-white">
                      <th class="p-2 col-2">Name</th>
+                     <th class="p-2 col-1">Price</th>
                      <th class="p-2 col-1">Quantity</th>
                      <th class="p-2 col-5">Description</th>
-                     <th class="p-2 col-1">Action</th>
+                     <th class="p-2 col-2">Action</th>
                   </tr>
                </thead>
             </table>
@@ -55,9 +56,10 @@
                   @foreach ($supplies as $supply)
                   <tr style="font-size: 16px;" class="bg-secondary">
                      <td class="p-2 col-2 ">{{ $supply->supply_name }}</td>
+                     <td class="p-2 col-1 ">{{ $supply->supply_price }}</td>
                      <td class="p-2 col-1">{{ $supply->supply_quantity }}</td>
                      <td class="p-2 col-5">{{ $supply->supply_description }}</td>
-                     <td class="p-2 col-1">
+                     <td class="p-2 col-2">
                         <div class="d-flex justify-content-evenly gap-2">
                            <div>
                               <button class="btn admin-staff-btn text-white w-100 px-2 py-1" data-bs-toggle="modal"
@@ -98,7 +100,7 @@
                            </div>
 
                            <div class="modal-body mt-3">
-                              <form action="{{ route('supply.stockin') }}" method="POST">
+                              <form action="{{ route('supply.stock_in') }}" method="POST">
                                  @csrf
 
                                  <input type="text" name="supply_id" value="{{$supply->id}}" hidden>
@@ -233,8 +235,8 @@
                         class="form-control p-2">
                   </div>
                   <div class="col">
-                     <input style="background-color: #d9d9d9" type="number" disabled name="supply_quantity"
-                        placeholder="Quantity" class="form-control p-2">
+                     <input style="background-color: #d9d9d9" type="numeric" name="supply_price" placeholder="Price"
+                        class="form-control p-2">
                   </div>
                </div>
 

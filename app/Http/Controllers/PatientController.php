@@ -21,14 +21,15 @@ class PatientController extends Controller
     public function profile()
     {
         $patient = Patient::where('user_id', Auth::id())->first();
-
+        $user = Auth::user();
         $appointments = $patient ? $patient->appointments()->with('service')->get() : collect();
         $services = Service::all();
 
         return view('patient.profile', [
             'patient' => $patient,
             'appointments' => $appointments,
-            'services' => $services
+            'services' => $services,
+            'user' => $user
         ]);
     }
 
@@ -156,7 +157,15 @@ class PatientController extends Controller
             }
         }
 
-        return redirect($request->input('redirect_to', route('staff.patient')));
+        $redirectTo = $request->input('redirect_to');
+
+        if ($redirectTo) {
+            return redirect($redirectTo);
+        } elseif (Auth::user()->role === 'staff') {
+            return redirect()->route('staff.patient');
+        } else {
+            return redirect()->back(); 
+        }
     }
 
     /**

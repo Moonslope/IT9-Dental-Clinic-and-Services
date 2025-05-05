@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('appointment_id');
             $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade');
 
+            $table->string('status')->nullable()->default('Unpaid');
             $table->decimal('treatment_cost', 10, 2);
             $table->timestamps();
         });
