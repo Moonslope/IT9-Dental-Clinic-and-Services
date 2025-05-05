@@ -68,7 +68,6 @@ Route::prefix('/dentist')->name('dentist.')->middleware(['auth', 'role:dentist']
     Route::get('/dashboard', [DentistController::class, 'index'])->name('dashboard');
 });
 
-
 //service crud para sa admin ug staff
 Route::prefix('service')->name('service.')->group(function () {
     Route::post('/', [ServiceController::class, 'store'])->name('store');
