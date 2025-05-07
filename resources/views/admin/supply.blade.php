@@ -13,9 +13,6 @@
 @endsection
 
 @section('adminContent')
-@include('layout.supply_crud',[
-'supplies' => $supplies, 'suppliers' => $suppliers, 'user' => $user,
-'redirect_route' => route('admin.supply')
-])
-
+@include('layout.supply_crud',['supplies' => $supplies, 'suppliers' => $suppliers, 'user' => $user])
+@include('layout.modals.crud_success')
 @endsection

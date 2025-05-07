@@ -41,7 +41,7 @@ class StockInController extends Controller
             $supply->supply_quantity += $validated['quantity_received'];
             $supply->save();
     
-            return redirect()->back();
+            return redirect()->back()->with('added_success','Successfully added!');
         
     }
 
@@ -65,7 +65,7 @@ class StockInController extends Controller
     $supply->supply_quantity += $quantity_difference;
     $supply->save();
 
-    return redirect()->back();
+    return redirect()->back()->with('updated_success','Successfully updated!');
 }
 
 
@@ -81,10 +81,7 @@ public function destroy(Request $request, StockIn $stock)
 
     $stock->delete();
 
-    return redirect()->back();
+    return redirect()->back()->with('deleted_success','Successfully deleted!');
 }
-
-
-
-   
+ 
 }

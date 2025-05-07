@@ -14,11 +14,16 @@
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
          <div class="row w-100 p-3">
-            <div class="col">
+            <div class="col col-3">
                <h3>Services Lists</h3>
             </div>
-
-            <div class="col col-2">
+            <div class="col">
+               <div class="d-flex w-75 gap-2">
+                  <input type="text" id="search" class="form-control" placeholder=" Search">
+                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
+               </div>
+            </div>
+            <div class="col col-1">
                <button class="btn admin-staff-btn w-100 p-1 text-white" data-bs-toggle="modal"
                   data-bs-target="#addServiceModal">ADD <i class="ms-2 bi bi-plus-circle-fill"></i></button>
             </div>
@@ -29,7 +34,7 @@
 
 <div class="row mx-2">
    <div style="overflow: hidden" class="card">
-      <div style="height: 425px !important; " class="card-body">
+      <div style="height: 465px !important; " class="card-body">
          <div class="row">
             <table>
                <thead class="">
@@ -63,17 +68,50 @@
                            </div>
 
                            <div>
-                              <form action="{{route('service.destroy', ['service' => $service])}}" method="POST">
-                                 <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
-                                 @csrf
-                                 @method('delete')
-                                 <button class="btn admin-staff-btn text-white w-100 px-2 py-1"><i
-                                       class="bi bi-trash-fill"></i></button>
-                              </form>
+                              <button type="button" class="btn admin-staff-btn text-white w-100 px-2 py-1"
+                                 data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{$service->id}}">
+                                 <i class="bi bi-trash-fill"></i>
+                              </button>
                            </div>
                         </div>
                      </td>
                   </tr>
+
+                  <!-- Confirmation Modal -->
+                  <div class="modal fade" id="confirmDeleteModal{{$service->id}}" tabindex="-1"
+                     aria-labelledby="confirmDeleteModalLabel{{$service->id}}" aria-hidden="true">
+                     <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                           <div class="modal-header d-flex justify-content-between">
+                              <h4 class="modal-title">Confirm Deletion</h4>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                 aria-label="Close"></button>
+                           </div>
+                           <div class="modal-body">
+                              <p class="my-4 fs-5">Are you sure you want to delete <strong>{{ $service->service_name
+                                    }}</strong>?</p>
+                           </div>
+
+                           <div class="modal-footer row mt-3 gap-2 pt-3">
+                              <div class="col">
+                                 <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                    data-bs-dismiss="modal">Cancel</button>
+                              </div>
+                              <div class="col">
+                                 <form action="{{ route('service.destroy', ['service' => $service]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit"
+                                       class="btn admin-staff-btn w-100 text-white p-1">Delete</button>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  {{-- edit modal --}}
                   <div class="modal fade" id="editServiceModal{{$service->id}}" tabindex="-1"
                      aria-labelledby="editServiceModalLabel{{$service->id}}" aria-hidden="true">
                      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
@@ -113,7 +151,7 @@
                                           type="button" data-bs-dismiss="modal">Cancel</button>
                                     </div>
                                     <div class="col">
-                                       <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+
                                        <button class="btn admin-staff-btn w-100 fw-bold text-white p-1"
                                           type="submit">Update</button>
                                     </div>
@@ -169,7 +207,7 @@
                         data-bs-dismiss="modal">Cancel</button>
                   </div>
                   <div class="col">
-                     <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+
 
                      <button class="btn admin-staff-btn w-100 fw-bold text-white p-1" type="submit">Add</button>
                   </div>

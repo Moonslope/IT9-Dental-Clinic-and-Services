@@ -29,7 +29,8 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-         
+            $request->session()->flash('login_success', 'You have logged in successfully!');
+            
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } 
@@ -97,10 +98,10 @@ class AuthController extends Controller
                 'specialization' => $data['specialization'], 
             ]);
 
-            return redirect()->route('admin.dentist');
+            return redirect()->route('admin.dentist')->with('added_success','Successfully added!');
 
         } else {
-            return redirect()->route('admin.staff');
+            return redirect()->route('admin.staff')->with('added_success','Successfully added!');
         }
     }
     

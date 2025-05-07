@@ -18,18 +18,18 @@
 <h1>Appointments</h1>
 
 <style>
-    .modal-dialog {
-       margin: auto !important;
-    }
- 
-    .modal,
-    .modal-dialog,
-    .modal-content {
-       padding: 15px !important;
-    }
- </style>
+   .modal-dialog {
+      margin: auto !important;
+   }
 
- <div class="row m-2">
+   .modal,
+   .modal-dialog,
+   .modal-content {
+      padding: 15px !important;
+   }
+</style>
+
+<div class="row m-2">
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
          <div class="row w-100 p-3 gap-3">
@@ -37,37 +37,38 @@
          </div>
       </div>
    </div>
- </div>
+</div>
 
 <div class="row m-2">
    <div class="card" style="overflow:hidden">
       <div class="card-body">
          <div class="row">
             @if ($appointments->isEmpty())
-                <p class="alert text-center text-secondary">No appointments assigned to you.</p>
+            <p class="alert text-center text-secondary">No appointments assigned to you.</p>
             @else
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Service</th>
-                            <th>Patient</th>
-                            <th>Appointment Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($appointments as $appointment)
-                            <tr>
-                                <td>{{ $appointment->id }}</td>
-                                <td>{{ $appointment->service->service_name ?? 'N/A' }}</td>
-                                <td>{{ $appointment->patient->user->first_name ?? 'N/A' }} {{ $appointment->patient->user->last_name ?? '' }}</td>
-                                <td>{{ $appointment->appointment_date }}</td>
-                                <td>{{ $appointment->status }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <table class="table table-bordered">
+               <thead>
+                  <tr>
+                     <th>#</th>
+                     <th>Service</th>
+                     <th>Patient</th>
+                     <th>Appointment Date</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @foreach ($appointments as $appointment)
+                  <tr>
+                     <td>{{ $appointment->id }}</td>
+                     <td>{{ $appointment->service->service_name ?? 'N/A' }}</td>
+                     <td>{{ $appointment->patient->user->first_name ?? 'N/A' }} {{
+                        $appointment->patient->user->last_name ?? '' }}</td>
+                     <td>{{ $appointment->appointment_date }}</td>
+                     <td>{{ $appointment->status }}</td>
+                  </tr>
+                  @endforeach
+               </tbody>
+            </table>
             @endif
          </div>
       </div>

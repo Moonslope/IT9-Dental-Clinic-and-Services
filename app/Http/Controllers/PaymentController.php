@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\Appointment;
+use App\Models\Treatment;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class PaymentController extends Controller
 {
     /**
@@ -26,9 +28,25 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Treatment $treatment)
     {
-        //
+
+        $totalAmount = $treatment->treatment_cost;
+
+        // Create the payment record
+        $payment = Payment::create([
+            'treatment_id' => $treatment->id,
+            'total_amount' => $totalAmount,
+            'payment_date' => Carbon::now()->toDateString(),
+        ]);
+
+        // Update the treatment status
+        $treatment->status = 'Paid';
+        $treatment->appointment->status = 'Completed';
+        $treatment->save();
+        $treatment->appointment->save();
+
+        return redirect()->back()->with('success', 'Payment successful!');
     }
 
     /**

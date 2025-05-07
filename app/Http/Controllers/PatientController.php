@@ -101,7 +101,7 @@ class PatientController extends Controller
                 'gender' => $data['gender'], 
             ]);
 
-            return redirect($request->input('redirect_to', route('staff.patient')));
+            return redirect()->back()->with('added_success','Successfully added!');
         } 
     }
 
@@ -157,15 +157,7 @@ class PatientController extends Controller
             }
         }
 
-        $redirectTo = $request->input('redirect_to');
-
-        if ($redirectTo) {
-            return redirect($redirectTo);
-        } elseif (Auth::user()->role === 'staff') {
-            return redirect()->route('staff.patient');
-        } else {
-            return redirect()->back(); 
-        }
+        return redirect()->back()->with('updated_success','Successfully updated!');
     }
 
     /**
@@ -174,6 +166,6 @@ class PatientController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        return redirect($request->input('redirect_to', route('staff.patient')));
+        return redirect()->back()->with('deleted_success','Successfully deleted!');
     }
 }

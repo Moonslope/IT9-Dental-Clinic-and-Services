@@ -3,7 +3,7 @@
 @section('title', 'Dental Clinic and Services')
 
 @section('content')
-
+@include('layout.custom_scrollbar')
 <style>
    .modal-dialog {
       margin: auto !important;
@@ -13,6 +13,10 @@
    .modal-dialog,
    .modal-content {
       padding: 15px !important;
+   }
+
+   .custom-dropdown {
+      min-width: 80px;
    }
 </style>
 
@@ -65,21 +69,20 @@
                <div class="d-flex ms-3 gap-2 me-3">
                   <div class="dropdown">
                      <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->first_name
-                        }}
-                        {{ Auth::user()->last_name
-                        }}
+                        {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                      </button>
-                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{route('patient.profile')}}">Profile</a></li>
+                     <ul style="overflow: hidden;" class="dropdown-menu custom-dropdown">
+                        <li class=""><a class="dropdown-item text-center p-2"
+                              href="{{route('patient.profile')}}">Profile</a></li>
                         <li>
                            <form action="{{ route('logout') }}" method="POST">
                               @csrf
-                              <button type="submit" class="a-hover border-0 bg-transparent">Logout</button>
+                              <button type="submit" class="dropdown-item text-center p-2">Logout</button>
                            </form>
                         </li>
                      </ul>
                   </div>
+
                </div>
             </div>
             {{-- <li class="hideOnMobile"><a class="fw-semibold" href="#">{{ Auth::user()->first_name
@@ -157,7 +160,7 @@
             </div>
 
             <div class="modal-body mt-4">
-               <form action="{{ route('appointments.store') }}" method="POST">
+               <form action="{{ route('patient.appointments.store') }}" method="POST">
                   @csrf
 
                   {{-- <div class="row mb-2">
@@ -291,6 +294,9 @@
       </div>
       {{-- Services --}}
    </div>
+
+   @include('layout.modals.appointment_success')
+   @include('layout.modals.login_success')
 
    <script>
       function showSidebar(){

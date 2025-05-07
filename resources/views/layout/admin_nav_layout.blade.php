@@ -2,6 +2,18 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
+@include('layout.custom_scrollbar')
+<style>
+   .modal-dialog {
+      margin: auto !important;
+   }
+
+   .modal,
+   .modal-dialog,
+   .modal-content {
+      padding: 15px !important;
+   }
+</style>
 <div class="container-fluid vh-100">
    <div class="row border border-start-0 border-end-0 border-top-0 border-2 sticky">
       <div class="col col-2  d-flex justify-content-center">
@@ -22,8 +34,8 @@
       </div>
    </div>
 
-   <div style="min-height: 525px !important;" class="row">
-      <div style="background-color: #1e466b !important; max-height: 525px; overflow-y: auto; width: 250px;"
+   <div class="row">
+      <div id="sidebar" style="background-color: #1e466b !important; max-height: 559px; overflow-y: auto; width: 250px;"
          class="col-2">
          <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href="{{route('admin.dashboard')}}"><i
@@ -106,5 +118,25 @@
    </div>
 
 </div>
+
+<script>
+   window.addEventListener('DOMContentLoaded', function () {
+      const sidebar = document.getElementById('sidebar');
+
+      if (!sidebar) return;
+
+      // Restore scroll position
+      const savedScroll = sessionStorage.getItem('sidebarScroll');
+      if (savedScroll !== null) {
+         sidebar.scrollTop = parseInt(savedScroll, 10);
+      }
+
+      // Save scroll position on page unload
+      window.addEventListener('beforeunload', function () {
+         sessionStorage.setItem('sidebarScroll', sidebar.scrollTop);
+      });
+   });
+</script>
+
 
 @endsection

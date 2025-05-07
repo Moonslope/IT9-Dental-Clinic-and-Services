@@ -2,6 +2,18 @@
 @section('title', 'Dentist Dashboard')
 
 @section('content')
+@include('layout.custom_scrollbar')
+<style>
+   .modal-dialog {
+      margin: auto !important;
+   }
+
+   .modal,
+   .modal-dialog,
+   .modal-content {
+      padding: 15px !important;
+   }
+</style>
 <div class="container-fluid vh-100">
    <div class="row border border-start-0 border-end-0 border-top-0 border-2 ">
       <div class="col col-2  d-flex justify-content-center">
@@ -21,7 +33,7 @@
       </div>
    </div>
 
-   <div style="min-height: 525px !important;" class="row">
+   <div style="height: 559px !important;" class="row">
       <div style="background-color: #1e466b !important;" class="col-2">
          <div class="pb-2 pt-2 px-2 ">
             <a class="admin-btn" href="{{route('dentist.dashboard')}}"><i
@@ -33,7 +45,8 @@
          </div>
 
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href="{{ route('dentist.appointments') }}"><i class="bi bi-calendar-week fs-5 me-2 ms-3"></i>Appointments</a>
+            <a class="admin-btn" href="{{ route('dentist.appointments') }}"><i
+                  class="bi bi-calendar-week fs-5 me-2 ms-3"></i>Appointments</a>
          </div>
 
          <div class="pb-2 pt-2 px-2">

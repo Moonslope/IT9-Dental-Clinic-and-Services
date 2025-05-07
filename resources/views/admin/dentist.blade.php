@@ -31,11 +31,18 @@
       <div class="card-body d-flex justify-content-between">
 
          <div class="row w-100 p-3">
-            <div class="col">
+            <div class="col col-3">
                <h3>Dentist Lists</h3>
             </div>
 
-            <div class="col col-2">
+            <div class="col">
+               <div class="d-flex w-75 gap-2">
+                  <input type="text" id="search" class="form-control" placeholder=" Search">
+                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
+               </div>
+            </div>
+
+            <div class="col col-1">
                <button class="btn admin-staff-btn text-white w-100 p-1" data-bs-toggle="modal"
                   data-bs-target="#addDentistModal">ADD <i class="ms-2 bi bi-plus-circle-fill"></i></button>
             </div>
@@ -46,7 +53,7 @@
 
 <div class="row m-2">
    <div style="overflow: hidden;" class="card">
-      <div style="height: 425px !important;" class="card-body">
+      <div style="height: 465px !important;" class="card-body">
 
          <div class="row">
             <table>
@@ -268,4 +275,5 @@
       </div>
    </div>
 
+   @include('layout.modals.crud_success')
    @endsection

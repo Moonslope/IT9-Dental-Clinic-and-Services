@@ -38,7 +38,7 @@ class SupplierController extends Controller
         $newSupplier = $request->validated();
         Supplier::create($newSupplier);
 
-        return redirect($request->input('redirect_to', route('staff.supplier')));
+        return redirect()->back()->with('added_success','Successfully added!');
     }
 
     /**
@@ -65,7 +65,7 @@ class SupplierController extends Controller
         $newSupplier = $request->validated();
         $supplier->update($newSupplier);
 
-        return redirect($request->input('redirect_to', route('staff.supplier')));
+        return redirect()->back()->with('updated_success','Successfully updated!');
     }
 
     /**
@@ -74,6 +74,6 @@ class SupplierController extends Controller
     public function destroy(Request $request, Supplier $supplier)
     {
         $supplier->delete();
-        return redirect($request->input('redirect_to', route('staff.supplier')));
+        return redirect()->back()->with('deleted_success','Successfully deleted!');
     }
 }

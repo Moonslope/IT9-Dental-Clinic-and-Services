@@ -23,7 +23,7 @@
    </div>
 </div>
 <div class="row px-2">
-   <div style="height: 420px !important; overflow:hidden;" class="card">
+   <div style="height: 465px !important; overflow:hidden;" class="card">
       <div class="card-body">
          <div class="row">
             <table class="table">

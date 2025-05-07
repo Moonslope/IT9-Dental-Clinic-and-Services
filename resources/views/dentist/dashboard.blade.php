@@ -17,5 +17,5 @@
 @section('dentistContent')
 <h1>dashboard</h1>
 
-
+@include('layout.modals.login_success')
 @endsection

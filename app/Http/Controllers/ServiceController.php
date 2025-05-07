@@ -37,8 +37,7 @@ class ServiceController extends Controller
     {
         $newService = $request->validated();
         Service::create($newService);
-
-        return redirect($request->input('redirect_to', route('staff.service')));
+        return redirect()->back()->with('added_success','Successfully added!');
     }
 
     /**
@@ -65,7 +64,7 @@ class ServiceController extends Controller
         $newService = $request->validated();
         $service->update($newService);
 
-        return redirect($request->input('redirect_to', route('staff.service')));
+        return redirect()->back()->with('updated_success','Successfully updated!');
     }
 
     /**
@@ -74,6 +73,6 @@ class ServiceController extends Controller
     public function destroy(Request $request, Service $service)
     {
         $service->delete();
-        return redirect($request->input('redirect_to', route('staff.service')));
+        return redirect()->back()->with('deleted_success','Successfully deleted!');
     }
 }

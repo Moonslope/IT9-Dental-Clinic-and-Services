@@ -24,7 +24,7 @@
 
 <div class="row mx-2">
    <div style="overflow: hidden" class="card">
-      <div style="height: 425px !important;" class="card-body">
+      <div style="height: 465px !important;" class="card-body">
          <div class="row">
             <table>
                <thead>
@@ -32,10 +32,10 @@
                      <th class="p-2 col-2">Service</th>
                      <th class="p-2 col-2">Patient Name</th>
                      <th class="p-2 col-2">Dentist Assigned</th>
-                     <th class="p-2 col-2">Date</th>
-                     <th class="p-2 col-1">Status</th>
-                     <th class="p-2 col-2">Total Cost</th>
-                     <th class="p-2 col-1">Action</th>
+                     <th class="p-2 col-1 text-center">Date</th>
+                     <th class="p-2 col-1 text-center">Status</th>
+                     <th class="p-2 col-2 text-center">Total Cost</th>
+                     <th class="p-2 col-2 text-center">Action</th>
                   </tr>
                </thead>
             </table>
@@ -58,17 +58,28 @@
                         {{$treatment->appointment->dentist->user->first_name}}
                         {{$treatment->appointment->dentist->user->last_name}}
                      </td>
-                     <td class="pt-3 col-2 text-center">{{$treatment->appointment->appointment_date}}</td>
+                     <td class="pt-3 col-1 text-center">
+                        {{ \Carbon\Carbon::parse($treatment->appointment->appointment_date)->format('Y-m-d h:i: A') }}
+                     </td>
+                     <td class="pt-3 col-1 text-center">{{$treatment->status}}</td>
                      <td class="pt-3 col-2 text-center">₱{{ number_format($treatment->treatment_cost, 2) }}</td>
-                     <td class="p-2 col-1">
+                     <td class="p-2 col-2">
                         <div class="d-flex justify-content-evenly gap-2">
+                           @if($treatment->status === 'Paid')
+                           <button class="btn admin-staff-btn px-2 py-1 text-white" data-bs-toggle="modal"
+                              data-bs-target="#viewPaymentModal{{ $treatment->id }}">
+                              View
+                           </button>
+                           @else
                            <button class="btn admin-staff-btn  px-2 py-1 text-white" data-bs-toggle="modal"
                               data-bs-target="#usedSupplyModal{{$treatment->id}}"><i
                                  class="bi bi-plus-circle-fill fs-5"></i></button>
 
-                           <button class="btn admin-staff-btn  px-2 py-1 text-white" data-bs-toggle="modal"
-                              data-bs-target="#paymentModal{{$treatment->id}}">Payment</button>
-                        </div>
+                           <button class="btn admin-staff-btn px-2 py-1 text-white" data-bs-toggle="modal"
+                              data-bs-target="#paymentModal{{ $treatment->id }}">
+                              Payment
+                           </button>
+                           @endif
                      </td>
                   </tr>
                   @endforeach
@@ -81,6 +92,96 @@
 </div>
 
 @foreach ($treatments as $treatment)
+
+<!-- View Payment Modal -->
+<div class="modal fade" id="viewPaymentModal{{ $treatment->id }}" tabindex="-1"
+   aria-labelledby="viewPaymentLabel{{ $treatment->id }}" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+         <div class="modal-header text-white d-flex justify-content-between">
+            <h4 class="modal-title" id="viewPaymentLabel{{ $treatment->id }}">Payment Details</h4>
+            <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+
+         <div class="modal-body pt-2">
+            @php
+            $servicePrice = $treatment->appointment->service->service_price;
+            $totalSupplies = 0;
+            @endphp
+            <div class="my-3">
+               <div class="d-flex justify-content-between w-100 mb-2">
+                  <h5>Patient Name: {{$treatment->appointment->patient->user->first_name}}</h5>
+
+                  @if ($treatment->payment)
+                  <h5>Payment Date: {{ \Carbon\Carbon::parse($treatment->payment->payment_date)->format('F d, Y') }}
+                  </h5>
+                  @else
+                  <h5>Payment Date: Not yet paid</h5>
+                  @endif
+               </div>
+
+               <h5>Status: {{$treatment->status}}</h5>
+            </div>
+            @if($treatment->treatmentSupplies->isEmpty())
+            <div class="alert alert-warning mb-2">No supplies recorded for this treatment.</div>
+            @else
+
+
+
+            <hr>
+
+            <table style="border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden;"
+               class="table table-bordered mb-2 pt-2">
+               <thead>
+                  <tr style="font-size: 18px;" class=" text-center">
+                     <th class="text-white p-1" style="background-color: #00a1df">Name</th>
+                     <th class="text-white p-1" style="background-color:#00a1df !important;">Quantity</th>
+                     <th class="text-white p-1" style="background-color:#00a1df !important;">Price per item</th>
+                     <th class="text-white p-1" style="background-color:#00a1df !important;">Subtotal</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @foreach($treatment->treatmentSupplies as $ts)
+                  @php
+                  $subtotal = $ts->quantity_used * $ts->supply->supply_price;
+                  $totalSupplies += $subtotal;
+                  @endphp
+                  <tr style="font-size: 18px !important;" class="text-center">
+                     <td class="p-1">{{ $ts->supply->supply_name }}</td>
+                     <td class="p-1">{{ $ts->quantity_used }}</td>
+                     <td class="p-1">₱{{ number_format($ts->supply->supply_price, 2) }}</td>
+                     <td class="p-1">₱{{ number_format($subtotal, 2) }}</td>
+                  </tr>
+                  @endforeach
+               </tbody>
+               <tfoot>
+                  <tr style="font-size: 18px !important;" class="text-center ">
+                     <th style="background-color:#00a1df !important;" colspan="3" class="text-end text-white pe-5 p-1">
+                        Total
+                        Used
+                        Supplies
+                     </th>
+                     <th style="background-color:#00a1df !important;" class="text-white p-1">₱{{
+                        number_format($totalSupplies, 2) }}</th>
+                  </tr>
+               </tfoot>
+            </table>
+            @endif
+
+            <hr>
+
+            <p class="fs-5 py-2 mb-2">Service Price: <span class="float-end">₱{{ number_format($servicePrice, 2)
+                  }}</span>
+            </p>
+
+            <hr>
+            <h5 class="my-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{ number_format($servicePrice +
+                  $totalSupplies, 2) }}</span></h5>
+         </div>
+      </div>
+   </div>
+</div>
+
 <!-- Used Supplies Modal -->
 <div class="modal fade" id="usedSupplyModal{{ $treatment->id }}" tabindex="-1"
    aria-labelledby="modalLabel{{ $treatment->id }}" aria-hidden="true">
@@ -121,7 +222,7 @@
 </div>
 
 <!-- Payment Modal -->
-<div class="modal fade" id="paymentModal{{ $treatment->id }}" tabindex="-1"
+<div class="modal fade " id="paymentModal{{ $treatment->id }}" tabindex="-1"
    aria-labelledby="paymentModalLabel{{ $treatment->id }}" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
@@ -139,13 +240,14 @@
             @if($treatment->treatmentSupplies->isEmpty())
             <div class="alert alert-warning mb-2">No supplies recorded for this treatment.</div>
             @else
-            <table class="table table-bordered">
+            <table style="border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden;"
+               class="table table-bordered mb-2">
                <thead>
-                  <tr class="fs-5 text-center">
-                     <th class="text-white" style="background-color:#00a1df !important;">Name</th>
-                     <th class="text-white" style="background-color:#00a1df !important;">Quantity</th>
-                     <th class="text-white" style="background-color:#00a1df !important;">Price per item</th>
-                     <th class="text-white" style="background-color:#00a1df !important;">Subtotal</th>
+                  <tr style="font-size: 18px;" class=" text-center">
+                     <th class="text-white p-1" style="background-color: #00a1df">Name</th>
+                     <th class="text-white p-1" style="background-color:#00a1df !important;">Quantity</th>
+                     <th class="text-white p-1" style="background-color:#00a1df !important;">Price per item</th>
+                     <th class="text-white p-1" style="background-color:#00a1df !important;">Subtotal</th>
                   </tr>
                </thead>
                <tbody>
@@ -155,17 +257,22 @@
                   $totalSupplies += $subtotal;
                   @endphp
                   <tr style="font-size: 18px !important;" class="text-center">
-                     <td>{{ $ts->supply->supply_name }}</td>
-                     <td>{{ $ts->quantity_used }}</td>
-                     <td>₱{{ number_format($ts->supply->supply_price, 2) }}</td>
-                     <td>₱{{ number_format($subtotal, 2) }}</td>
+                     <td class="p-1">{{ $ts->supply->supply_name }}</td>
+                     <td class="p-1">{{ $ts->quantity_used }}</td>
+                     <td class="p-1">₱{{ number_format($ts->supply->supply_price, 2) }}</td>
+                     <td class="p-1">₱{{ number_format($subtotal, 2) }}</td>
                   </tr>
                   @endforeach
                </tbody>
                <tfoot>
-                  <tr style="font-size: 18px !important;" class="text-center">
-                     <th colspan="3" class="text-end">Total Used Supplies</th>
-                     <th>₱{{ number_format($totalSupplies, 2) }}</th>
+                  <tr style="font-size: 18px !important;" class="text-center ">
+                     <th style="background-color:#00a1df !important;" colspan="3" class="text-end text-white pe-5 p-1">
+                        Total
+                        Used
+                        Supplies
+                     </th>
+                     <th style="background-color:#00a1df !important;" class="text-white p-1">₱{{
+                        number_format($totalSupplies, 2) }}</th>
                   </tr>
                </tfoot>
             </table>
@@ -173,15 +280,18 @@
 
             <hr>
 
-            <p class="fs-5 py-2">Service Price: <span class="float-end">₱{{ number_format($servicePrice, 2) }}</span>
+            <p class="fs-5 py-2 mb-2">Service Price: <span class="float-end">₱{{ number_format($servicePrice, 2)
+                  }}</span>
             </p>
-            <h5 class="mt-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{ number_format($servicePrice +
+
+            <hr>
+            <h5 class="my-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{ number_format($servicePrice +
                   $totalSupplies, 2) }}</span></h5>
          </div>
 
 
          <div class="modal-footer pt-3">
-            <form action="" method="POST">
+            <form action="{{ route('payment.store', ['treatment'=>$treatment]) }}" method="POST">
                @csrf
                <button type="submit" class="btn admin-staff-btn px-2 py-1 text-white">Confirm Payment</button>
             </form>

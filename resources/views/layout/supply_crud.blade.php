@@ -15,11 +15,18 @@
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
          <div class="row w-100 p-3 gap-3">
-            <div class="col">
+            <div class="col col-3">
                <h3>Supply Lists</h3>
             </div>
 
-            <div class="col col-2">
+            <div class="col">
+               <div class="d-flex w-75 gap-2">
+                  <input type="text" id="search" class="form-control" placeholder=" Search">
+                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
+               </div>
+            </div>
+
+            <div class="col col-1">
                <button class="btn admin-staff-btn text-white w-100 p-1" data-bs-toggle="modal"
                   data-bs-target="#addSupplyModal">
                   ADD <i class="ms-2 bi bi-plus-circle-fill"></i>
@@ -32,7 +39,7 @@
 
 <div class="row m-2">
    <div style="overflow: hidden;" class="card">
-      <div class="card-body">
+      <div style="height: 465px !important;" class="card-body">
          <div class="row">
             <table>
                <thead class="">
@@ -76,7 +83,7 @@
 
                            <div>
                               <form action="{{ route('supply.destroy', ['supply' => $supply]) }}" method="POST">
-                                 <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+
                                  @csrf
                                  @method('delete')
                                  <button class="btn admin-staff-btn text-white w-100 px-2 py-1">
@@ -196,7 +203,7 @@
                                     </div>
 
                                     <div class="col">
-                                       <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+
                                        <button class="btn w-100 fw-bold admin-staff-btn text-white p-1"
                                           type="submit">Update</button>
                                     </div>
@@ -252,7 +259,6 @@
                   </div>
 
                   <div class="col">
-                     <input type="hidden" name="redirect_to" value=" {{ $redirect_route }}">
                      <button class="btn admin-staff-btn w-100 fw-bold text-white p-1" type="submit">Add</button>
                   </div>
                </div>

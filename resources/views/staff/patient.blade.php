@@ -13,9 +13,6 @@
 @endsection
 
 @section('staffContent')
-@include('layout.patient_crud',[
-'users' => $users,
-'redirect_route' => route('staff.patient')
-])
-
+@include('layout.patient_crud',['users' => $users])
+@include('layout.modals.crud_success')
 @endsection

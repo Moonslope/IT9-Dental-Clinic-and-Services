@@ -9,6 +9,7 @@ class Treatment extends Model
     protected $fillable = [
         'appointment_id',
         'treatment_date',
+        'status',
         'treatment_cost',
     ];
 
@@ -25,5 +26,10 @@ class Treatment extends Model
     public function treatmentSupplies()
     {
         return $this->hasMany(TreatmentSupply::class, 'treatment_id', 'id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }

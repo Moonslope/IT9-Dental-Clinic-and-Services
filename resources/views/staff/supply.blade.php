@@ -13,8 +13,6 @@
 @endsection
 
 @section('staffContent')
-@include('layout.supply_crud', [
-'supplies' => $supplies, 'suppliers' => $suppliers, 'user' => $user,
-'redirect_route' => route('staff.supply')
-])
+@include('layout.supply_crud', ['supplies' => $supplies, 'suppliers' => $suppliers, 'user' => $user,])
+@include('layout.modals.crud_success')
 @endsection

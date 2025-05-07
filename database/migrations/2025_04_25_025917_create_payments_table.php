@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('treatment_id')->references('id')->on('treatments')->onDelete('cascade');
 
             $table->decimal('total_amount', 10, 2);
-            $table->string('status');
             $table->date('payment_date');
             $table->timestamps();
         });

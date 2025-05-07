@@ -13,6 +13,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\TreatmentSupplyController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', [PatientController::class, 'index']);
 
@@ -104,3 +105,5 @@ Route::delete('/patient/{user}', [PatientController::class, 'destroy'])->name('p
 Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
 
 Route::post('/treatment-supply', [TreatmentSupplyController::class, 'store'])->name('treatment-supply.store');
+
+Route::post('/payment/{treatment}', [PaymentController::class, 'store'])->name('payment.store');

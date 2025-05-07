@@ -14,5 +14,5 @@
 
 @section('staffContent')
 
-@include('layout.service_crud', ['services' => $services, 'redirect_route' => route('staff.service')])
+@include('layout.service_crud', ['services' => $services])
 @endsection

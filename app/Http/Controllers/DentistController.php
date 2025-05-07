@@ -94,9 +94,8 @@ class DentistController extends Controller
             }
         }
 
-        return redirect()->route('admin.dentist');
+        return redirect()->back()->with('updated_success','Successfully updated!');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -104,7 +103,7 @@ class DentistController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        return redirect(route('admin.dentist'));
+        return redirect()->back()->with('deleted_success','Successfully deleted!');
     }
 
     public function appointments()

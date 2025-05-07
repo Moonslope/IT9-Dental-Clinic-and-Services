@@ -28,34 +28,6 @@ class StaffController extends Controller
         return view('staff.dashboard',  ['staff' => $staff]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Staff $staff)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Staff $staff)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -79,9 +51,8 @@ class StaffController extends Controller
         }
 
         $user->update($data);
-        return redirect(route('admin.staff'));
+        return redirect()->back()->with('updated_success','Successfully updated!');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -89,7 +60,7 @@ class StaffController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        return redirect(route('admin.staff'));
+        return redirect()->back()->with('deleted_success','Successfully deleted!');
     }
 
     

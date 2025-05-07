@@ -11,11 +11,8 @@
 </div>
 
 @endsection
-
 @section('adminContent')
-@include('layout.service_crud',[
-'services' => $services,
-'redirect_route' => route('admin.service')
-])
+@include('layout.service_crud')
+@include('layout.modals.crud_success')
 
 @endsection

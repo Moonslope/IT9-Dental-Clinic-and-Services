@@ -2,6 +2,7 @@
 @section('title', 'Profile')
 
 @section('content')
+@include('layout.custom_scrollbar')
 <style>
    .modal-dialog {
       margin: auto !important;
@@ -93,33 +94,78 @@
          <div class="row mx-4 pt-3">
             <p class="fw-semibold mb-2">Appointment</p>
             <div style="overflow: hidden;" class="card shadow">
-               <div style="height: 230px !important;" class="card-body">
+               <div class="card-body" style="max-height: 230px; overflow-y: auto;">
                   <table class="table">
                      <thead>
                         <tr class="fs-5">
                            <th style="background-color:#00a1df !important;" class="p-1 text-white">Service</th>
                            <th style="background-color:#00a1df !important;" class="p-1 text-white">Date</th>
                            <th style="background-color:#00a1df !important;" class="p-1 text-white">Status</th>
+                           <th style="background-color:#00a1df !important;" class="text-white p-1">Action</th>
                         </tr>
                      </thead>
 
                      <tbody>
                         @if ($appointments->isEmpty())
-                        <p class="text-secondary">You have no appointments scheduled.</p>
+                        <tr>
+                           <td colspan="3" class="text-center text-secondary p-2">You have no appointments scheduled.
+                           </td>
+                        </tr>
                         @else
+
                         @foreach ($appointments as $appointment)
                         <tr>
-                           <td class="p-1">{{ $appointment->service->service_name }}</td>
-                           <td class="p-1">{{ $appointment->appointment_date }}</td>
-                           <td class="p-1">{{ ucfirst($appointment->status) }}</td>
+                           <td class="p-2">{{ $appointment->service->service_name }}</td>
+                           <td class="p-2">{{ $appointment->appointment_date }}</td>
+                           <td class="p-2">
+                              @if ($appointment->status === 'Approved')
+                              <span style="padding-inline: 15px !important;"
+                                 class="bg-info fw-semibold  rounded-pill text-white py-1">{{
+                                 ($appointment->status)
+                                 }}</span>
+                              @elseif ($appointment->status === 'Completed')
+                              <span style="padding-inline: 10px !important;"
+                                 class="bg-success fw-semibold rounded-pill text-white py-1">{{
+                                 ($appointment->status)
+                                 }}</span>
+                              @else
+                              <span style="padding-inline: 20px !important;"
+                                 class="bg-warning fw-semibold rounded-pill text-white py-1">{{
+                                 ($appointment->status)
+                                 }}</span>
+                              @endif
+                           </td>
+
+                           <td class="col-2">
+                              @if($appointment->status === 'Pending')
+                              <div class="d-flex align-items-center gap-2">
+                                 <button style="padding-inline: 23px !important;"
+                                    class="btn admin-staff-btn text-white mt-2 rounded-pill">EDIT</button>
+
+                                 <button class="btn admin-staff-btn text-white mt-2 rounded-pill me-1"><i
+                                       class="bi bi-trash-fill px-4"></i></button>
+                              </div>
+
+                              @elseif($appointment->status === 'Approved')
+                              <button style="padding-inline: 20px !important;"
+                                 class="btn admin-staff-btn text-white mt-2 rounded-pill">VIEW</button>
+
+                              @elseif($appointment->status === 'Completed')
+                              <button style="padding-inline: 20px !important;"
+                                 class="btn admin-staff-btn text-white mt-2 rounded-pill">VIEW</button>
+                              @endif
+
+
+                           </td>
                         </tr>
                         @endforeach
+                        @endif
                      </tbody>
                   </table>
-                  @endif
                </div>
             </div>
          </div>
+
       </div>
    </div>
 </div>
@@ -137,7 +183,7 @@
          </div>
 
          <div class="modal-body mt-4">
-            <form action="{{ route('appointments.store') }}" method="POST">
+            <form action="{{ route('patient.appointments.store') }}" method="POST">
                @csrf
 
                <div class="row gap-2 mb-2">
@@ -296,4 +342,6 @@
       </div>
    </div>
 </div>
+
+@include('layout.modals.appointment_success')
 @endsection

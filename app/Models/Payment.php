@@ -9,7 +9,6 @@ class Payment extends Model
     protected $fillable = [
         'treatment_id',
         'total_amount',
-        'status',
         'payment_date',
     ];
 

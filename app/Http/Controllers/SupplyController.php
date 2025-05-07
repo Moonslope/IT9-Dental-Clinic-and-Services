@@ -47,7 +47,7 @@ class SupplyController extends Controller
         $newSupply = $request->validated();
         Supply::create($newSupply);
 
-        return redirect($request->input('redirect_to', route('staff.supply')));
+        return redirect()->back()->with('added_success','Successfully added');
     }
 
     /**
@@ -74,7 +74,7 @@ class SupplyController extends Controller
         $newSupply = $request->validated();
         $supply->update($newSupply);
 
-        return redirect($request->input('redirect_to', route('staff.supply')));
+        return redirect()->back()->with('updated_success', 'Successfully updated!');
     }
 
     /**
@@ -83,6 +83,6 @@ class SupplyController extends Controller
     public function destroy(Request $request, Supply $supply)
     {
         $supply->delete();
-        return redirect($request->input('redirect_to', route('staff.supply')));
+        return redirect()->back()->with('deleted_success', 'Successfully deleted!');
     }
 }

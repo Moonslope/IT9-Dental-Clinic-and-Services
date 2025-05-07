@@ -6,6 +6,7 @@ use App\Models\Treatment;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Dentist;
+use App\Models\Service;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,15 @@ class AppointmentController extends Controller
     {
         $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
         $dentists = Dentist::all();
+        $patients = Patient::latest()->get();
+        $services = Service::all();
         // dd($appointments);
-        return view('admin.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
+        return view('admin.appointment', 
+        ['appointments' => $appointments, 
+         'dentists' => $dentists, 
+         'services'=>$services,
+         'patients'=>$patients
+    ]);
     }
     /**
      * Display a listing of the resource.
@@ -69,7 +77,7 @@ class AppointmentController extends Controller
             // 'message' => $request->message,
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');;
     }
 
     /**
@@ -103,15 +111,19 @@ class AppointmentController extends Controller
         $appointment->status = 'Approved';
         $appointment->save();
 
-        // create treatment pag pindot sa proceed to treatment
-        $servicePrice = $appointment->service->service_price ?? 0.00;
-        Treatment::create([
-            'appointment_id' => $appointment->id,
-            'treatment_cost' => $servicePrice,
-        ]);
-    
+        // Check if a treatment already exists for this appointment
+        if (!$appointment->treatment) {
+            $servicePrice = $appointment->service->service_price ?? 0.00;
+
+            Treatment::create([
+                'appointment_id' => $appointment->id,
+                'treatment_cost' => $servicePrice,
+            ]);
+        }
+
         return redirect($request->input('redirect_to', route('staff.appointment')));
     }
+
 
     /**
      * Remove the specified resource from storage.

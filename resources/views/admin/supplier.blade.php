@@ -15,7 +15,7 @@
 @section('adminContent')
 
 @include('layout.supplier_crud', [
-'suppliers' => $suppliers,
-'redirect_route' => route('admin.supplier')
-])
+'suppliers' => $suppliers,])
+
+@include('layout.modals.crud_success')
 @endsection

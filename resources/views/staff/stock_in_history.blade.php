@@ -14,5 +14,5 @@
 
 @section('staffContent')
 @include('layout.stock_in_history_layout')
-
+@include('layout.modals.crud_success')
 @endsection
