@@ -195,7 +195,7 @@
 </div>
 
 {{-- Modal for booking an appointment --}}
-<div class="modal fade" id="bookAppointmentModal" tabindex="-1" aria-labelledby="bookAppointmentModalLabel"
+{{-- <div class="modal fade" id="bookAppointmentModal" tabindex="-1" aria-labelledby="bookAppointmentModalLabel"
    aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" style="max-width: 800px">
       <div class="modal-content">
@@ -291,4 +291,4 @@
          </div>
       </div>
    </div>
-</div>
+</div> --}}
