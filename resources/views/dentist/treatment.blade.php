@@ -83,7 +83,7 @@
 {{-- Modal for Prescription --}}
 <div class="modal fade" id="prescriptionModal{{ $treatment->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $treatment->id }}" aria-hidden="true">
    <div class="modal-dialog">
-      <form method="POST" action="{{ route('dentist.prescription.store') }}" class="modal-content">
+      <form method="POST" action="{{ route('dentist.treatment.store') }}" class="modal-content">
          @csrf
          <input type="hidden" name="treatment_id" value="{{ $treatment->id }}">
          <input type="hidden" name="patient_id" value="{{ $appointment->patient->id }}">

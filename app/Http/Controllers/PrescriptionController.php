@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dentist;
 use App\Models\Prescription;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller

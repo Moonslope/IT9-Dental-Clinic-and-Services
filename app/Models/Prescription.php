@@ -6,12 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prescription extends Model
 {
-    // protected $fillable = [
-    //     'treatment_id',
-    //     'medication',
-    //     'dosage',
-    //     'date_issued',
-    // ];
 
     protected $fillable = [
         'treatment_id',
