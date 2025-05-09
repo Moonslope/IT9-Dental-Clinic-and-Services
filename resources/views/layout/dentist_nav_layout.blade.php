@@ -53,7 +53,7 @@
             <a class="admin-btn" href=""><i class="bi bi-journal-text fs-5 me-2 ms-3"></i></i>Prescriptions</a>
          </div>
          <div class="pb-2 pt-2 px-2 border border-start-0 border-top-0 border-end-0 border-secondary">
-            <a class="admin-btn" href=""><i class="bi bi-clock-history fs-5 me-2 ms-3"></i>Treatment Records</a>
+            <a class="admin-btn" href="{{ route('dentist.treatmentRecords') }}"><i class="bi bi-clock-history fs-5 me-2 ms-3"></i>Treatment Records</a>
          </div>
 
          <div class="pb-2 pt-2 px-2">

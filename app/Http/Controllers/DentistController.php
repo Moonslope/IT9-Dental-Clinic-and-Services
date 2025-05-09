@@ -94,7 +94,7 @@ class DentistController extends Controller
             }
         }
 
-        return redirect()->back()->with('updated_success','Successfully updated!');
+        return redirect()->back()->with('updated_success', 'Successfully updated!');
     }
 
     /**
@@ -103,7 +103,7 @@ class DentistController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        return redirect()->back()->with('deleted_success','Successfully deleted!');
+        return redirect()->back()->with('deleted_success', 'Successfully deleted!');
     }
 
     public function appointments()
@@ -118,5 +118,13 @@ class DentistController extends Controller
             'appointments' => $appointments,
             'dentist' => $dentist
         ]);
+    }
+
+    public function treatmentRecords()
+    {
+        $dentist = Dentist::where('user_id', Auth::id())->with('appointments.treatments')->firstOrFail();
+
+        $appointments = $dentist->appointments()->with(['treatments', 'service', 'patient.user'])->get();
+        return view('dentist.treatment', ['appointments' => $appointments]);
     }
 }

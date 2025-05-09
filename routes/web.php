@@ -14,6 +14,7 @@ use App\Http\Controllers\StockInController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\TreatmentSupplyController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PrescriptionController;
 
 Route::get('/', [PatientController::class, 'index']);
 
@@ -68,6 +69,8 @@ Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->gro
 Route::prefix('/dentist')->name('dentist.')->middleware(['auth', 'role:dentist'])->group(function () {
     Route::get('/dashboard', [DentistController::class, 'index'])->name('dashboard');
     Route::get('/appointments', [DentistController::class, 'appointments'])->name('appointments');
+    Route::get('/treatmentRecords', [DentistController::class, 'treatmentRecords'])->name('treatmentRecords');
+    Route::post('/prescription', [PrescriptionController::class, 'store'])->name('prescription.store');
 });
 
 //service crud para sa admin ug staff

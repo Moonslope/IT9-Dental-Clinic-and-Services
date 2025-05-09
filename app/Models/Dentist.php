@@ -21,4 +21,9 @@ class Dentist extends Model
     {
         return $this->hasMany(Appointment::class, 'dentist_id', 'id');
     }
+
+    public function treatmentRecords()
+    {
+        return $this->hasMany(Treatment::class);
+    }
 }

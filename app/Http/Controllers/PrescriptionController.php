@@ -28,7 +28,17 @@ class PrescriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'treatment_id' => 'required|exists:treatments,id',
+            'patient_id' => 'required|exists:patients,id',
+            'medication' => 'required|string|max:255',
+            'instructions' => 'required|string',
+        ]);
+
+        Prescription::create($validated);
+
+        return redirect()->back()->with('success', 'Prescription created successfully.');
     }
 
     /**

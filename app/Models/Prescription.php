@@ -6,14 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prescription extends Model
 {
+    // protected $fillable = [
+    //     'treatment_id',
+    //     'medication',
+    //     'dosage',
+    //     'date_issued',
+    // ];
+
     protected $fillable = [
         'treatment_id',
+        'patient_id',
         'medication',
-        'dosage',
-        'date_issued',
+        'instructions',
     ];
 
     public function treatment()
     {
         return $this->belongsTo(Treatment::class, 'treatment_id', 'id');
-    }}
+    }
+}
