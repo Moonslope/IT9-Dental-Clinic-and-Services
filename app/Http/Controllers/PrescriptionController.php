@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePrescriptionRequest;
 use App\Models\Dentist;
 use App\Models\Prescription;
 use Illuminate\Support\Facades\Auth;
@@ -62,9 +63,11 @@ class PrescriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Prescription $prescription)
+    public function update(UpdatePrescriptionRequest $request, Prescription $prescription)
     {
-        //
+        $prescription->update($request->validated());
+
+        return redirect()->back();
     }
 
     /**
