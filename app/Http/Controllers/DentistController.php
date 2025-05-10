@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Dentist;
+use App\Models\Prescription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -126,5 +127,16 @@ class DentistController extends Controller
 
         $appointments = $dentist->appointments()->with(['treatments', 'service', 'patient.user'])->get();
         return view('dentist.treatment', ['appointments' => $appointments]);
+    }
+
+    public function viewPrescription()
+    {
+        $userID = Auth::id();
+        $dentist = Dentist::where('user_id', $userID)->first();
+
+        $appointments = Appointment::where('dentist_id', $dentist->id)
+            ->with(['patient.user', 'treatments.prescriptions'])->get();
+
+        return view('dentist.prescription', ['appointments' => $appointments]);
     }
 }
