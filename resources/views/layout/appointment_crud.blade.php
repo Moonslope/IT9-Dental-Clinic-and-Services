@@ -173,7 +173,7 @@
 
                                     {{-- Submit Button --}}
                                     <div class="row">
-                                       <input type="hidden" name="redirect_to" value="{{ $redirect_route }}">
+
                                        <button class="btn w-100 fw-bold text-white p-1"
                                           style="background-color: #00a1df" type="submit">Proceed to
                                           treatment</button>
