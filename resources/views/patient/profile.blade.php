@@ -306,7 +306,7 @@
                                  VIEW
                               </button>
 
-                              {{--completed view modal --}}
+                              {{-- completed view modal --}}
                               <div class="modal fade" id="viewModal{{ $appointment->id }}" tabindex="-1"
                                  aria-labelledby="viewModalLabel{{ $appointment->id }}" aria-hidden="true">
                                  <div class="modal-dialog modal-dialog-centered">
@@ -321,7 +321,7 @@
                                              <div class="col">
                                                 <label for="service" class="mb-2">Service</label>
                                                 <input type="text" readonly id="service"
-                                                   value="{{$appointment->service->service_name}}"
+                                                   value="{{ $appointment->service->service_name }}"
                                                    class="form-control p-2">
                                              </div>
 
@@ -337,14 +337,14 @@
                                              <div class="col">
                                                 <label for="amount_paid" class="mb-2">Amount Paid</label>
                                                 <input type="text" readonly id="amount_paid"
-                                                   value="₱ {{$appointment->treatments->treatment_cost}}"
+                                                   value="₱ {{ $appointment->treatments->first()->treatment_cost ?? 'N/A' }}"
                                                    class="form-control p-2">
                                              </div>
 
                                              <div class="col">
                                                 <label for="status" class="mb-2">Status</label>
-                                                <input type="text" readonly id="status" value="{{$appointment->status}}"
-                                                   class="form-control p-2">
+                                                <input type="text" readonly id="status"
+                                                   value="{{ $appointment->status }}" class="form-control p-2">
                                              </div>
                                           </div>
 
@@ -352,11 +352,10 @@
                                              <div class="col">
                                                 <label for="dentist" class="mb-2">Dentist Assigned</label>
                                                 <input type="text" readonly id="dentist"
-                                                   value="{{$appointment->dentist->user->first_name}} {{$appointment->dentist->user->last_name}}"
+                                                   value="{{ $appointment->dentist->user->first_name }} {{ $appointment->dentist->user->last_name }}"
                                                    class="form-control p-2">
                                              </div>
                                           </div>
-
                                        </div>
                                        <div class="modal-footer p-1">
                                           <button type="button" class="btn admin-staff-btn p-1 text-white w-100"
@@ -366,6 +365,7 @@
                                  </div>
                               </div>
                               @endif
+
 
                            </td>
                         </tr>
