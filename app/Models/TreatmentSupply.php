@@ -10,6 +10,7 @@ class TreatmentSupply extends Model
         'treatment_id',
         'supply_id',
         'quantity_used',
+        'total_quantity'
     ];
 
     public function treatment()

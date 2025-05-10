@@ -20,30 +20,36 @@ class StockInController extends Controller
     }
 
     public function store(Request $request)
-    {
-            $validated = $request->validate([
-                'supply_id' => 'required|exists:supplies,id',
-                'quantity_received' => 'required|integer|min:1',
-                'date_received' => 'required|date',
-                'supplier_id' => 'required|exists:suppliers,id',
-                'user_id' => 'required|exists:users,id',
-            ]);
-    
-            StockIn::create([
-                'supply_id' => $validated['supply_id'],
-                'quantity_received' => $validated['quantity_received'],
-                'date_received' => $validated['date_received'],
-                'user_id' => $validated['user_id'],
-                'supplier_id' => $validated['supplier_id'],
-            ]);
-          
-            $supply = Supply::findOrFail($validated['supply_id']);
-            $supply->supply_quantity += $validated['quantity_received'];
-            $supply->save();
-    
-            return redirect()->back()->with('added_success','Successfully added!');
-        
-    }
+{
+    $validated = $request->validate([
+        'supply_id' => 'required|exists:supplies,id',
+        'quantity_received' => 'required|integer|min:1',
+        'date_received' => 'required|date',
+        'supplier_id' => 'required|exists:suppliers,id',
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+    // Get the current supply
+    $supply = Supply::findOrFail($validated['supply_id']);
+
+    // Add received quantity to current supply quantity
+    $supply->supply_quantity += $validated['quantity_received'];
+    $supply->save();
+
+    // Save to stock_ins
+    StockIn::create([
+        'supply_id' => $validated['supply_id'],
+        'quantity_received' => $validated['quantity_received'],
+        'total_quantity' => $supply->supply_quantity, 
+        'date_received' => $validated['date_received'],
+        'user_id' => $validated['user_id'],
+        'supplier_id' => $validated['supplier_id'],
+    ]);
+
+    return redirect()->back()->with('added_success', 'Successfully added!');
+}
+
+
 
     public function update(Request $request, StockIn $stock)
 {
@@ -54,20 +60,25 @@ class StockInController extends Controller
 
     $old_quantity = $stock->quantity_received;
 
-    // Update stock in
-    $stock->quantity_received = $request->quantity_received;
-    $stock->date_received = $request->date_received;
-    $stock->save();
-
     // Adjust supply quantity
     $supply = Supply::findOrFail($stock->supply_id);
     $quantity_difference = $request->quantity_received - $old_quantity;
     $supply->supply_quantity += $quantity_difference;
+
+    if ($supply->supply_quantity < 0) {
+        $supply->supply_quantity = 0; // Prevent negative
+    }
+
     $supply->save();
+
+    // Update stock-in record
+    $stock->quantity_received = $request->quantity_received;
+    $stock->total_quantity = $supply->supply_quantity;
+    $stock->date_received = $request->date_received;
+    $stock->save();
 
     return redirect()->back()->with('updated_success','Successfully updated!');
 }
-
 
 public function destroy(Request $request, StockIn $stock)
 {

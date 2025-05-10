@@ -12,6 +12,7 @@ class StockIn extends Model
         'date_received',
         'user_id',
         'supplier_id',
+        'total_quantity'
     ];
 
     public function supply()

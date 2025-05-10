@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('supply_id')->references('id')->on('supplies')->onDelete('cascade');
 
             $table->integer('quantity_received');
+            $table->integer('total_quantity')->default(0);
             $table->date('date_received');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

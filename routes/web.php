@@ -45,6 +45,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/stock in history', [StockInController::class, 'admin_stock_in_history'])->name('stock_in_history');
     Route::get('/treatment', [TreatmentController::class, 'admin_treatment'])->name('treatment');
     Route::get('/appointment', [AppointmentController::class, 'admin_appointments'])->name('appointment');
+    Route::get('/stock outs', [TreatmentSupplyController::class, 'admin_stock_out'])->name('stock_out');
 
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
@@ -63,6 +64,7 @@ Route::prefix('/staff')->name('staff.')->middleware(['auth', 'role:staff'])->gro
     Route::get('/stock in history', [StockInController::class, 'staff_stock_in_history'])->name('stock_in_history');
     Route::get('/patient', [PatientController::class, 'staff_patient'])->name('patient');
     Route::get('/treatment', [TreatmentController::class, 'staff_treatment'])->name('treatment');
+    Route::get('/stock outs', [TreatmentSupplyController::class, 'staff_stock_out'])->name('stock_out');
 });
 
 // DENTIST
