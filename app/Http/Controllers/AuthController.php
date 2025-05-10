@@ -98,10 +98,10 @@ class AuthController extends Controller
                 'specialization' => $data['specialization'], 
             ]);
 
-            return redirect()->route('admin.dentist')->with('added_success','Successfully added!');
+            return redirect()->route('admin.dentist')->with('added_success','Dentist successfully added!');
 
         } else {
-            return redirect()->route('admin.staff')->with('added_success','Successfully added!');
+            return redirect()->route('admin.staff')->with('added_success','Staff successfully added!');
         }
     }
     

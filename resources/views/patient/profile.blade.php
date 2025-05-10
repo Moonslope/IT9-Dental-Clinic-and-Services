@@ -15,6 +15,8 @@
    }
 </style>
 
+@include('layout.modals.crud_success')
+
 <div class="container-fluid vh-100">
    <div class="row h-100">
       <div style="background-color: #1e466b !important" class="col col-3 h-100">
@@ -116,7 +118,9 @@
                         @foreach ($appointments as $appointment)
                         <tr>
                            <td class="p-2">{{ $appointment->service->service_name }}</td>
-                           <td class="p-2">{{ $appointment->appointment_date }}</td>
+                           <td class="p-2">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d,
+                              Y h:i A') }}
+                           </td>
                            <td class="p-2">
                               @if ($appointment->status === 'Approved')
                               <span style="padding-inline: 15px !important;"
@@ -140,24 +144,233 @@
                               @if($appointment->status === 'Pending')
                               <div class="d-flex align-items-center gap-2">
                                  <button style="padding-inline: 23px !important;"
-                                    class="btn admin-staff-btn text-white mt-2 rounded-pill">EDIT</button>
+                                    class="btn admin-staff-btn text-white mt-2 rounded-pill" data-bs-toggle="modal"
+                                    data-bs-target="#editAppointmentModal-{{ $appointment->id }}">
+                                    EDIT
+                                 </button>
 
-                                 <button class="btn admin-staff-btn text-white mt-2 rounded-pill me-1"><i
-                                       class="bi bi-trash-fill px-4"></i></button>
+                                 <div class="modal fade" id="editAppointmentModal-{{ $appointment->id }}" tabindex="-1"
+                                    aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" style="max-width: 800px">
+                                       <div class="modal-content">
+                                          <div class="modal-header d-flex justify-content-between align-items-center">
+                                             <h3 class="pb-2">Edit Appointment</h3>
+                                             <button class="btn-close pb-2" type="button" data-bs-dismiss="modal"
+                                                aria-label="close"></button>
+                                          </div>
+
+                                          {{-- edit appointment --}}
+                                          <div class="modal-body mt-4">
+                                             <form action="{{ route('appointments.patient_update', $appointment->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <div class="row gap-2 mb-2">
+                                                   <div class="col">
+                                                      <label for="services" class="mb-1 fw-semibold">Services</label>
+                                                      <select style="background-color: #d9d9d9" name="service_id"
+                                                         id="services" class="form-select p-2" required>
+                                                         @if ($services->isEmpty())
+                                                         <option value="" disabled>No services available</option>
+                                                         @else
+                                                         <option value="" disabled>Select a service</option>
+                                                         @foreach ($services as $service)
+                                                         <option value="{{ $service->id }}" {{ $appointment->service_id
+                                                            == $service->id ? 'selected' : '' }}>
+                                                            {{ $service->service_name }}
+                                                         </option>
+                                                         @endforeach
+                                                         @endif
+                                                      </select>
+                                                   </div>
+
+                                                   <div class="col">
+                                                      <label class="mb-1 fw-semibold">Appointment Date</label>
+                                                      <input type="datetime-local" name="appointment_date"
+                                                         class="form-control p-2"
+                                                         value="{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d\TH:i') }}"
+                                                         style="background-color: #d9d9d9" required>
+                                                   </div>
+                                                </div>
+
+                                                <div class="row mt-3">
+                                                   <button class="btn w-100 admin-staff-btn fw-bold text-white p-1"
+                                                      type="submit">Update
+                                                      Appointment</button>
+                                                </div>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+
+
+                                 <button type="submit" class="btn admin-staff-btn text-white mt-2 rounded-pill me-1"
+                                    data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{$appointment->id}}">
+                                    <i class="bi bi-trash-fill px-4"></i>
+                                 </button>
+
+                                 <!-- Confirmation Modal -->
+                                 <div class="modal fade" id="confirmDeleteModal{{$appointment->id}}" tabindex="-1"
+                                    aria-labelledby="confirmDeleteModalLabel{{$appointment->id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                       <div class="modal-content">
+                                          <div class="modal-header d-flex justify-content-between">
+                                             <h4 class="modal-title">Confirm Deletion</h4>
+                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                             <p class="my-4 fs-5 text-center">Are you sure you want to delete this
+                                                appointment?</p>
+                                          </div>
+
+                                          <div class="modal-footer row mt-3 gap-2 pt-3">
+                                             <div class="col">
+                                                <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                                   data-bs-dismiss="modal">Cancel</button>
+                                             </div>
+                                             <div class="col">
+                                                <form action="{{ route('appointments.destroy', $appointment->id) }}"
+                                                   method="POST" class="d-inline">
+                                                   @csrf
+                                                   @method('DELETE')
+                                                   <button type="submit"
+                                                      class="btn admin-staff-btn w-100 text-white p-1">Delete</button>
+                                                </form>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
                               </div>
 
                               @elseif($appointment->status === 'Approved')
                               <button style="padding-inline: 20px !important;"
-                                 class="btn admin-staff-btn text-white mt-2 rounded-pill">VIEW</button>
+                                 class="btn admin-staff-btn text-white mt-2 rounded-pill" data-bs-toggle="modal"
+                                 data-bs-target="#viewModal{{ $appointment->id }}">
+                                 VIEW
+                              </button>
+
+                              {{-- approved view modal --}}
+                              <div class="modal fade" id="viewModal{{ $appointment->id }}" tabindex="-1"
+                                 aria-labelledby="viewModalLabel{{ $appointment->id }}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                       <div class="modal-header d-flex justify-content-between">
+                                          <h5 class="modal-title" id="viewModalLabel">Details</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                             aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <div class="row gap-2 mt-3">
+                                             <div class="col">
+                                                <label for="service" class="mb-2">Service</label>
+                                                <input type="text" readonly id="service"
+                                                   value="{{$appointment->service->service_name}}"
+                                                   class="form-control p-2">
+                                             </div>
+
+                                             <div class="col">
+                                                <label for="date" class="mb-2">Appointment Date</label>
+                                                <input type="text" readonly id="date"
+                                                   value="{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d, Y h:i A') }}"
+                                                   class="form-control p-2">
+                                             </div>
+                                          </div>
+
+                                          <div class="row mt-3 mb-2">
+                                             <div class="col">
+                                                <label for="dentist" class="mb-2">Dentist Assigned</label>
+                                                <input type="text" readonly id="dentist"
+                                                   value="{{$appointment->dentist->user->first_name}} {{$appointment->dentist->user->last_name}}"
+                                                   class="form-control p-2">
+                                             </div>
+                                          </div>
+
+                                       </div>
+                                       <div class="modal-footer p-1">
+                                          <button type="button" class="btn admin-staff-btn p-1 text-white w-100"
+                                             data-bs-dismiss="modal">Close</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
 
                               @elseif($appointment->status === 'Completed')
                               <button style="padding-inline: 20px !important;"
-                                 class="btn admin-staff-btn text-white mt-2 rounded-pill">VIEW</button>
-                              @endif
+                                 class="btn admin-staff-btn text-white mt-2 rounded-pill" data-bs-toggle="modal"
+                                 data-bs-target="#viewModal{{ $appointment->id }}">
+                                 VIEW
+                              </button>
 
+                              {{--completed view modal --}}
+                              <div class="modal fade" id="viewModal{{ $appointment->id }}" tabindex="-1"
+                                 aria-labelledby="viewModalLabel{{ $appointment->id }}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                       <div class="modal-header d-flex justify-content-between">
+                                          <h5 class="modal-title" id="viewModalLabel">Details</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                             aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <div class="row gap-2 mt-3">
+                                             <div class="col">
+                                                <label for="service" class="mb-2">Service</label>
+                                                <input type="text" readonly id="service"
+                                                   value="{{$appointment->service->service_name}}"
+                                                   class="form-control p-2">
+                                             </div>
+
+                                             <div class="col">
+                                                <label for="date" class="mb-2">Appointment Date</label>
+                                                <input type="text" readonly id="date"
+                                                   value="{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F d, Y h:i A') }}"
+                                                   class="form-control p-2">
+                                             </div>
+                                          </div>
+
+                                          <div class="row gap-2 mt-3">
+                                             <div class="col">
+                                                <label for="amount_paid" class="mb-2">Amount Paid</label>
+                                                <input type="text" readonly id="amount_paid"
+                                                   value="₱ {{$appointment->treatments->treatment_cost}}"
+                                                   class="form-control p-2">
+                                             </div>
+
+                                             <div class="col">
+                                                <label for="status" class="mb-2">Status</label>
+                                                <input type="text" readonly id="status" value="{{$appointment->status}}"
+                                                   class="form-control p-2">
+                                             </div>
+                                          </div>
+
+                                          <div class="row mt-3 mb-2">
+                                             <div class="col">
+                                                <label for="dentist" class="mb-2">Dentist Assigned</label>
+                                                <input type="text" readonly id="dentist"
+                                                   value="{{$appointment->dentist->user->first_name}} {{$appointment->dentist->user->last_name}}"
+                                                   class="form-control p-2">
+                                             </div>
+                                          </div>
+
+                                       </div>
+                                       <div class="modal-footer p-1">
+                                          <button type="button" class="btn admin-staff-btn p-1 text-white w-100"
+                                             data-bs-dismiss="modal">Close</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              @endif
 
                            </td>
                         </tr>
+
+
                         @endforeach
                         @endif
                      </tbody>

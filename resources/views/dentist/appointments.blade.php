@@ -15,7 +15,6 @@
 @endsection
 
 @section('dentistContent')
-<h1>Appointments</h1>
 
 <style>
    .modal-dialog {

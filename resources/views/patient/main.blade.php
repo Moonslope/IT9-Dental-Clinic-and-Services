@@ -132,9 +132,6 @@
                         data-bs-target="#bookAppointmentModal">Book an Appointment</button>
                      @endauth
 
-                     <a class="btn btn-info px-3 py-2 btn-lg d-none d-md-inline-block" href="#section3">Browse
-                        services</a>
-
                      <a class="btn btn-info px-2 py-1 btn-sm d-md-none" href="">Book</a>
                      <a class="btn btn-info px-2 py-1 btn-sm d-md-none" href="">Services</a>
                   </div>

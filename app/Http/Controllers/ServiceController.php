@@ -37,7 +37,7 @@ class ServiceController extends Controller
     {
         $newService = $request->validated();
         Service::create($newService);
-        return redirect()->back()->with('added_success','Successfully added!');
+        return redirect()->back()->with('added_success','Service successfully added!');
     }
 
     /**

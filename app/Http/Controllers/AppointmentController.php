@@ -124,12 +124,30 @@ class AppointmentController extends Controller
         return redirect()->back();
     }
 
+    public function patient_update(Request $request, Appointment $appointment)
+    {
+        // Validate
+        $request->validate([
+            'service_id' => 'required|exists:services,id',  // Ensure the service ID exists
+            'appointment_date' => 'required|date|after:today',  // Ensure the date is valid and in the future
+        ]);
+
+        // Update appointment details
+        $appointment->service_id = $request->input('service_id');
+        $appointment->appointment_date = $request->input('appointment_date');
+        $appointment->save(); 
+
+        return redirect()->back()->with('success', 'Appointment updated successfully.');
+    }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Appointment $appointment)
     {
-        //
+        $appointment->delete();
+
+        return redirect()->back()->with('deleted_success','Appointment successfully deleted!');
     }
 }

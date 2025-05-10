@@ -32,7 +32,7 @@ class Appointment extends Model
 
     public function treatments()
     {
-        return $this->hasMany(Treatment::class, 'appointment_id', 'id');
+        return $this->hasOne(Treatment::class, 'appointment_id', 'id');
     }
 
     public function payments()

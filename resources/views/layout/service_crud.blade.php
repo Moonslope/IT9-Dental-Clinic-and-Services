@@ -88,7 +88,8 @@
                                  aria-label="Close"></button>
                            </div>
                            <div class="modal-body">
-                              <p class="my-4 fs-5">Are you sure you want to delete <strong>{{ $service->service_name
+                              <p class="my-4 fs-5 text-center">Are you sure you want to delete <strong>{{
+                                    $service->service_name
                                     }}</strong>?</p>
                            </div>
 
@@ -102,8 +103,7 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit"
-                                       class="btn admin-staff-btn w-100 text-white p-1">Delete</button>
+                                    <button type="submit" class="btn btn-danger w-100 text-white p-1">Delete</button>
                                  </form>
                               </div>
                            </div>
@@ -207,7 +207,6 @@
                         data-bs-dismiss="modal">Cancel</button>
                   </div>
                   <div class="col">
-
 
                      <button class="btn admin-staff-btn w-100 fw-bold text-white p-1" type="submit">Add</button>
                   </div>
