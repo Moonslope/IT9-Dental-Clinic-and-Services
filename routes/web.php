@@ -71,7 +71,8 @@ Route::prefix('/dentist')->name('dentist.')->middleware(['auth', 'role:dentist']
     Route::get('/appointments', [DentistController::class, 'appointments'])->name('appointments');
     Route::get('/treatmentRecords', [DentistController::class, 'treatmentRecords'])->name('treatmentRecords');
     Route::post('/treatment', [PrescriptionController::class, 'store'])->name('treatment.store');
-    Route::get('/prescirption', [DentistController::class, 'viewPrescription'])->name('prescription');
+    Route::get('/prescription', [DentistController::class, 'viewPrescription'])->name('prescription');
+    Route::put('/prescription/{prescription}', [PrescriptionController::class, 'update'])->name('prescription.update');
 });
 
 //service crud para sa admin ug staff
