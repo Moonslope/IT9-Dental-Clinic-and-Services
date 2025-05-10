@@ -121,7 +121,7 @@ class AppointmentController extends Controller
             ]);
         }
 
-        return redirect($request->input('redirect_to', route('staff.appointment')));
+        return redirect()->back();
     }
 
 

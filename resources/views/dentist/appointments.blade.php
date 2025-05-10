@@ -49,22 +49,28 @@
             <table class="table table-bordered">
                <thead>
                   <tr>
-                     <th>#</th>
-                     <th>Service</th>
-                     <th>Patient</th>
-                     <th>Appointment Date</th>
-                     <th>Status</th>
+                     <th style="background-color:#00a1df !important;" class="p-2 text-white">#</th>
+                     <th style="background-color:#00a1df !important;" class="p-2 text-white">Service</th>
+                     <th style="background-color:#00a1df !important;" class="p-2 text-white">Patient</th>
+                     <th style="background-color:#00a1df !important;" class="p-2 text-white">Appointment Date</th>
+                     <th style="background-color:#00a1df !important;" class="p-2 text-white">Status</th>
                   </tr>
                </thead>
                <tbody>
                   @foreach ($appointments as $appointment)
                   <tr>
-                     <td>{{ $appointment->id }}</td>
-                     <td>{{ $appointment->service->service_name ?? 'N/A' }}</td>
-                     <td>{{ $appointment->patient->user->first_name ?? 'N/A' }} {{
+                     <td class="p-2">{{ $appointment->id }}</td>
+                     <td class="p-2">{{ $appointment->service->service_name ?? 'N/A' }}</td>
+                     <td class="p-2">{{ $appointment->patient->user->first_name ?? 'N/A' }} {{
                         $appointment->patient->user->last_name ?? '' }}</td>
-                     <td>{{ $appointment->appointment_date }}</td>
-                     <td>{{ $appointment->status }}</td>
+                     <td class="p-2">{{ $appointment->appointment_date }}</td>
+                     <td class="p-2">
+                        @if ($appointment->status==="Completed")
+                        <span class="bg-success rounded-pill px-2 py-1 text-white">{{ $appointment->status }}</span>
+                        @elseif($appointment->status==="Approved")
+                        <span class="bg-info rounded-pill px-2 py-1 text-white">{{ $appointment->status }}</span>
+                        @endif
+                     </td>
                   </tr>
                   @endforeach
                </tbody>

@@ -106,11 +106,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="row">
-   <!-- Other dashboard cards -->
    <div class="col-md-4">
       <div class="card m-2 shadow">
          <div class="card-header">
-            <p class="fs-5 mb-0">Services Distribution</p>
+            <p class="fs-5 mb-0 text-center">Services Distribution</p>
          </div>
          <div class="card-body" style="height: 300px;">
             <canvas id="servicesPieChart"></canvas>
@@ -118,7 +117,6 @@
       </div>
    </div>
 </div>
-
 
 @include('layout.modals.login_success')
 <script>
