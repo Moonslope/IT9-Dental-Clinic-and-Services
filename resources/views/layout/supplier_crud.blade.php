@@ -20,10 +20,21 @@
             </div>
 
             <div class="col">
-               <div class="d-flex w-75 gap-2">
-                  <input type="text" id="search" class="form-control" placeholder=" Search">
-                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
-               </div>
+               @php
+               $user = Auth::user();
+               $searchRoute = route('staff.supplier');
+               if ($user && $user->role === 'admin') {
+               $searchRoute = route('admin.supplier');
+               }
+               @endphp
+
+               <form action="{{ $searchRoute }}" method="GET" class="d-flex w-75 gap-2">
+                  <input type="text" id="search" name="search" class="form-control" placeholder="Search supplier"
+                     value="{{ request('search') }}">
+                  <button type="submit" class="btn admin-staff-btn">
+                     <i class="bi bi-search fs-5 p-2 text-white"></i>
+                  </button>
+               </form>
             </div>
 
             <div class="col col-1">

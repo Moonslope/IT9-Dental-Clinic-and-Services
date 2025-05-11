@@ -14,27 +14,64 @@ use phpDocumentor\Reflection\Types\Nullable;
 
 class AppointmentController extends Controller
 {
-    public function staff_appointments()
+    public function staff_appointments(Request $request)
     {
-        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
+        $search = $request->input('search');
+
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('dentist.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         $dentists = Dentist::all();
-        // dd($appointments);
-        return view('staff.appointment', ['appointments' => $appointments, 'dentists' => $dentists]);
+
+        return view('staff.appointment', [
+            'appointments' => $appointments,
+            'dentists' => $dentists
+        ]);
     }
 
-    public function admin_appointments()
+    public function admin_appointments(Request $request)
     {
-        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])->get();
+        $search = $request->input('search');
+
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('dentist.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         $dentists = Dentist::all();
         $patients = Patient::latest()->get();
         $services = Service::all();
-        // dd($appointments);
-        return view('admin.appointment', 
-        ['appointments' => $appointments, 
-         'dentists' => $dentists, 
-         'services'=>$services,
-         'patients'=>$patients
-    ]);
+
+        return view('admin.appointment', [
+            'appointments' => $appointments,
+            'dentists' => $dentists,
+            'services' => $services,
+            'patients' => $patients
+        ]);
     }
     /**
      * Display a listing of the resource.

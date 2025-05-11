@@ -10,16 +10,28 @@ class SupplierController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function admin_supplier()
+    public function admin_supplier(Request $request)
     {
-        $suppliers = Supplier::all();
-        return view('admin.supplier', ['suppliers'=>$suppliers]);
+        $search = $request->input('search');
+        $suppliers = Supplier::when($search, function ($query, $search) {
+            $query->where('supplier_name', 'like', "%{$search}%")
+                  ->orWhere('contact_number', 'like', "%{$search}%")
+                  ->orWhere('address', 'like', "%{$search}%");
+        })->latest()->get();
+
+        return view('admin.supplier', ['suppliers' => $suppliers]);
     }
 
-    public function staff_supplier()
+    public function staff_supplier(Request $request)
     {
-        $suppliers = Supplier::all();
-        return view('staff.supplier', ['suppliers'=>$suppliers]);
+        $search = $request->input('search');
+        $suppliers = Supplier::when($search, function ($query, $search) {
+            $query->where('supplier_name', 'like', "%{$search}%")
+                  ->orWhere('contact_number', 'like', "%{$search}%")
+                  ->orWhere('address', 'like', "%{$search}%");
+        })->latest()->get();
+
+        return view('staff.supplier', ['suppliers' => $suppliers]);
     }
 
     /**
