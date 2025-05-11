@@ -18,27 +18,12 @@
       <div class="card m-2 shadow" style="overflow: hidden;">
          <div class="d-flex gap-2">
             <div class="d-flex justify-content-center align-items-center px-4 bg-info">
-               <i class="bi bi-calendar-week fs-2 me-2 text-white"></i>
+               <i class="bi bi-calendar-event fs-2 me-2 text-white"></i>
             </div>
 
             <div class="p-1">
                <p class="fs-5">Appointments Today</p>
-               <p class="fs-3">2</p>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-success">
-               <i class="bi bi-people-fill fs-2 text-white"></i>
-            </div>
-
-            <div class="p-1">
-               <p class="fs-5">Dentist</p>
-               <p class="fs-3">12</p>
+               <p class="fs-3">{{$todayAppointments}}</p>
             </div>
          </div>
       </div>
@@ -48,12 +33,25 @@
       <div class="card m-2 shadow" style="overflow: hidden;">
          <div class="d-flex gap-2">
             <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
-               <i class="bi bi-person-gear fs-2"></i>
+               <i class="bi bi-hourglass-split fs-2"></i>
             </div>
-
             <div class="p-1">
-               <p class="fs-5">Staff</p>
-               <p class="fs-3">4</p>
+               <p class="fs-5">Pending Appointments</p>
+               <p class="fs-3">{{$pendingAppointments}}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col">
+      <div class="card m-2 shadow" style="overflow: hidden;">
+         <div class="d-flex gap-2">
+            <div class="d-flex justify-content-center align-items-center px-4 bg-info">
+               <i class="bi bi-calendar-week fs-2 text-white"></i>
+            </div>
+            <div class="p-1">
+               <p class="fs-5">Upcoming Appointments</p>
+               <p class="fs-3">{{$upcomingAppointments}}</p>
             </div>
          </div>
       </div>
@@ -78,12 +76,13 @@
    <div class="col">
       <div class="card m-2 shadow" style="overflow: hidden;">
          <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-success">
-               <i class="bi bi-cash fs-2 text-white"></i>
+            <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
+               <i class="bi bi-person-gear fs-2"></i>
             </div>
+
             <div class="p-1">
-               <p class="fs-5">Revenue Today</p>
-               <p class="fs-3">$200</p>
+               <p class="fs-5">Staff</p>
+               <p class="fs-3">{{$totalStaffs}}</p>
             </div>
          </div>
       </div>
@@ -92,17 +91,20 @@
    <div class="col">
       <div class="card m-2 shadow" style="overflow: hidden;">
          <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-info">
-               <i class="bi bi-calendar-plus fs-2 text-white"></i>
+            <div class="d-flex justify-content-center align-items-center px-4 bg-success">
+               <i class="bi bi-people-fill fs-2 text-white"></i>
             </div>
+
             <div class="p-1">
-               <p class="fs-5">Upcoming Appointments</p>
-               <p class="fs-3">5</p>
+               <p class="fs-5">Dentist</p>
+               <p class="fs-3">{{$totalDentists}}</p>
             </div>
          </div>
       </div>
    </div>
 </div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="row">

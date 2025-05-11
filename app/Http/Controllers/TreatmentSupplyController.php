@@ -12,9 +12,16 @@ class TreatmentSupplyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function admin_stock_out()
     {
-        //
+        $stock_outs = TreatmentSupply::all();
+        return view('admin.stock_out_history', ['stock_outs'=>$stock_outs]);
+    }
+
+    public function staff_stock_out()
+    {
+        $stock_outs = TreatmentSupply::all();
+        return view('staff.stock_out_history', ['stock_outs'=>$stock_outs]);
     }
 
     /**
@@ -57,10 +64,12 @@ class TreatmentSupplyController extends Controller
     
                 // Add to the treatment-supply junction table
                 TreatmentSupply::create([
-                    'treatment_id' => $request->treatment_id,
-                    'supply_id' => $supplyId,
-                    'quantity_used' => $quantity,
-                ]);
+                'treatment_id' => $request->treatment_id,
+                'supply_id' => $supplyId,
+                'quantity_used' => $quantity,
+                'total_quantity' => $supply->supply_quantity,
+            ]);
+
             }
         }
     

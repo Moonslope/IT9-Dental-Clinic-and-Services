@@ -29,7 +29,8 @@
             <table class="table">
                <tr style="font-size: 16px;" class="">
                   <th style="background-color: #00a1df !important;" class="p-2  text-white col-2">Name</th>
-                  <th style="background-color: #00a1df !important;" class="p-2 text-white col-2">Quantity</th>
+                  <th style="background-color: #00a1df !important;" class="p-1 text-white col-1">Quantity Received</th>
+                  <th style="background-color: #00a1df !important;" class="p-1 text-white col-1">Total Quantity</th>
                   <th style="background-color: #00a1df !important;" class="p-2 text-white col-2">Date Received</th>
                   <th style="background-color: #00a1df !important;" class="p-2 text-white col-2">Supplier</th>
                   <th style="background-color: #00a1df !important;" class="p-2 text-white col-2">Staff</th>
@@ -48,7 +49,8 @@
                   @foreach ($stock_ins as $stock)
                   <tr style="font-size: 16px;" class="">
                      <td class="p-2 col-2">{{ $stock->supply->supply_name }}</td>
-                     <td class="p-2 col-2">{{ $stock->quantity_received }}</td>
+                     <td class="p-2 col-1">{{ $stock->quantity_received }}</td>
+                     <td class="p-2 col-1">{{ $stock->total_quantity }}</td>
                      <td class="p-2 col-2">{{ $stock->date_received }}</td>
                      <td class="p-2 col-2">{{ $stock->supplier->supplier_name }}</td>
                      <td class="p-2 col-2">{{ $stock->user->first_name }} {{ $stock->user->last_name }}</td>

@@ -96,6 +96,11 @@
                   class="bi bi-clock-history fs-5 me-2 ms-3"></i>Stock In History</a>
          </div>
 
+         <div class="pb-2 pt-2 px-2">
+            <a class="admin-btn" href="{{route('admin.stock_out')}}"><i
+                  class="bi bi-clock-history fs-5 me-2 ms-3"></i>Stock Out History</a>
+         </div>
+
          <div class="pb-2 pt-2 px-2 border border-start-0 border-top-0 border-end-0 pb-2 border-secondary">
             <a class="admin-btn" href="{{route('admin.supplier')}}"><i
                   class="bi bi-people-fill me-2 fs-5 ms-3"></i>Suppliers</a>

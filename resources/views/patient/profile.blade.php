@@ -15,7 +15,7 @@
       }
    </style>
 
-   @include('layout.modals.crud_success')
+
 
    <div class="container-fluid vh-100">
       <div class="row h-100">
@@ -25,12 +25,12 @@
                   class="text-white text-start fw-semibold"><i class="bi bi-arrow-return-left me-2"></i> Back</a>
             </div>
 
-            <div class="row d-flex justify-content-center pt-3">
-               <p style="height: 150px; width: 150px;" class="text-center rounded-pill border border-2 text-white">
-                  pic
-                  dire
-               </p>
+         <div class="row  pt-3">
+            <div class="d-flex justify-content-center">
+               <img class="border rounded-pill border-2" src="{{ asset('images/user.png') }}" alt="" width="150"
+                  height="150">
             </div>
+         </div>
 
             <div class="row border border-start-0 border-top-0 border-end-0 mx-3 py-3">
                <p class="fs-5 text-white text-center pt-3 fw-semibold">{{ $patient->user->first_name }} {{
@@ -343,25 +343,25 @@
                                                       appointment?</p>
                                                 </div>
 
-                                                <div class="modal-footer row mt-3 gap-2 pt-3">
-                                                   <div class="col">
-                                                      <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
-                                                         data-bs-dismiss="modal">Cancel</button>
-                                                   </div>
-                                                   <div class="col">
-                                                      <form action="{{ route('appointments.destroy', $appointment->id) }}"
-                                                         method="POST" class="d-inline">
-                                                         @csrf
-                                                         @method('DELETE')
-                                                         <button type="submit"
-                                                            class="btn admin-staff-btn w-100 text-white p-1">Delete</button>
-                                                      </form>
-                                                   </div>
-                                                </div>
+                                          <div class="modal-footer row mt-3 gap-2 pt-3">
+                                             <div class="col">
+                                                <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                                   data-bs-dismiss="modal">Cancel</button>
+                                             </div>
+                                             <div class="col">
+                                                <form action="{{ route('appointments.destroy', $appointment->id) }}"
+                                                   method="POST" class="d-inline">
+                                                   @csrf
+                                                   @method('DELETE')
+                                                   <button type="submit"
+                                                      class="btn btn-danger w-100 text-white p-1">Delete</button>
+                                                </form>
                                              </div>
                                           </div>
                                        </div>
                                     </div>
+                                 </div>
+                              </div>
 
                                     @elseif($appointment->status === 'Approved')
                                     <button style="padding-inline: 20px !important;"
@@ -535,38 +535,38 @@
                      </div>
                   </div>
 
-                  <div class="row mb-2 gap-2">
-                     <div class="col">
-                        <label for="first_name" class="mb-1  fw-semibold">First Name</label>
-                        <input type="text" id="first_name" name="first_name" placeholder="First Name"
-                           class="form-control p-2" value="{{ Auth::check() ? Auth::user()->first_name : '' }}"
-                           style="background-color: #d9d9d9" required>
-                     </div>
-
-                     <div class="col">
-                        <label for="last_name" class="mb-1  fw-semibold">Last Name</label>
-                        <input type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-control p-2"
-                           value="{{ Auth::check() ? Auth::user()->last_name : '' }}" style="background-color: #d9d9d9"
-                           required>
-                     </div>
+               <div class="row mb-2 gap-2">
+                  <div class="col">
+                     <label for="first_name" class="mb-1  fw-semibold">First Name</label>
+                     <input type="text" id="first_name" name="first_name" placeholder="First Name"
+                        class="form-control p-2" value="{{ Auth::check() ? Auth::user()->first_name : '' }}"
+                        style="background-color: #d9d9d9" readonly>
                   </div>
 
-                  <div class="row mb-2 gap-2">
-                     <div class="col">
-                        <label for="email" class="mb-1  fw-semibold">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Email" class="form-control p-2"
-                           value="{{ Auth::check() ? Auth::user()->email : '' }}" style="background-color: #d9d9d9"
-                           required>
-                     </div>
-
-                     <div class="col">
-                        <label for="contact_number" class="mb-1  fw-semibold">Contact Number</label>
-                        <input type="tel" id="contact_number" name="contact_number"
-                           placeholder="Phone number: +63 9XXXXXXXXX" class="form-control p-2"
-                           style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required
-                           value="{{ Auth::check() ? Auth::user()->contact_number : '' }}">
-                     </div>
+                  <div class="col">
+                     <label for="last_name" class="mb-1  fw-semibold">Last Name</label>
+                     <input type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-control p-2"
+                        value="{{ Auth::check() ? Auth::user()->last_name : '' }}" style="background-color: #d9d9d9"
+                        readonly>
                   </div>
+               </div>
+
+               <div class="row mb-2 gap-2">
+                  <div class="col">
+                     <label for="email" class="mb-1  fw-semibold">Email</label>
+                     <input type="email" id="email" name="email" placeholder="Email" class="form-control p-2"
+                        value="{{ Auth::check() ? Auth::user()->email : '' }}" style="background-color: #d9d9d9"
+                        readonly>
+                  </div>
+
+                  <div class="col">
+                     <label for="contact_number" class="mb-1  fw-semibold">Contact Number</label>
+                     <input type="tel" id="contact_number" name="contact_number"
+                        placeholder="Phone number: +63 9XXXXXXXXX" class="form-control p-2"
+                        style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" readonly
+                        value="{{ Auth::check() ? Auth::user()->contact_number : '' }}">
+                  </div>
+               </div>
 
                   <div class="row mb-3">
                      <label for="message" class="mb-1  fw-semibold">Message</label>
@@ -703,4 +703,5 @@
          location.reload();
       }
    </script>
-   @endsection
+   @include('layout.modals.crud_success')
+@endsection

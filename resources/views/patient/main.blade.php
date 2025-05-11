@@ -198,14 +198,14 @@
                         <label for="first_name" class="mb-1  fw-semibold">First Name</label>
                         <input type="text" id="first_name" name="first_name" placeholder="First Name"
                            class="form-control p-2" value="{{ Auth::check() ? Auth::user()->first_name : '' }}"
-                           style="background-color: #d9d9d9" required>
+                           style="background-color: #d9d9d9" readonly>
                      </div>
 
                      <div class="col">
                         <label for="last_name" class="mb-1  fw-semibold">Last Name</label>
                         <input type="text" id="last_name" name="last_name" placeholder="Last Name"
                            class="form-control p-2" value="{{ Auth::check() ? Auth::user()->last_name : '' }}"
-                           style="background-color: #d9d9d9" required>
+                           style="background-color: #d9d9d9" readonly>
                      </div>
                   </div>
 
@@ -214,14 +214,14 @@
                         <label for="email" class="mb-1  fw-semibold">Email</label>
                         <input type="email" id="email" name="email" placeholder="Email" class="form-control p-2"
                            value="{{ Auth::check() ? Auth::user()->email : '' }}" style="background-color: #d9d9d9"
-                           required>
+                           readonly>
                      </div>
 
                      <div class="col">
                         <label for="contact_number" class="mb-1  fw-semibold">Contact Number</label>
                         <input type="tel" id="contact_number" name="contact_number"
                            placeholder="Phone number: +63 9XXXXXXXXX" class="form-control p-2"
-                           style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" required
+                           style="background-color: #d9d9d9" pattern="^(09|\+639)\d{9}$" readonly
                            value="{{ Auth::check() ? Auth::user()->contact_number : '' }}">
                      </div>
                   </div>
