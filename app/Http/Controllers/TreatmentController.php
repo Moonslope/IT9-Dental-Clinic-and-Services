@@ -46,7 +46,7 @@ class TreatmentController extends Controller
     {
         $treatment = Treatment::create([
             'appointment_id' => $appointment->id,
-            'treatment_cost' => $appointment->service->service_price ?? 0.00,
+            'treatment_cost' => $appointment->service->base_price ?? 0.00,
             'status' => 'Unpaid',
         ]);
 

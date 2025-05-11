@@ -178,15 +178,14 @@
                <h5 class="fw-bold mb-3">{{ $service->service_name }}</h5>
                <p>{{ $service->service_description }}</p>
                <button class="sign-in-btn text-white w-50 p-1 mt-3 border border-0">
-                  ₱{{ number_format($service->service_price) }}
+                  ₱{{ number_format($service->base_price) }} - ₱{{ number_format($service->estimated_max_price) }}
                </button>
             </div>
          </div>
          @endforeach
       </div>
-      {{-- Services --}}
    </div>
-
+   {{-- Services --}}
    @include('layout.modals.appointment_success')
    @include('layout.modals.login_success')
 

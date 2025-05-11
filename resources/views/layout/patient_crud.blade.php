@@ -20,8 +20,19 @@
 
             <div class="col">
                <div class="d-flex w-75 gap-2">
-                  <input type="text" id="search" class="form-control" placeholder=" Search">
-                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
+                  @php
+                  $user = Auth::user();
+                  $searchRoute = route('staff.patient');
+                  if ($user && $user->role === 'admin') {
+                  $searchRoute = route('admin.patient');
+                  }
+                  @endphp
+
+                  <form method="GET" action="{{ $searchRoute }}">
+                     <input type="text" name="search" class="form-control" placeholder="Search"
+                        value="{{ request('search') }}">
+                     <button type="submit" class="btn btn-primary mt-2">Search</button>
+                  </form>
                </div>
             </div>
 

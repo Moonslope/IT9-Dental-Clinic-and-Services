@@ -15,20 +15,38 @@ class SupplyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function admin_supply()
+    public function admin_supply(Request $request)
     {
         $user = User::where('id', Auth::id())->first();
         $suppliers = Supplier::all();
-        $supplies = Supply::latest()->get();
-        return view('admin.supply', ['supplies'=>$supplies, 'suppliers'=>$suppliers, 'user'=>$user]);
+
+        $search = $request->input('search');
+        $supplies = Supply::when($search, function ($query, $search) {
+            return $query->where('supply_name', 'like', "%{$search}%");
+        })->latest()->get();
+
+        return view('admin.supply', [
+            'supplies' => $supplies,
+            'suppliers' => $suppliers,
+            'user' => $user
+        ]);
     }
 
-    public function staff_supply()
+    public function staff_supply(Request $request)
     {
         $user = User::where('id', Auth::id())->first();
         $suppliers = Supplier::all();
-        $supplies = Supply::all();
-        return view('staff.supply', ['supplies'=>$supplies, 'suppliers'=>$suppliers, 'user'=>$user]);
+
+        $search = $request->input('search');
+        $supplies = Supply::when($search, function ($query, $search) {
+            return $query->where('supply_name', 'like', "%{$search}%");
+        })->latest()->get();
+
+        return view('staff.supply', [
+            'supplies' => $supplies,
+            'suppliers' => $suppliers,
+            'user' => $user
+        ]);
     }
 
     /**

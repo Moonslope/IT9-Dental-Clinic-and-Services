@@ -24,7 +24,8 @@ class ServiceRequest extends FormRequest
         return [
             'service_name' => 'required|string|max:255',
             'service_description' => 'nullable|string',
-            'service_price' => 'required|numeric|min:0',
+            'base_price' => 'required|numeric|min:0',
+            'estimated_max_price' => 'required|numeric|min:0'
         ];
     }
 }

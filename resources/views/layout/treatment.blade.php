@@ -248,7 +248,7 @@
 
          <div class="modal-body pt-4">
             @php
-            $servicePrice = $treatment->appointment->service->service_price;
+            $servicePrice = $treatment->appointment->service->base_price;
             $totalSupplies = 0;
             @endphp
 

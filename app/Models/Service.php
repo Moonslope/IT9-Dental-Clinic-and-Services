@@ -9,7 +9,8 @@ class Service extends Model
     protected $fillable = [
         'service_name',
         'service_description',
-        'service_price',
+        'base_price',
+        'estimated_max_price'
     ];
 
     public function appointments()
