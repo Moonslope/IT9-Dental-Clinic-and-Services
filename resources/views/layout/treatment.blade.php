@@ -17,6 +17,25 @@
             <div class="col">
                <h3>Treatment Lists</h3>
             </div>
+            <div class="col">
+               @php
+               $user = Auth::user();
+               $searchRoute = route('staff.treatment');
+               if ($user && $user->role === 'admin') {
+               $searchRoute = route('admin.treatment');
+               } elseif ($user && $user->role === 'dentist') {
+               $searchRoute = route('dentist.treatment');
+               }
+               @endphp
+
+               <form action="{{ $searchRoute }}" method="GET" class="d-flex w-75 gap-2">
+                  <input type="text" id="search" name="search" class="form-control" placeholder="Search"
+                     value="{{ request('search') }}">
+                  <button type="submit" class="btn admin-staff-btn">
+                     <i class="bi bi-search fs-5 p-2 text-white"></i>
+                  </button>
+               </form>
+            </div>
          </div>
       </div>
    </div>
