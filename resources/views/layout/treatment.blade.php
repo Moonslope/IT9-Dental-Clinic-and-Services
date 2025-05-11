@@ -106,7 +106,7 @@
 
          <div class="modal-body pt-2">
             @php
-            $servicePrice = $treatment->appointment->service->service_price;
+            $servicePrice = $treatment->appointment->service->base_price;
             $totalSupplies = 0;
             @endphp
             <div class="my-3">
@@ -234,7 +234,7 @@
 
          <div class="modal-body pt-4">
             @php
-            $servicePrice = $treatment->appointment->service->service_price;
+            $servicePrice = $treatment->appointment->service->base_price;
             $totalSupplies = 0;
             @endphp
 

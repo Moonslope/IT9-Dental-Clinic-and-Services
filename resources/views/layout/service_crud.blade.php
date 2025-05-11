@@ -40,8 +40,9 @@
                <thead class="">
                   <tr style="font-size: 16px; background-color:#00a1df !important;" class="text-white">
                      <th class="p-2 col-2">Name</th>
-                     <th class="p-2 col-1">Price</th>
-                     <th class="p-2 col-5">Description</th>
+                     <th class="p-2 col-1">Base Price</th>
+                     <th class="p-2 col-2">Estimated Max Price</th>
+                     <th class="p-2 col-4">Description</th>
                      <th class="p-2 col-1">Action</th>
                   </tr>
                </thead>
@@ -57,8 +58,9 @@
                   @foreach ($services as $service)
                   <tr style="font-size: 16px;" class="bg-secondary">
                      <td class="p-2 col-2 ">{{ $service->service_name }}</td>
-                     <td class="p-2 col-1">{{ $service->service_price }}</td>
-                     <td class="p-2 col-5">{{ $service->service_description }}</td>
+                     <td class="p-2 col-1">{{ $service->base_price }}</td>
+                     <td class="p-2 col-2">{{ $service->estimated_max_price }}</td>
+                     <td class="p-2 col-4">{{ $service->service_description }}</td>
                      <td class="p-2 col-1">
                         <div class="d-flex justify-content-evenly">
                            <div>
@@ -132,14 +134,23 @@
                                           name="service_name" class="form-control p-2"
                                           value="{{$service->service_name}}">
                                     </div>
+                                 </div>
+
+                                 <div class="row gap-2 mb-3">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="number" id="ServicePrice"
-                                          name="service_price" min="1" class="form-control p-2"
-                                          value="{{$service->service_price}}">
+                                          name="base_price" placeholder="Base price" class="form-control p-2"
+                                          value="{{$service->base_price}}">
+                                    </div>
+
+                                    <div class=" col">
+                                       <input style="background-color: #d9d9d9" type="number" id="ServicePrice"
+                                          name="estimated_max_price" placeholder="Estimated max price"
+                                          class="form-control p-2" value="{{$service->estimated_max_price}}">
                                     </div>
                                  </div>
 
-                                 <div class="row mb-3">
+                                 <div class=" row mb-3">
                                     <textarea style="background-color: #d9d9d9" name="service_description"
                                        id="ServiceDescription"
                                        class="form-control pb-5">{{$service->service_description}}</textarea>
@@ -185,14 +196,22 @@
             <form action="{{route('service.store')}}" method="POST">
                @csrf
                @method('POST')
-               <div class="row mb-3 gap-2">
+               <div class="row mb-3">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="ServiceName" name="service_name"
                         placeholder="Service Name" class="form-control p-2">
                   </div>
+               </div>
+
+               <div class="row gap-2 mb-3">
                   <div class="col">
-                     <input style="background-color: #d9d9d9" type="number" id="ServicePrice" name="service_price"
-                        placeholder="Price" class="form-control p-2">
+                     <input style="background-color: #d9d9d9" type="number" id="ServicePrice" name="base_price"
+                        placeholder="Base price" class="form-control p-2">
+                  </div>
+
+                  <div class="col">
+                     <input style="background-color: #d9d9d9" type="number" id="ServicePrice" name="estimated_max_price"
+                        placeholder="Estimated max price" class="form-control p-2">
                   </div>
                </div>
 

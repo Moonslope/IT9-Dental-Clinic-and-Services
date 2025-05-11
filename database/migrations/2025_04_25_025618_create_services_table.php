@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('service_name');
             $table->string('service_description')->nullable();
-            $table->decimal('service_price', 10, 2);
+            $table->decimal('base_price', 10, 2);
+            $table->decimal('estimated_max_price', 10, 2);
             $table->timestamps();
         });
     }

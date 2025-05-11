@@ -160,15 +160,6 @@
                <form action="{{ route('patient.appointments.store') }}" method="POST">
                   @csrf
 
-                  {{-- <div class="row mb-2">
-                     <select name="dentist_id" id="dentist_id" class="form-select" style="background-color: #d9d9d9">
-                        <option value="" disabled selected>Select a dentist</option>
-                        @foreach ($dentists as $dentist)
-                        <option value="{{ $dentist->id }}">{{ $dentist->name }}</option>
-                        @endforeach
-                     </select>
-                  </div> --}}
-
                   <div class="row gap-2 mb-2">
                      <div class="col">
                         <label for="services" class="mb-1  fw-semibold">Services</label>
@@ -283,15 +274,14 @@
                <h5 class="fw-bold mb-3">{{ $service->service_name }}</h5>
                <p>{{ $service->service_description }}</p>
                <button class="sign-in-btn text-white w-50 p-1 mt-3 border border-0">
-                  ₱{{ number_format($service->service_price) }}
+                  ₱{{ number_format($service->base_price) }} - ₱{{ number_format($service->estimated_max_price) }}
                </button>
             </div>
          </div>
          @endforeach
       </div>
-      {{-- Services --}}
    </div>
-
+   {{-- Services --}}
    @include('layout.modals.appointment_success')
    @include('layout.modals.login_success')
 
