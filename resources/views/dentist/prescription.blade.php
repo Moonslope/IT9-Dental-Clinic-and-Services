@@ -30,6 +30,7 @@
             <thead>
                 <tr>
                     <th>Patient</th>
+                    <th>Service</th>
                     <th>Medication</th>
                     <th>Instructions</th>
                     <th>Appointment Date</th>
@@ -43,6 +44,7 @@
 
                 <tr>
                     <td>{{ $appointment->patient->user->first_name }} {{ $appointment->patient->user->last_name }}</td>
+                    <td>{{ $appointment->service->service_name }}</td>
                     <td>{{ $prescription->medication }}</td>
                     <td>{{ $prescription->instructions }}</td>
                     <td>{{ $appointment->appointment_date }}</td>
@@ -54,6 +56,7 @@
                     </td>
                 </tr>
 
+                {{-- print and update modal --}}
                 <div class="modal fade" id="printmodal{{ $prescription->id }}" tabindex="-1"
                     aria-labelledby="printModalLabel{{ $prescription->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -85,11 +88,12 @@
                                                 Y') }}</p>
                                             <p><strong>Dentist:</strong> {{ Auth::user()->first_name }} {{
                                                 Auth::user()->last_name }}</p>
-                                            <p><strong></strong> {{ $appointment->patient->user->first_name }} {{
+                                            <p><strong>Name:</strong> {{ $appointment->patient->user->first_name }} {{
                                                 $appointment->patient->user->last_name }}</p>
                                         </div>
 
                                         <div class="mb-3">
+                                            <p><strong>Service:</strong> {{ $appointment->service->service_name }}</p>
                                             <p><strong>Medication:</strong> {{ $prescription->medication }}</p>
                                             <p><strong>Instructions:</strong> {{ $prescription->instructions }}</p>
                                             <p><strong>Appointment Date:</strong> {{ $appointment->created_at->format('F
