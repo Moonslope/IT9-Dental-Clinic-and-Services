@@ -22,12 +22,16 @@ class PatientController extends Controller
     {
         $patient = Patient::where('user_id', Auth::id())->first();
         $user = Auth::user();
+
         $appointments = $patient ? $patient->appointments()->with('service')->get() : collect();
+        $prescriptions = $patient ? $patient->prescriptions()->with('treatment.appointment.dentist.user')->get() : collect();
+
         $services = Service::all();
 
         return view('patient.profile', [
             'patient' => $patient,
             'appointments' => $appointments,
+            'prescriptions' => $prescriptions,
             'services' => $services,
             'user' => $user
         ]);
@@ -43,13 +47,15 @@ class PatientController extends Controller
         ]);
     }
 
-    public function admin_patient(){
+    public function admin_patient()
+    {
 
         $users = User::with('patient')->where('role', 'patient')->get();
         return view('admin.patient', ['users' => $users]);
     }
 
-    public function staff_patient(){
+    public function staff_patient()
+    {
         $users = User::with('patient')->where('role', 'patient')->get();
         return view('staff.patient', ['users' => $users]);
     }
@@ -83,7 +89,7 @@ class PatientController extends Controller
         }
 
         $data = $request->validate($baseValidation);
-    
+
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -93,16 +99,16 @@ class PatientController extends Controller
             'address' => $data['address'],
             'role' => $data['role'],
         ]);
-    
+
         if ($user->role === 'patient') {
             Patient::create([
                 'user_id' => $user->id,
-                'age' => $data['age'], 
-                'gender' => $data['gender'], 
+                'age' => $data['age'],
+                'gender' => $data['gender'],
             ]);
 
-            return redirect()->back()->with('added_success','Successfully added!');
-        } 
+            return redirect()->back()->with('added_success', 'Successfully added!');
+        }
     }
 
     /**
@@ -157,7 +163,7 @@ class PatientController extends Controller
             }
         }
 
-        return redirect()->back()->with('updated_success','Successfully updated!');
+        return redirect()->back()->with('updated_success', 'Successfully updated!');
     }
 
     /**
@@ -166,6 +172,6 @@ class PatientController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        return redirect()->back()->with('deleted_success','Successfully deleted!');
+        return redirect()->back()->with('deleted_success', 'Successfully deleted!');
     }
 }
