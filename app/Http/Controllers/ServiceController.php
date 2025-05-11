@@ -10,15 +10,25 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function staff_service()
+    public function staff_service(Request $request)
     {
-        $services = Service::latest()->get();
+        $search = $request->input('search');
+        $services = Service::when($search, function ($query, $search) {
+            $query->where('service_name', 'like', "%{$search}%")
+                  ->orWhere('service_description', 'like', "%{$search}%");
+        })->latest()->get();
+
         return view('staff.service', ['services' => $services]);
     }
 
-    public function admin_service()
+    public function admin_service(Request $request)
     {
-        $services = Service::latest()->get();
+        $search = $request->input('search');
+        $services = Service::when($search, function ($query, $search) {
+            $query->where('service_name', 'like', "%{$search}%")
+                  ->orWhere('service_description', 'like', "%{$search}%");
+        })->latest()->get();
+
         return view('admin.service', ['services' => $services]);
     }
 

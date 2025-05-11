@@ -10,6 +10,14 @@
    }
 </style>
 
+@php
+    $user = Auth::user();
+    $searchRoute = route('staff.service');
+    if ($user && $user->role === 'admin') {
+        $searchRoute = route('admin.service');
+    }
+@endphp
+
 <div class="row m-2">
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
@@ -18,10 +26,13 @@
                <h3>Services Lists</h3>
             </div>
             <div class="col">
-               <div class="d-flex w-75 gap-2">
-                  <input type="text" id="search" class="form-control" placeholder=" Search">
-                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
-               </div>
+               <form action="{{ $searchRoute }}" method="GET" class="d-flex w-75 gap-2">
+                  <input type="text" name="search" class="form-control" placeholder="Search services"
+                     value="{{ request('search') }}">
+                  <button type="submit" class="btn admin-staff-btn">
+                     <i class="bi bi-search fs-5 p-2 text-white"></i>
+                  </button>
+               </form>
             </div>
             <div class="col col-1">
                <button class="btn admin-staff-btn w-100 p-1 text-white" data-bs-toggle="modal"

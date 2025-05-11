@@ -47,16 +47,39 @@ class PatientController extends Controller
         ]);
     }
 
-    public function admin_patient()
+    public function admin_patient(Request $request)
     {
+        $search = $request->input('search');
 
-        $users = User::with('patient')->where('role', 'patient')->get();
+        $users = User::with('patient')
+            ->where('role', 'patient')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         return view('admin.patient', ['users' => $users]);
     }
 
-    public function staff_patient()
+    public function staff_patient(Request $request)
     {
-        $users = User::with('patient')->where('role', 'patient')->get();
+        $search = $request->input('search');
+
+        $users = User::with('patient')
+            ->where('role', 'patient')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         return view('staff.patient', ['users' => $users]);
     }
 
