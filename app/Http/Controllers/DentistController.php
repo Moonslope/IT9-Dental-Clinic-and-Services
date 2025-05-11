@@ -17,9 +17,26 @@ class DentistController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function admin_dentist()
+    public function admin_dentist(Request $request)
     {
-        $users = User::with('dentist')->where('role', 'dentist')->get();
+        $search = $request->input('search');
+
+        $users = User::with('dentist')
+            ->where('role', 'dentist')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('contact_number', 'like', "%{$search}%")
+                      ->orWhere('address', 'like', "%{$search}%")
+                      ->orWhereHas('dentist', function ($q2) use ($search) {
+                          $q2->where('specialization', 'like', "%{$search}%");
+                      });
+                });
+            })
+            ->get();
+
         return view('admin.dentist', ['users' => $users]);
     }
 
@@ -107,13 +124,25 @@ class DentistController extends Controller
         return redirect()->back()->with('deleted_success', 'Successfully deleted!');
     }
 
-    public function appointments()
+    public function appointments(Request $request)
     {
         $userID = Auth::id();
-
         $dentist = Dentist::where('user_id', $userID)->first();
 
-        $appointments = Appointment::with(['service', 'patient'])->where('dentist_id', $dentist->id)->get();
+        $search = $request->input('search');
+
+        $appointments = Appointment::with(['service', 'patient.user'])
+            ->where('dentist_id', $dentist->id)
+            ->when($search, function ($query, $search) {
+                $query->whereHas('patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                });
+            })
+            ->get();
 
         return view('dentist.appointments', [
             'appointments' => $appointments,
@@ -121,11 +150,24 @@ class DentistController extends Controller
         ]);
     }
 
-    public function treatmentRecords()
+    public function treatmentRecords(Request $request)
     {
         $dentist = Dentist::where('user_id', Auth::id())->with('appointments.treatments')->firstOrFail();
+        $search = $request->input('search');
 
-        $appointments = $dentist->appointments()->with(['treatments', 'service', 'patient.user'])->get();
+        $appointments = $dentist->appointments()
+            ->with(['treatments', 'service', 'patient.user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         return view('dentist.treatment', ['appointments' => $appointments]);
     }
 

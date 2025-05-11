@@ -33,13 +33,17 @@
          <div class="row w-100 p-3">
             <div class="col col-3">
                <h3>Staff Lists</h3>
+               
             </div>
 
             <div class="col">
-               <div class="d-flex w-75 gap-2">
-                  <input type="text" id="search" class="form-control" placeholder=" Search">
-                  <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
-               </div>
+               <form method="GET" action="{{ route('admin.staff') }}" class="d-flex w-75 gap-2">
+                  <input type="text" id="search" name="search" class="form-control" placeholder="Search staff"
+                     value="{{ request('search') }}">
+                  <button type="submit" class="btn admin-staff-btn">
+                     <i class="bi bi-search fs-5 p-2 text-white"></i>
+                  </button>
+               </form>
             </div>
 
             <div class="col col-1">

@@ -91,11 +91,12 @@ class AppointmentController extends Controller
             })
             ->get();
 
-        $dentists = Dentist::all();
+        // Pass $appointments and $dentist to the view
+        $dentist = Auth::user()->dentist;
 
         return view('dentist.appointments', [
             'appointments' => $appointments,
-            'dentists' => $dentists
+            'dentist' => $dentist
         ]);
     }
     
