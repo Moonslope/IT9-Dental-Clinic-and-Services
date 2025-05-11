@@ -23,8 +23,6 @@
                $searchRoute = route('staff.treatment');
                if ($user && $user->role === 'admin') {
                $searchRoute = route('admin.treatment');
-               } elseif ($user && $user->role === 'dentist') {
-               $searchRoute = route('dentist.treatment');
                }
                @endphp
 

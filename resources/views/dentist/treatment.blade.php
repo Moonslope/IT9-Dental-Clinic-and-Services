@@ -35,6 +35,16 @@
          <div class="row w-100 p-3 gap-3">
             <h3>Treatment Records</h3>
          </div>
+                     <div class="col">
+               <div class="d-flex w-75 gap-2">
+                  {{-- Always use the dentist appointment route --}}
+                     <form action="{{ route('dentist.treatmentRecords') }}" method="GET" class="mb-3">
+                     <input type="text" name="search" class="form-control"
+                      placeholder="Search" value="{{ request('search') }}">
+                     <button type="submit" class="btn btn-primary mt-2">Search</button>
+                     </form>
+               </div>
+            </div>
       </div>
    </div>
 </div>
