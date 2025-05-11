@@ -28,13 +28,21 @@
 
                            <div class="mb-3">
                               <label for="email" class="form-label">Email</label>
-                              <input type="email" id="email" name="email" class="form-control p-2 rounded-pill">
+                              <input type="email" id="email" name="email" class="form-control p-2 rounded-pill @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                              
+                              @error('email')
+                                 <div class="text-danger">{{ $message }}</div>
+                              @enderror
                            </div>
 
                            <div class="mb-3">
                               <label for="password" class="form-label">Password</label>
                               <input type="password" id="password" name="password"
-                                 class="form-control p-2 rounded-pill">
+                                 class="form-control p-2 rounded-pill @error('password') is-invalid @enderror">
+
+                              @error('password')
+                                 <div class="text-danger">{{ $message }}</div>
+                              @enderror
                            </div>
 
                            <input type="submit" value="Login"

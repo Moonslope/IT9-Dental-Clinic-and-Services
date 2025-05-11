@@ -32,10 +32,10 @@
                      <th class="p-2 col-2">Service</th>
                      <th class="p-2 col-2">Patient</th>
                      <th class="p-2 col-2">Dentist</th>
-                     <th class="p-2 col-2 ">Date</th>
-                     <th class="p-2 col-1 ">Status</th>
-                     <th class="p-2 col-2 ">Total Cost</th>
-                     <th class="p-2 col-1 ">Action</th>
+                     <th class="p-2 col-2">Date</th>
+                     <th class="p-2 col-1">Status</th>
+                     <th class="p-2 col-2">Total Cost</th>
+                     <th class="p-2 col-1">Action</th>
                   </tr>
                </thead>
             </table>
@@ -105,79 +105,93 @@
          </div>
 
          <div class="modal-body pt-2">
-            @php
-            $servicePrice = $treatment->appointment->service->service_price;
-            $totalSupplies = 0;
-            @endphp
-            <div class="my-3">
-               <div class="d-flex justify-content-between w-100 mb-2">
-                  <h5>Patient Name: {{$treatment->appointment->patient->user->first_name}}</h5>
 
-                  @if ($treatment->payment)
-                  <h5>Payment Date: {{ \Carbon\Carbon::parse($treatment->payment->payment_date)->format('F d, Y') }}
-                  </h5>
-                  @else
-                  <h5>Payment Date: Not yet paid</h5>
-                  @endif
+            <div id="printArea{{ $treatment->id }}" class="p-4">
+
+               <div class="text-center mb-4">
+                  <img height="65" width="65" src="{{ asset('images/final_logo.svg') }}" alt="Clinic logo">
+                  <h3>Dental Clinic and Services</h3>
+                  <hr style="border-top:2px solid #000; margin-top:20px;">
                </div>
 
-               <h5>Status: {{$treatment->status}}</h5>
-            </div>
-            @if($treatment->treatmentSupplies->isEmpty())
-            <div class="alert alert-warning mb-2">No supplies recorded for this treatment.</div>
-            @else
+               @php
+               $servicePrice = $treatment->appointment->service->service_price;
+               $totalSupplies = 0;
+               @endphp
+               <div class="my-3">
+                  <div class="d-flex justify-content-between w-100 mb-2">
+                     <h5>Patient Name: {{$treatment->appointment->patient->user->first_name}}</h5>
+
+                     @if ($treatment->payment)
+                     <h5>Payment Date: {{ \Carbon\Carbon::parse($treatment->payment->payment_date)->format('F d, Y') }}
+                     </h5>
+                     @else
+                     <h5>Payment Date: Not yet paid</h5>
+                     @endif
+                  </div>
+
+                  <h5>Status: {{$treatment->status}}</h5>
+               </div>
+               @if($treatment->treatmentSupplies->isEmpty())
+               <div class="alert alert-warning mb-2">No supplies recorded for this treatment.</div>
+               @else
 
 
 
-            <hr>
+               <hr>
 
-            <table style="border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden;"
-               class="table table-bordered mb-2 pt-2">
-               <thead>
-                  <tr style="font-size: 18px;" class=" text-center">
-                     <th class="text-white p-1" style="background-color: #00a1df">Name</th>
-                     <th class="text-white p-1" style="background-color:#00a1df !important;">Quantity</th>
-                     <th class="text-white p-1" style="background-color:#00a1df !important;">Price per item</th>
-                     <th class="text-white p-1" style="background-color:#00a1df !important;">Subtotal</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  @foreach($treatment->treatmentSupplies as $ts)
-                  @php
-                  $subtotal = $ts->quantity_used * $ts->supply->supply_price;
-                  $totalSupplies += $subtotal;
-                  @endphp
-                  <tr style="font-size: 18px !important;" class="text-center">
-                     <td class="p-1">{{ $ts->supply->supply_name }}</td>
-                     <td class="p-1">{{ $ts->quantity_used }}</td>
-                     <td class="p-1">₱{{ number_format($ts->supply->supply_price, 2) }}</td>
-                     <td class="p-1">₱{{ number_format($subtotal, 2) }}</td>
-                  </tr>
-                  @endforeach
-               </tbody>
-               <tfoot>
-                  <tr style="font-size: 18px !important;" class="text-center ">
-                     <th style="background-color:#00a1df !important;" colspan="3" class="text-end text-white pe-5 p-1">
-                        Total
-                        Used
-                        Supplies
-                     </th>
-                     <th style="background-color:#00a1df !important;" class="text-white p-1">₱{{
-                        number_format($totalSupplies, 2) }}</th>
-                  </tr>
-               </tfoot>
-            </table>
-            @endif
+               <table style="border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden;"
+                  class="table table-bordered mb-2 pt-2">
+                  <thead>
+                     <tr style="font-size: 18px;" class=" text-center">
+                        <th class="text-white p-1" style="background-color: #00a1df">Name</th>
+                        <th class="text-white p-1" style="background-color:#00a1df !important;">Quantity</th>
+                        <th class="text-white p-1" style="background-color:#00a1df !important;">Price per item</th>
+                        <th class="text-white p-1" style="background-color:#00a1df !important;">Subtotal</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach($treatment->treatmentSupplies as $ts)
+                     @php
+                     $subtotal = $ts->quantity_used * $ts->supply->supply_price;
+                     $totalSupplies += $subtotal;
+                     @endphp
+                     <tr style="font-size: 18px !important;" class="text-center">
+                        <td class="p-1">{{ $ts->supply->supply_name }}</td>
+                        <td class="p-1">{{ $ts->quantity_used }}</td>
+                        <td class="p-1">₱{{ number_format($ts->supply->supply_price, 2) }}</td>
+                        <td class="p-1">₱{{ number_format($subtotal, 2) }}</td>
+                     </tr>
+                     @endforeach
+                  </tbody>
+                  <tfoot>
+                     <tr style="font-size: 18px !important;" class="text-center ">
+                        <th style="background-color:#00a1df !important;" colspan="3" class="text-end text-white pe-5 p-1">
+                           Total
+                           Used
+                           Supplies
+                        </th>
+                        <th style="background-color:#00a1df !important;" class="text-white p-1">₱{{
+                           number_format($totalSupplies, 2) }}</th>
+                     </tr>
+                  </tfoot>
+               </table>
+               @endif
 
-            <hr>
+               <hr>
 
-            <p class="fs-5 py-2 mb-2">Service Price: <span class="float-end">₱{{ number_format($servicePrice, 2)
+               <p class="fs-5 py-2 mb-2">Service Price: <span class="float-end">₱{{ number_format($servicePrice, 2)
                   }}</span>
-            </p>
+               </p>
 
-            <hr>
-            <h5 class="my-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{ number_format($servicePrice +
+               <hr>
+               <h5 class="my-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{ number_format($servicePrice +
                   $totalSupplies, 2) }}</span></h5>
+
+            </div>
+            <div class="row">
+               <button class="btn btn-secondary w-100" type="button" onclick="printDiv('printArea{{ $treatment->id }}')">Print</button>
+            </div>
          </div>
       </div>
    </div>
@@ -301,3 +315,15 @@
    </div>
 </div>
 @endforeach
+
+<script>
+   function printDiv(divId) {
+      const printContents = document.getElementById(divId).innerHTML;
+      const originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      location.reload();
+    }
+</script>
