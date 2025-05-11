@@ -80,46 +80,25 @@ class AppointmentController extends Controller
         return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+  
     public function update(Request $request, Appointment $appointment)
     {
         $request->validate([
-            'dentist_id' => 'required|exists:dentists,id',
-            'appointment_date' => 'required|date|after:today',
+            'status' => 'required|in:Approved,Declined',
+            'dentist_id' => 'required_if:status,Approved|exists:dentists,id',
+            'appointment_date' => 'required_if:status,Approved|date|after:today',
         ]);
 
+        if ($request->status === 'Approved') {
         $appointment->dentist_id = $request->input('dentist_id');
         $appointment->appointment_date = $request->input('appointment_date');
-        $appointment->status = 'Approved';
-        $appointment->save();
 
-        // Check if a treatment already exists for this appointment
-        if (!$appointment->treatment) {
-            $servicePrice = $appointment->service->service_price ?? 0.00;
-
-            Treatment::create([
-                'appointment_id' => $appointment->id,
-                'treatment_cost' => $servicePrice,
-            ]);
+        } else {
+            $appointment->dentist_id = null;
         }
+
+        $appointment->status = $request->status;
+        $appointment->save();
 
         return redirect()->back();
     }
@@ -139,7 +118,6 @@ class AppointmentController extends Controller
 
         return redirect()->back()->with('success', 'Appointment updated successfully.');
     }
-
 
     /**
      * Remove the specified resource from storage.

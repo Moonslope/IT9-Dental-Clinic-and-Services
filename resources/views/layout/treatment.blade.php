@@ -30,12 +30,12 @@
                <thead>
                   <tr style="font-size: 16px; background-color:#00a1df !important;" class="text-white">
                      <th class="p-2 col-2">Service</th>
-                     <th class="p-2 col-2">Patient Name</th>
-                     <th class="p-2 col-2">Dentist Assigned</th>
-                     <th class="p-2 col-1 text-center">Date</th>
-                     <th class="p-2 col-1 text-center">Status</th>
-                     <th class="p-2 col-2 text-center">Total Cost</th>
-                     <th class="p-2 col-2 text-center">Action</th>
+                     <th class="p-2 col-2">Patient</th>
+                     <th class="p-2 col-2">Dentist</th>
+                     <th class="p-2 col-2 ">Date</th>
+                     <th class="p-2 col-1 ">Status</th>
+                     <th class="p-2 col-2 ">Total Cost</th>
+                     <th class="p-2 col-1 ">Action</th>
                   </tr>
                </thead>
             </table>
@@ -58,12 +58,13 @@
                         {{$treatment->appointment->dentist->user->first_name}}
                         {{$treatment->appointment->dentist->user->last_name}}
                      </td>
-                     <td class="pt-3 col-1 text-center">
-                        {{ \Carbon\Carbon::parse($treatment->appointment->appointment_date)->format('Y-m-d h:i: A') }}
+                     <td class="pt-3 col-2 text-center">
+                        {{ \Carbon\Carbon::parse($treatment->appointment->appointment_date)->format('F d, Y | h:i: A')
+                        }}
                      </td>
                      <td class="pt-3 col-1 text-center">{{$treatment->status}}</td>
                      <td class="pt-3 col-2 text-center">₱{{ number_format($treatment->treatment_cost, 2) }}</td>
-                     <td class="p-2 col-2">
+                     <td class="p-2 col-1">
                         <div class="d-flex justify-content-evenly gap-2">
                            @if($treatment->status === 'Paid')
                            <button class="btn admin-staff-btn px-2 py-1 text-white" data-bs-toggle="modal"

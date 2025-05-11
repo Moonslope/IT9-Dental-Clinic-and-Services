@@ -118,3 +118,6 @@ Route::put('/appointments/update/{appointment}', [AppointmentController::class, 
 Route::post('/treatment-supply', [TreatmentSupplyController::class, 'store'])->name('treatment-supply.store');
 
 Route::post('/payment/{treatment}', [PaymentController::class, 'store'])->name('payment.store');
+
+Route::post('/treatments/{appointment}', [TreatmentController::class, 'store'])->name('treatments.store');
+

@@ -8,7 +8,6 @@ class Treatment extends Model
 {
     protected $fillable = [
         'appointment_id',
-        'treatment_date',
         'status',
         'treatment_cost',
     ];

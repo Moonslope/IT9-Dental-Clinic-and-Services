@@ -123,18 +123,28 @@
                            </td>
                            <td class="p-2">
                               @if ($appointment->status === 'Approved')
-                              <span style="padding-inline: 15px !important;"
-                                 class="bg-info fw-semibold  rounded-pill text-white py-1">{{
+                              <span style="padding-inline: 16px !important; padding-block: 3px !important;"
+                                 class="bg-info fw-semibold  rounded-pill">{{
                                  ($appointment->status)
                                  }}</span>
                               @elseif ($appointment->status === 'Completed')
-                              <span style="padding-inline: 10px !important;"
-                                 class="bg-success fw-semibold rounded-pill text-white py-1">{{
+                              <span style="padding-inline: 12px !important; padding-block: 3px !important;"
+                                 class="bg-success fw-semibold rounded-pill text-white">{{
+                                 ($appointment->status)
+                                 }}</span>
+                              @elseif ($appointment->status === 'Ongoing')
+                              <span style="padding-inline: 20px !important; padding-block: 3px !important;"
+                                 class="bg-primary fw-semibold rounded-pill text-white pb-1">{{
+                                 ($appointment->status)
+                                 }}</span>
+                              @elseif ($appointment->status === 'Declined')
+                              <span style="padding-inline: 20px !important; padding-block: 3px !important;"
+                                 class="bg-danger fw-semibold rounded-pill text-white">{{
                                  ($appointment->status)
                                  }}</span>
                               @else
-                              <span style="padding-inline: 20px !important;"
-                                 class="bg-warning fw-semibold rounded-pill text-white py-1">{{
+                              <span style="padding-inline: 22px !important; padding-block: 3px !important;"
+                                 class="bg-warning fw-semibold rounded-pill">{{
                                  ($appointment->status)
                                  }}</span>
                               @endif
@@ -205,13 +215,12 @@
                                     </div>
                                  </div>
 
-
                                  <button type="submit" class="btn admin-staff-btn text-white mt-2 rounded-pill me-1"
                                     data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{$appointment->id}}">
                                     <i class="bi bi-trash-fill px-4"></i>
                                  </button>
 
-                                 <!-- Confirmation Modal -->
+                                 <!-- Delete Confirmation Modal -->
                                  <div class="modal fade" id="confirmDeleteModal{{$appointment->id}}" tabindex="-1"
                                     aria-labelledby="confirmDeleteModalLabel{{$appointment->id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -246,6 +255,49 @@
                                  </div>
                               </div>
 
+                              {{-- DECLINED --}}
+                              @elseif($appointment->status === 'Declined')
+                              <button type="submit" class="btn admin-staff-btn text-white mt-2 rounded-pill me-1"
+                                 data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{$appointment->id}}">
+                                 <i style="padding-inline: 30px !important;" class="bi bi-trash-fill"></i>
+                              </button>
+
+                              <!-- Delete Confirmation Modal -->
+                              <div class="modal fade" id="confirmDeleteModal{{$appointment->id}}" tabindex="-1"
+                                 aria-labelledby="confirmDeleteModalLabel{{$appointment->id}}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                       <div class="modal-header d-flex justify-content-between">
+                                          <h4 class="modal-title">Confirm Deletion</h4>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                             aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <p class="my-4 fs-5 text-center">Are you sure you want to delete this
+                                             appointment?</p>
+                                       </div>
+
+                                       <div class="modal-footer row mt-3 gap-2 pt-3">
+                                          <div class="col">
+                                             <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                          </div>
+                                          <div class="col">
+                                             <form action="{{ route('appointments.destroy', $appointment->id) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                   class="btn btn-danger w-100 text-white p-1">Delete</button>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+
+                              {{--APPROVED --}}
                               @elseif($appointment->status === 'Approved')
                               <button style="padding-inline: 20px !important;"
                                  class="btn admin-staff-btn text-white mt-2 rounded-pill" data-bs-toggle="modal"
