@@ -151,55 +151,87 @@
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="first_name"
-                                          name="first_name" class="form-control p-2" value="{{ $user->first_name }}">
+                                          name="first_name" class="form-control p-2 @error('first_name') is-invalid @enderror" value="{{ $user->first_name }}">
+
+                                          @error('first_name')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
 
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="last_name"
-                                          name="last_name" class="form-control p-2" value="{{ $user->last_name }}">
+                                          name="last_name" class="form-control p-2 @error('last_name') is-invalid @enderror" value="{{ $user->last_name }}">
+
+                                          @error('last_name')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="numeric" id="age" name="age"
-                                          class="form-control p-2" value="{{$user->patient->age}}" placeholder="Age">
+                                          class="form-control p-2 @error('age') is-invalid @enderror" value="{{$user->patient->age}}" placeholder="Age">
+
+                                          @error('age')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
 
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="gender" name="gender"
-                                          class="form-control p-2" value="{{$user->patient->gender}}"
+                                          class="form-control p-2 @error('gender') is-invalid @enderror" value="{{$user->patient->gender}}"
                                           placeholder="Gender">
+
+                                          @error('gender')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="email" id="email" name="email"
-                                          class="form-control p-2" value="{{ $user->email }}">
+                                          class="form-control p-2 @error('email') is-invalid @enderror" value="{{ $user->email }}">
+
+                                          @error('email')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="address" name="address"
-                                          class="form-control p-2" value="{{ $user->address }}">
+                                          class="form-control p-2 @error('address') is-invalid @enderror" value="{{ $user->address }}">
+
+                                          @error('address')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="contact_number"
-                                          name="contact_number" class="form-control p-2"
+                                          name="contact_number" class="form-control p-2 @error('contact_number') is-invalid @enderror"
                                           value="{{ $user->contact_number }}">
+
+                                          @error('contact_number')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="password" id="password"
-                                          name="password" class="form-control p-2"
+                                          name="password" class="form-control p-2 @error('password') is-invalid @enderror"
                                           placeholder="Enter new password (optional)">
+
+                                          @error('password')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
@@ -229,7 +261,7 @@
 </div>
 </div>
 
-{{-- Modal to Add supplies --}}
+{{-- Modal to Add patient --}}
 <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
 
@@ -246,52 +278,84 @@
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="first_name" name="first_name"
-                        placeholder="First Name" class="form-control p-2">
+                        placeholder="First Name" class="form-control p-2 @error('first_name') is-invalid @enderror" value="{{ old('first_name') }}">
+
+                        @error('first_name')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
 
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="last_name" name="last_name"
-                        placeholder="Last Name" class="form-control p-2">
+                        placeholder="Last Name" class="form-control p-2 @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}">
+
+                        @error('last_name')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="numeric" id="age" name="age"
-                        class="form-control p-2" placeholder="Age">
+                        class="form-control p-2 @error('age') is-invalid @enderror" placeholder="Age" value="{{ old('age') }}">
+
+                        @error('age')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
 
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="gender" name="gender"
-                        class="form-control p-2" placeholder="Gender">
+                        class="form-control p-2 @error('gender') is-invalid @enderror" placeholder="Gender" value="{{ old('gender') }}">
+
+                        @error('gender')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="contact_number" name="contact_number"
-                        placeholder="Contact Number" class="form-control p-2">
+                        placeholder="Contact Number" class="form-control p-2 @error('contact_number') is-invalid @enderror" value="{{ old('contact_number') }}">
+
+                        @error('contact_number')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="address" name="address"
-                        placeholder="Address" class="form-control p-2">
+                        placeholder="Address" class="form-control p-2 @error('address') is-invalid @enderror" value="{{ old('address') }}">
+
+                        @error('address')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="email" id="email" name="email" placeholder="Email"
-                        class="form-control p-2">
+                        class="form-control p-2 @error('email') is-invalid @enderror" value="{{ old('email') }}">
+
+                        @error('email')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="password" id="password" name="password"
-                        placeholder="Password" class="form-control p-2">
+                        placeholder="Password" class="form-control p-2 @error('password') is-invalid @enderror">
+
+                        @error('password')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
@@ -313,3 +377,13 @@
       </div>
    </div>
 </div>
+
+
+<script>
+   @if ($errors->any()) 
+      document.addEventListener('DOMContentLoaded', function(){
+         var myModal = new bootstrap.Modal(document.getElementById('addPatientModal'));
+         myModal.show();
+      })
+   @endif
+</script>

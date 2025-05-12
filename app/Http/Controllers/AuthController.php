@@ -66,13 +66,13 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $baseValidation = [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-            'contact_number' => 'required|string',
-            'address' => 'required|string',
-            'role' => 'required|in:patient,dentist,staff,admin',
+            'first_name'      => 'required|string|max:255',
+            'last_name'       => 'required|string|max:255',
+            'email'           => 'required|email|unique:users,email',
+            'password'        => 'required|string|min:8',
+            'contact_number'  => 'required|string',
+            'address'         => 'required|string',
+            'role'            => 'required|in:patient,dentist,staff,admin',
         ];
 
         if ($request->role === 'dentist') {
@@ -82,13 +82,13 @@ class AuthController extends Controller
         $data = $request->validate($baseValidation);
 
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'first_name'     => $data['first_name'],
+            'last_name'      => $data['last_name'],
+            'email'          => $data['email'],
+            'password'       => Hash::make($data['password']),
             'contact_number' => $data['contact_number'],
-            'address' => $data['address'],
-            'role' => $data['role'],
+            'address'        => $data['address'],
+            'role'           => $data['role'],
         ]);
 
         if ($user->role === 'patient') {

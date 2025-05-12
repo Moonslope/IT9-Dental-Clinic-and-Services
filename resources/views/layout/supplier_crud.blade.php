@@ -142,26 +142,40 @@
                               <form action="{{route('supplier.update', ['supplier' => $supplier->id])}}" method="POST">
                                  @csrf
                                  @method('PUT')
+
+                                 <input type="hidden" name="from_modal" value="editSupplierModal{{ $supplier->id }}">
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="supplier_name"
-                                          name="supplier_name" class="form-control p-2"
+                                          name="supplier_name" class="form-control p-2 @error('supplier_name') is-invalid @enderror"
                                           value="{{ $supplier->supplier_name }}">
+
+                                          @error('supplier_name')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="address" name="address"
-                                          class="form-control p-2" value="{{ $supplier->address }}">
+                                          class="form-control p-2 @error('address') is-invalid @enderror" value="{{ $supplier->address }}">
+                                          
+                                          @error('address')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" id="contact_number"
-                                          name="contact_number" class="form-control p-2"
+                                          name="contact_number" class="form-control p-2 @error('contact_number') is-invalid @enderror"
                                           value="{{ $supplier->contact_number }}">
+
+                                          @error('contact_number')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
@@ -204,10 +218,16 @@
                <form action="{{route('supplier.store')}}" method="POST">
                   @csrf
                   @method('POST')
+
+                  <input type="hidden" name="from_modal" value="addSupplierModal">
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="supplier_name" name="supplier_name"
-                           placeholder="Name" class="form-control p-2">
+                           placeholder="Name" class="form-control p-2 @error('supplier_name') is-invalid @enderror" value="{{ old('supplier_name') }}">
+
+                           @error('supplier_name')
+                              <div class="text-danger small">{{ $message }}</div>
+                           @enderror
                      </div>
 
                   </div>
@@ -215,14 +235,22 @@
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="contact_number" name="contact_number"
-                           placeholder="Contact Number" class="form-control p-2">
+                           placeholder="Contact Number" class="form-control p-2 @error('contact_number') is-invalid @enderror" value="{{old('contact_number')}}">
+
+                           @error('contact_number')
+                              <div class="text-danger small">{{ $message }}</div>
+                           @enderror
                      </div>
                   </div>
 
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="address" name="address"
-                           placeholder="Address" class="form-control p-2">
+                           placeholder="Address" class="form-control p-2 @error('address') is-invalid @enderror" value="{{ old('address') }}">
+
+                           @error('contact_number')
+                              <div class="text-danger small">{{ $message }}</div>
+                           @enderror
                      </div>
                   </div>
 
@@ -241,3 +269,20 @@
          </div>
       </div>
    </div>
+</div>
+
+
+<script>
+   @if ($errors->any())
+      document.addEventListener('DOMContentLoaded', function(){
+         const modalId = "{{ old('from_modal') }}";
+         if(modalId){
+            const modalElement = document.getElementById(modalId);
+            if(modalElement){
+               const myModal = new bootstrap.Modal(modalElement);
+               myModal.show();
+            }
+         }
+      });
+   @endif
+</script>
