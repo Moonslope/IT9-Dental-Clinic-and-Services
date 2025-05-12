@@ -33,19 +33,23 @@
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
          <div class="row w-100 p-3 gap-3">
-            <h3>Treatment Records</h3>
-         </div>
-                     <div class="col">
-               <div class="d-flex w-75 gap-2">
-                  {{-- Always use the dentist appointment route --}}
-                     <form action="{{ route('dentist.treatmentRecords') }}" method="GET" class="mb-3">
-    <input type="text" name="search" class="form-control"
-        placeholder="Search" value="{{ request('search') }}">
+            <div class="col">
+               <h3>Treatment lists</h3>
+            </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Search</button>
-</form>
+            <div class="col">
+               <div>
+                  <form action="{{ route('dentist.treatmentRecords') }}" method="GET" class="mb-3">
+                     <div class="d-flex w-100 gap-2">
+                        <input type="text" name="search" class="form-control p-1" placeholder="Search"
+                           value="{{ request('search') }}">
+                        <button type="submit" class="btn admin-staff-btn"><i
+                              class="bi bi-search fs-5 p-2 text-white"></i></button>
+                     </div>
+                  </form>
                </div>
             </div>
+         </div>
       </div>
    </div>
 </div>

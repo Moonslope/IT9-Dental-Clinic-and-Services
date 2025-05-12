@@ -20,25 +20,32 @@ class AppointmentController extends Controller
 
         $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
             ->when($search, function ($query, $search) {
-                $query->whereHas('patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('dentist.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('service', function ($q) use ($search) {
-                    $q->where('service_name', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('patient.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('dentist.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('service', function ($q2) use ($search) {
+                        $q2->where('service_name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
                 });
             })
             ->get();
 
         $dentists = Dentist::all();
+        $patients = Patient::latest()->get();
+        $services = Service::all();
 
         return view('staff.appointment', [
             'appointments' => $appointments,
-            'dentists' => $dentists
+            'dentists' => $dentists,
+            'services' => $services,
+            'patients' => $patients
         ]);
     }
 
@@ -48,16 +55,19 @@ class AppointmentController extends Controller
 
         $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
             ->when($search, function ($query, $search) {
-                $query->whereHas('patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('dentist.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('service', function ($q) use ($search) {
-                    $q->where('service_name', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('patient.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('dentist.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('service', function ($q2) use ($search) {
+                        $q2->where('service_name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
                 });
             })
             ->get();
@@ -71,32 +81,6 @@ class AppointmentController extends Controller
             'dentists' => $dentists,
             'services' => $services,
             'patients' => $patients
-        ]);
-    }
-
-    public function dentist_appointments(Request $request)
-    {
-        $search = $request->input('search');
-
-        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
-            ->where('dentist_id', Auth::user()->dentist->id ?? null)
-            ->when($search, function ($query, $search) {
-                $query->whereHas('patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('service', function ($q) use ($search) {
-                    $q->where('service_name', 'like', "%{$search}%");
-                });
-            })
-            ->get();
-
-        // Pass $appointments and $dentist to the view
-        $dentist = Auth::user()->dentist;
-
-        return view('dentist.appointments', [
-            'appointments' => $appointments,
-            'dentist' => $dentist
         ]);
     }
     
@@ -119,6 +103,25 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
+    public function store_admin_staff(Request $request){
+        $request->validate([
+            'service_id' => 'required|exists:services,id',
+            'patient_id' => 'required|exists:patients,id',
+            'appointment_date' => 'required|date|after:today',
+        ]);
+
+        Appointment::create([
+        'service_id' => $request->service_id,
+        'patient_id' => $request->patient_id,
+        'dentist_id' => null,
+        'appointment_date' => $request->appointment_date,
+        'status' => 'Pending',
+        ]);
+
+        return redirect()->back()->with('appointment_success', 'Appointment successfully added.');;
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -141,7 +144,7 @@ class AppointmentController extends Controller
             // 'message' => $request->message,
         ]);
 
-        return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');;
+        return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');
     }
 
   
