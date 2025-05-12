@@ -89,8 +89,12 @@
                               <div class="modal-body mt-3">
                                  <div class="mb-3">
                                     <label for="quantity " class="form-label fs-5 mb-2">Quantity</label>
-                                    <input style="background-color: #d9d9d9" type="number" class="form-control p-2"
+                                    <input style="background-color: #d9d9d9" type="number" class="form-control p-2 @error('quantity_received') is-invalid @enderror"
                                        name="quantity_received" value="{{ $stock->quantity_received }}" required>
+
+                                       @error('quantity_received')
+                                          <div class="text-danger small">{{ $message }}</div>
+                                       @enderror
                                  </div>
                                  <div class="mb-3">
                                     <label for="date_received" class="form-label fs-5 mb-2">Date Received</label>
@@ -121,3 +125,12 @@
       </div>
    </div>
 </div>
+
+<script>
+   @if ($errors->any()) 
+      document.addEventListener('DOMContentLoaded', function(){
+         var myModal = new bootstrap.Modal(document.getElementById('editStockModal{{ $stock->id }}'));
+         myModal.show();
+      })
+   @endif
+</script>

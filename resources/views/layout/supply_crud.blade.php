@@ -131,7 +131,7 @@
 
                                  <div class="row mb-3">
                                     <div class="col">
-                                       <select required name="supplier_id" class="form-select p-2"
+                                       <select required name="supplier_id" class="form-select p-2 @error('supplier_id') is-invalid @enderror"
                                           style="background-color: #d9d9d9" required>
                                           <option value="" disabled selected>Select Supplier</option>
                                           @foreach($suppliers as $supplier)
@@ -139,6 +139,10 @@
                                              {{$supplier->supplier_name}}
                                           </option>
                                           @endforeach
+
+                                          @error('supplier_id')
+                                              <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                        </select>
                                     </div>
                                  </div>
@@ -146,8 +150,12 @@
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" required type="number"
-                                          name="quantity_received" min="1" class="form-control p-2"
+                                          name="quantity_received" min="1" class="form-control p-2 @error('quantity_received') is-invalid @enderror"
                                           placeholder="Quantity Received">
+
+                                          @error('quantity_received')
+                                              <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
 
                                     <div class="col">
@@ -189,20 +197,34 @@
                               <form action="{{ route('supply.update', ['supply' => $supply]) }}" method="POST">
                                  @csrf
                                  @method('put')
+
+                                 <input type="hidden" name="from_modal" value="editSupplyModal{{ $supply->id }}">
                                  <div class="row mb-3 gap-2">
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="text" name="supply_name"
-                                          class="form-control p-2" value="{{$supply->supply_name}}">
+                                          class="form-control p-2 @error('supply_name') is-invalid @enderror" value="{{$supply->supply_name}}">
+
+                                          @error('supply_name')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                     <div class="col">
                                        <input style="background-color: #d9d9d9" type="number" name="supply_quantity"
-                                          min="1" class="form-control p-2" value="{{$supply->supply_quantity}}">
+                                          min="1" class="form-control p-2 @error('supply_quantity') is-invalid @enderror" value="{{$supply->supply_quantity}}">
+
+                                          @error('supply_quantity')
+                                             <div class="text-danger small">{{ $message }}</div>
+                                          @enderror
                                     </div>
                                  </div>
 
                                  <div class="row mb-3">
                                     <textarea style="background-color: #d9d9d9" name="supply_description"
-                                       class="form-control pb-5">{{$supply->supply_description}}</textarea>
+                                       class="form-control pb-5 @error('supply_description') is-invalid @enderror">{{$supply->supply_description}}</textarea>
+
+                                       @error('supply_description')
+                                          <div class="text-danger small">{{ $message }}</div>
+                                       @enderror
                                  </div>
 
                                  <div class="modal-footer row mt-3 gap-2 pt-3">
@@ -245,20 +267,35 @@
             <form action="{{ route('supply.store') }}" method="POST">
                @csrf
                @method('POST')
+
+               <input type="hidden" name="from_modal" value="addSupplyModal">
+
                <div class="row mb-3 gap-2">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" name="supply_name" placeholder="Supply Name"
-                        class="form-control p-2">
+                        class="form-control p-2 @error('supply_name') is-invalid @enderror" value="{{ old('supply_name') }}">
+                        
+                        @error('supply_name')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="numeric" name="supply_price" placeholder="Price"
-                        class="form-control p-2">
+                        class="form-control p-2 @error('supply_price') is-invalid @enderror" value="{{ old('supply_price') }}">
+
+                        @error('supply_price')
+                           <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                   </div>
                </div>
 
                <div class="row">
-                  <textarea style="background-color: #d9d9d9" name="supply_description" class="form-control pb-5"
+                  <textarea style="background-color: #d9d9d9" name="supply_description" class="form-control pb-5 @error('supply_description') is-invalid @enderror"
                      placeholder="Description"></textarea>
+
+                     @error('supply_description')
+                        <div class="text-danger small">{{ $message }}</div>
+                     @enderror
                </div>
 
                <div class="modal-footer row mt-3 gap-2 pt-3">
@@ -276,3 +313,18 @@
       </div>
    </div>
 </div>
+
+<script>
+   @if ($errors->any()) 
+      document.addEventListener('DOMContentLoaded', function() {
+         const modalId = "{{ old('from_modal') }}";
+         if (modalId) {
+            const modalElement = document.getElementById(modalId);
+            if (modalElement) {
+               const myModal = new bootstrap.Modal(modalElement);
+               myModal.show();
+            }
+         }
+      });
+   @endif
+</script>
