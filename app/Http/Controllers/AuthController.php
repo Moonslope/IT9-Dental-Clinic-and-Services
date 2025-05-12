@@ -25,6 +25,20 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        $user = User::where('email', $request->email)->first();
+        $errors = [];
+
+        if (!$user) {
+            $errors['email'] = 'This email is not registered.';
+            $errors['password'] = 'Incorrect password.';
+        } elseif (!Hash::check($request->password, $user->password)) {
+            $errors['password'] = 'Incorrect password.';
+        }
+
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
@@ -41,11 +55,6 @@ class AuthController extends Controller
                 return redirect()->route('dentist.dashboard');
             }
         }
-
-        return back()->withErrors([
-            'email' => 'Invalid email.',
-            'password' => 'Invalid password'
-        ])->withInput();
     }
 
     // show register form
