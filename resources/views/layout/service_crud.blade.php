@@ -11,11 +11,11 @@
 </style>
 
 @php
-    $user = Auth::user();
-    $searchRoute = route('staff.service');
-    if ($user && $user->role === 'admin') {
-        $searchRoute = route('admin.service');
-    }
+$user = Auth::user();
+$searchRoute = route('staff.service');
+if ($user && $user->role === 'admin') {
+$searchRoute = route('admin.service');
+}
 @endphp
 
 <div class="row m-2">
@@ -27,7 +27,7 @@
             </div>
             <div class="col">
                <form action="{{ $searchRoute }}" method="GET" class="d-flex w-75 gap-2">
-                  <input type="text" name="search" class="form-control" placeholder="Search services"
+                  <input type="text" name="search" class="form-control p-1" placeholder="Search"
                      value="{{ request('search') }}">
                   <button type="submit" class="btn admin-staff-btn">
                      <i class="bi bi-search fs-5 p-2 text-white"></i>

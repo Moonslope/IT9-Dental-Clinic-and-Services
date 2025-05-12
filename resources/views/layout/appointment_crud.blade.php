@@ -10,6 +10,8 @@
    }
 </style>
 
+@include('layout.modals.crud_success')
+
 <div class="row m-2">
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
@@ -19,7 +21,7 @@
             </div>
 
             <div class="col">
-               <div class="d-flex w-75 gap-2">
+               <div>
                   @php
                   $user = Auth::user();
                   $searchRoute = route('staff.appointment');
@@ -29,9 +31,12 @@
                   @endphp
 
                   <form action="{{ $searchRoute }}" method="GET" class="mb-3">
-                     <input type="text" name="search" class="form-control"
-                        placeholder="Search" value="{{ request('search') }}">
-                     <button type="submit" class="btn btn-primary mt-2">Search</button>
+                     <div class="d-flex w-75 gap-2">
+                        <input type="text" name="search" class="form-control p-1" placeholder="Search"
+                           value="{{ request('search') }}">
+                        <button type="submit" class="btn admin-staff-btn"><i
+                              class="bi bi-search fs-5 p-2 text-white"></i></button>
+                     </div>
                   </form>
                </div>
             </div>
@@ -47,7 +52,7 @@
 
 <div class="row m-2">
    <div class="card" style="overflow:hidden">
-      <div style="height: 465px !important; " class="card-body">
+      <div style="height: 450px !important; " class="card-body">
          <div class="row">
             <table>
                <thead>
@@ -425,8 +430,8 @@
 
                                              {{-- Submit Button --}}
                                              <div class="row">
-                                                <button class="btn w-100 fw-bold text-white p-1"
-                                                   style="background-color: #00a1df" type="submit">Confirm</button>
+                                                <button class="btn w-100 fw-bold text-white p-1 admin-staff-btn"
+                                                   type="submit">Confirm</button>
                                              </div>
                                           </form>
                                        </div>
@@ -437,7 +442,6 @@
                            </div>
                         </td>
                      </tr>
-
 
                      @endforeach
                   </tbody>

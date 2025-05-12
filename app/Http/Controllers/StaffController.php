@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Supply;
+use App\Models\Supplier;
 use App\Models\Dentist;
+use App\Models\Patient;
 use App\Models\Staff;
+use App\Models\Service;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class StaffController extends Controller
 {
@@ -23,11 +29,54 @@ class StaffController extends Controller
     }
 
     public function index()
-    {
+    {   
+        $totalSupplies = Supply::count();
+        $totalSuppliers = Supplier::count();
+        $totalPatients = Patient::count();
+        $todayAppointments = Appointment::whereDate('appointment_date', Carbon::today())->count();
+        $upcomingAppointments = Appointment::whereDate('appointment_date', '>', Carbon::today())->where('status', 'approved')->count();
+        $pendingAppointments = Appointment::where('status', 'pending')->count();
         $staff = User::where('id', Auth::id())->first();
-        return view('staff.dashboard',  ['staff' => $staff]);
-    }
 
+        // Revenue for today
+        $todayRevenue = Payment::whereDate('created_at', Carbon::today())->sum('total_amount');
+
+        // Revenue for this week 
+        $weekRevenue = Payment::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->sum('total_amount');
+            
+        // Revenue for this month 
+        $monthRevenue = Payment::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->sum('total_amount');
+
+        // Revenue for this year 
+        $yearRevenue = Payment::whereYear('created_at', Carbon::now()->year)->sum('total_amount');
+
+        $services = Service::withCount('appointments')->get();
+
+        $labels = $services->pluck('service_name');
+        $data = $services->pluck('appointments_count');
+
+        return view('staff.dashboard',  
+        [
+        'staff' => $staff,
+        'totalSupplies' => $totalSupplies,
+        'totalSuppliers' => $totalSuppliers,
+        'totalPatients' => $totalPatients,
+        'todayAppointments' => $todayAppointments,
+        'upcomingAppointments' => $upcomingAppointments,
+        'pendingAppointments' => $pendingAppointments,
+        'todayRevenue' => $todayRevenue,
+        'weekRevenue' => $weekRevenue,
+        'monthRevenue' => $monthRevenue,
+        'yearRevenue' => $yearRevenue,
+        'labels' => $labels,
+        'data' => $data
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.

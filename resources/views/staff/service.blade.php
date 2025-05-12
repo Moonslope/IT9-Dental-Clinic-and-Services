@@ -1,7 +1,6 @@
 @extends('layout.staff_nav_layout')
 
 @section('title', 'Service Lists')
-@section('user_type', 'Hi, ' )
 @section('breadcrumb')
 
 <div class="px-4 py-2 text-secondary" style="font-size: 0.95rem;">

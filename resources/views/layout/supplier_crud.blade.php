@@ -29,7 +29,7 @@
                @endphp
 
                <form action="{{ $searchRoute }}" method="GET" class="d-flex w-75 gap-2">
-                  <input type="text" id="search" name="search" class="form-control" placeholder="Search supplier"
+                  <input type="text" id="search" name="search" class="form-control p-1" placeholder="Search"
                      value="{{ request('search') }}">
                   <button type="submit" class="btn admin-staff-btn">
                      <i class="bi bi-search fs-5 p-2 text-white"></i>

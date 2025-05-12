@@ -137,7 +137,7 @@ class AppointmentController extends Controller
         $appointment->status = $request->status;
         $appointment->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('updated_success', 'Appointment has been '. $request->status);
     }
 
     public function patient_update(Request $request, Appointment $appointment)
@@ -153,7 +153,7 @@ class AppointmentController extends Controller
         $appointment->appointment_date = $request->input('appointment_date');
         $appointment->save(); 
 
-        return redirect()->back()->with('success', 'Appointment updated successfully.');
+        return redirect()->back()->with('updated_success', 'Appointment updated successfully.');
     }
 
     /**

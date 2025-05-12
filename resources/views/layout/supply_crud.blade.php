@@ -30,7 +30,7 @@
 
                <form action="{{ $searchRoute }}" method="GET" class="d-flex w-75 gap-2">
                   <input type="text" id="search" class="form-control" placeholder=" Search" name="search"
-                     value="{{ request('search') }}" style="background-color: #d9d9d9">
+                     value="{{ request('search') }}">
                   <button class="btn admin-staff-btn"><i class="bi bi-search fs-5 p-2 text-white"></i></button>
                </form>
             </div>
