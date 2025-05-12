@@ -75,7 +75,7 @@
          </div>
 
          <div class="pb-2 pt-2 px-2">
-            <a class="admin-btn" href=""><i class="bi bi-journal-text fs-5 me-2 ms-3"></i></i>Prescriptions</a>
+            <a class="admin-btn" href="{{ route('admin.prescriptions') }}"><i class="bi bi-journal-text fs-5 me-2 ms-3"></i></i>Prescriptions</a>
          </div>
          <div class="pb-2 pt-2 px-2">
             <a class="admin-btn" href="{{route('admin.treatment')}}"><i

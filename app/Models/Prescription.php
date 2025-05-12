@@ -23,4 +23,14 @@ class Prescription extends Model
     {
         return $this->belongsTo(Dentist::class, 'dentist_id', 'id');
     }
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
+    }
 }

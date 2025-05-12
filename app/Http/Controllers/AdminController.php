@@ -8,6 +8,7 @@ use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\Dentist;
+use App\Models\Prescription;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Supply;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
-  
+
     public function index()
     {
         $totalDentists = Dentist::count();
@@ -52,7 +53,7 @@ class AdminController extends Controller
 
         $labels = $services->pluck('service_name');
         $data = $services->pluck('appointments_count');
-        
+
         return view('admin.dashboard', [
             'totalDentists' => $totalDentists,
             'totalPatients' => $totalPatients,
@@ -71,5 +72,16 @@ class AdminController extends Controller
             'labels' => $labels,
             'data' => $data,
         ]);
+    }
+
+    public function prescriptions()
+    {
+        $prescriptions = Prescription::with([
+            'patient.user',
+            'appointment.service',
+            'appointment.dentist.user',
+        ])->latest()->get();
+
+        return view('admin.prescription', ['prescriptions' => $prescriptions]);
     }
 }

@@ -45,6 +45,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/treatment', [TreatmentController::class, 'admin_treatment'])->name('treatment');
     Route::get('/appointment', [AppointmentController::class, 'admin_appointments'])->name('appointment');
     Route::get('/stock outs', [TreatmentSupplyController::class, 'admin_stock_out'])->name('stock_out');
+    Route::get('/prescriptions', [AdminController::class, 'prescriptions'])->name('prescriptions');
 
     Route::delete('/staff/{user}/delete', [StaffController::class, 'destroy'])->name('staff.destroy');
     Route::put('/staff/{user}/update', [StaffController::class, 'update'])->name('staff.update');
@@ -120,4 +121,3 @@ Route::post('/treatment-supply', [TreatmentSupplyController::class, 'store'])->n
 Route::post('/payment/{treatment}', [PaymentController::class, 'store'])->name('payment.store');
 
 Route::post('/treatments/{appointment}', [TreatmentController::class, 'store'])->name('treatments.store');
-
