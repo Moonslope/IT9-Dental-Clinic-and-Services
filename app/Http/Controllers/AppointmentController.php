@@ -73,6 +73,33 @@ class AppointmentController extends Controller
             'patients' => $patients
         ]);
     }
+
+    public function dentist_appointments(Request $request)
+    {
+        $search = $request->input('search');
+
+        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
+            ->where('dentist_id', Auth::user()->dentist->id ?? null)
+            ->when($search, function ($query, $search) {
+                $query->whereHas('patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
+        // Pass $appointments and $dentist to the view
+        $dentist = Auth::user()->dentist;
+
+        return view('dentist.appointments', [
+            'appointments' => $appointments,
+            'dentist' => $dentist
+        ]);
+    }
+    
     /**
      * Display a listing of the resource.
      */

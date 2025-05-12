@@ -22,9 +22,22 @@ class StaffController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function admin_staff()
+    public function admin_staff(Request $request)
     {
-        $users = User::where('role', 'staff')->get();
+        $search = $request->input('search');
+
+        $users = User::where('role', 'staff')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('contact_number', 'like', "%{$search}%")
+                      ->orWhere('address', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         return view('admin.staff', ['users' => $users]);
     }
 

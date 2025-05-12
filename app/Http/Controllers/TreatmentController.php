@@ -17,18 +17,76 @@ class TreatmentController extends Controller
         //
     }
 
-    public function staff_treatment()
+    public function admin_treatment(Request $request)
     {
+        $search = $request->input('search');
         $supplies = Supply::all();
-        $treatments = Treatment::latest()->get();
-        return view('staff.treatment', ['treatments'=>$treatments, 'supplies'=>$supplies]);
+        $treatments = Treatment::with(['appointment.service', 'appointment.patient.user', 'appointment.dentist.user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('appointment.service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.treatment', ['treatments' => $treatments, 'supplies' => $supplies]);
     }
 
-    public function admin_treatment()
+    public function staff_treatment(Request $request)
     {
+        $search = $request->input('search');
         $supplies = Supply::all();
-        $treatments = Treatment::latest()->get();
-        return view('admin.treatment', ['treatments'=>$treatments, 'supplies'=>$supplies]);
+        $treatments = Treatment::with(['appointment.service', 'appointment.patient.user', 'appointment.dentist.user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('appointment.service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('staff.treatment', ['treatments' => $treatments, 'supplies' => $supplies]);
+    }
+
+    public function dentist_treatment(Request $request)
+    {
+        $search = $request->input('search');
+        $supplies = Supply::all();
+        $treatments = Treatment::with(['appointment.service', 'appointment.patient.user', 'appointment.dentist.user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('appointment.service', function ($q) use ($search) {
+                    $q->where('service_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('dentist.treatment', ['treatments' => $treatments, 'supplies' => $supplies]);
     }
 
     /**

@@ -30,22 +30,22 @@ class AuthController extends Controller
             $user = Auth::user();
 
             $request->session()->flash('login_success', 'You have logged in successfully!');
-            
+
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
-            } 
-            elseif ($user->role === 'patient') {
+            } elseif ($user->role === 'patient') {
                 return redirect()->route('patient.main');
-            } 
-            elseif ($user->role === 'staff') {
+            } elseif ($user->role === 'staff') {
                 return redirect()->route('staff.dashboard');
-            } 
-            elseif ($user->role === 'dentist') {
+            } elseif ($user->role === 'dentist') {
                 return redirect()->route('dentist.dashboard');
             }
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return back()->withErrors([
+            'email' => 'Invalid email.',
+            'password' => 'Invalid password'
+        ])->withInput();
     }
 
     // show register form
@@ -65,13 +65,13 @@ class AuthController extends Controller
             'address' => 'required|string',
             'role' => 'required|in:patient,dentist,staff,admin',
         ];
-    
+
         if ($request->role === 'dentist') {
             $baseValidation['specialization'] = 'required|string';
         }
-    
+
         $data = $request->validate($baseValidation);
-    
+
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -81,30 +81,28 @@ class AuthController extends Controller
             'address' => $data['address'],
             'role' => $data['role'],
         ]);
-    
+
         if ($user->role === 'patient') {
             Patient::create([
                 'user_id' => $user->id,
-                'age' => null, 
-                'gender' => null, 
+                'age' => null,
+                'gender' => null,
             ]);
             Auth::login($user);
 
             return redirect()->route('patient.main');
-
         } elseif ($user->role === 'dentist') {
             Dentist::create([
                 'user_id' => $user->id,
-                'specialization' => $data['specialization'], 
+                'specialization' => $data['specialization'],
             ]);
 
-            return redirect()->route('admin.dentist')->with('added_success','Dentist successfully added!');
-
+            return redirect()->route('admin.dentist')->with('added_success', 'Dentist successfully added!');
         } else {
-            return redirect()->route('admin.staff')->with('added_success','Staff successfully added!');
+            return redirect()->route('admin.staff')->with('added_success', 'Staff successfully added!');
         }
     }
-    
+
     // logout
     public function logout(Request $request)
     {
