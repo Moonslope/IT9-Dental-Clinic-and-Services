@@ -536,3 +536,31 @@
       </div>
    </div>
 </div>
+
+<script>
+   @if ($errors->any())
+      document.addEventListener('DOMContentLoaded', function(){
+         var myModal = new bootstrap.Modal(document.getElementById('confirmAppointmentModal'));
+         myModal.show();
+      });
+   @endif
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // For each confirm appointment modal
+    document.querySelectorAll('.modal').forEach(function(modal) {
+        modal.addEventListener('shown.bs.modal', function () {
+            var select = modal.querySelector('select[name="dentist_id"]');
+            var confirmBtn = modal.querySelector('button[type="submit"]');
+            if (select && confirmBtn) {
+                // Initial state
+                confirmBtn.disabled = !select.value;
+                // On change
+                select.addEventListener('change', function() {
+                    confirmBtn.disabled = !select.value;
+                });
+            }
+        });
+    });
+});
+</script>
