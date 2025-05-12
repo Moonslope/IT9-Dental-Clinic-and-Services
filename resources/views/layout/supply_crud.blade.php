@@ -91,14 +91,46 @@
                            </div>
 
                            <div>
-                              <form action="{{ route('supply.destroy', ['supply' => $supply]) }}" method="POST">
+                              <button type="button" class="btn admin-staff-btn text-white w-100 px-2 py-1"
+                                 data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{$supply->id}}">
+                                 <i class="bi bi-trash-fill"></i>
+                              </button>
 
-                                 @csrf
-                                 @method('delete')
-                                 <button class="btn admin-staff-btn text-white w-100 px-2 py-1">
-                                    <i class="bi bi-trash-fill"></i>
-                                 </button>
-                              </form>
+                              <!-- Confirmation Modal -->
+                              <div class="modal fade" id="confirmDeleteModal{{$supply->id}}" tabindex="-1"
+                                 aria-labelledby="confirmDeleteModalLabel{{$supply->id}}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                       <div class="modal-header d-flex justify-content-between">
+                                          <h4 class="modal-title">Confirm Deletion</h4>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                             aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <p class="my-4 fs-5 text-center">Are you sure you want to delete <strong>{{
+                                                $supply->supply_name
+                                                }}</strong>?</p>
+                                       </div>
+
+                                       <div class="modal-footer row mt-3 gap-2 pt-3">
+                                          <div class="col">
+                                             <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                          </div>
+                                          <div class="col">
+                                             <form action="{{ route('supply.destroy', ['supply' => $supply]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                   class="btn btn-danger w-100 text-white p-1">Delete</button>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
                            </div>
                         </div>
                      </td>
@@ -195,8 +227,8 @@
                                           class="form-control p-2" value="{{$supply->supply_name}}">
                                     </div>
                                     <div class="col">
-                                       <input style="background-color: #d9d9d9" type="number" name="supply_quantity"
-                                          min="1" class="form-control p-2" value="{{$supply->supply_quantity}}">
+                                       <input style="background-color: #d9d9d9" type="number" name="supply_price"
+                                          min="1" class="form-control p-2" value="{{$supply->supply_price}}">
                                     </div>
                                  </div>
 

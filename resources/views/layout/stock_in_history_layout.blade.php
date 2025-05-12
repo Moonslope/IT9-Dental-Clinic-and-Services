@@ -63,13 +63,45 @@
                            </div>
 
                            <div>
-                              <form action="{{route('stock_in.destroy', ['stock' =>$stock])}}" method="POST">
-                                 <input type="hidden" name="redirect_to">
-                                 @csrf
-                                 @method('delete')
-                                 <button class="btn admin-staff-btn text-white w-100 px-2 py-1"><i
-                                       class="bi bi-trash-fill"></i></button>
-                              </form>
+                              <button type="button" class="btn admin-staff-btn text-white w-100 px-2 py-1"
+                                 data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{$stock->id}}">
+                                 <i class="bi bi-trash-fill"></i>
+                              </button>
+
+                              <!-- Confirmation Modal -->
+                              <div class="modal fade" id="confirmDeleteModal{{$stock->id}}" tabindex="-1"
+                                 aria-labelledby="confirmDeleteModalLabel{{$stock->id}}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                       <div class="modal-header d-flex justify-content-between">
+                                          <h4 class="modal-title">Confirm Deletion</h4>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                             aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <p class="my-4 fs-5 text-center">Are you sure you want to delete this stock
+                                             in?</p>
+                                       </div>
+
+                                       <div class="modal-footer row mt-3 gap-2 pt-3">
+                                          <div class="col">
+                                             <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                          </div>
+                                          <div class="col">
+                                             <form action="{{route('stock_in.destroy', ['stock' =>$stock])}}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                   class="btn btn-danger w-100 text-white p-1">Delete</button>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
                            </div>
                         </div>
                      </td>
