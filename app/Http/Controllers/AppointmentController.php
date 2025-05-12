@@ -35,10 +35,14 @@ class AppointmentController extends Controller
             ->get();
 
         $dentists = Dentist::all();
+        $patients = Patient::latest()->get();
+        $services = Service::all();
 
         return view('staff.appointment', [
             'appointments' => $appointments,
-            'dentists' => $dentists
+            'dentists' => $dentists,
+            'services' => $services,
+            'patients' => $patients
         ]);
     }
 
@@ -119,6 +123,25 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
+    public function store_admin_staff(Request $request){
+        $request->validate([
+            'service_id' => 'required|exists:services,id',
+            'patient_id' => 'required|exists:patients,id',
+            'appointment_date' => 'required|date|after:today',
+        ]);
+
+        Appointment::create([
+        'service_id' => $request->service_id,
+        'patient_id' => $request->patient_id,
+        'dentist_id' => null,
+        'appointment_date' => $request->appointment_date,
+        'status' => 'Pending',
+        ]);
+
+        return redirect()->back()->with('appointment_success', 'Appointment successfully added.');;
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -141,7 +164,7 @@ class AppointmentController extends Controller
             // 'message' => $request->message,
         ]);
 
-        return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');;
+        return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');
     }
 
   

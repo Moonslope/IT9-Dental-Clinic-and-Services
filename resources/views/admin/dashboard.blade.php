@@ -95,6 +95,7 @@
    </div>
 
    <div class="row mb-3 gap-4">
+      <hr>
       <div class="col">
          <div class="row">
             <h3 class="ms-2 p-2">Revenue Trends</h3>
@@ -141,7 +142,7 @@
 
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   <div class="row gap-4">
+   <div class="row pt-0 mt-0 gap-4">
       <div style="margin-top: 50px !important;" class="col">
          <div class="row mt-3 mb-3">
             <div class="card m-2 shadow" style="overflow: hidden;">
