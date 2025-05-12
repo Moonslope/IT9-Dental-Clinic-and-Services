@@ -69,7 +69,7 @@
                      <th style="background-color:#00a1df !important;" class="p-2 text-white">Patient</th>
                      <th style="background-color:#00a1df !important;" class="p-2 text-white">Appointment Date</th>
                      <th style="background-color:#00a1df !important;" class="p-2 text-white">Status</th>
-                     <th style="background-color:#00a1df !important;" class="p-2 text-white">Action</th>
+                     <th style="background-color:#00a1df !important;" class="p-2 text-white col-2">Action</th>
                   </tr>
                </thead>
                <tbody>
@@ -81,9 +81,36 @@
                      <td class="p-2">{{ $appointment->patient->user->first_name ?? 'N/A' }}
                         {{ $appointment->patient->user->last_name ?? '' }}</td>
                      <td class="p-2">{{ $appointment->appointment_date }}</td>
-                     <td class="p-2">{{ $appointment->status }}</td>
                      <td class="p-2">
-                        <button class="btn btn-sm admin-staff-btn p-1 text-white" data-bs-toggle="modal"
+                        @if ($appointment->status === 'Approved')
+                        <span style="padding-inline: 16px !important; padding-block: 3px !important;"
+                           class="bg-info fw-semibold  rounded-pill">{{
+                           ($appointment->status)
+                           }}</span>
+                        @elseif ($appointment->status === 'Completed')
+                        <span style="padding-inline: 12px !important; padding-block: 3px !important;"
+                           class="bg-success fw-semibold rounded-pill text-white">{{
+                           ($appointment->status)
+                           }}</span>
+                        @elseif ($appointment->status === 'Ongoing')
+                        <span style="padding-inline: 20px !important; padding-block: 3px !important;"
+                           class="bg-primary fw-semibold rounded-pill text-white pb-1">{{
+                           ($appointment->status)
+                           }}</span>
+                        @elseif ($appointment->status === 'Declined')
+                        <span style="padding-inline: 20px !important; padding-block: 3px !important;"
+                           class="bg-danger fw-semibold rounded-pill text-white">{{
+                           ($appointment->status)
+                           }}</span>
+                        @else
+                        <span style="padding-inline: 22px !important; padding-block: 3px !important;"
+                           class="bg-warning fw-semibold rounded-pill">{{
+                           ($appointment->status)
+                           }}</span>
+                        @endif
+                     </td>
+                     <td class="p-2 col-2">
+                        <button class="btn btn-sm admin-staff-btn p-1 w-100 text-white" data-bs-toggle="modal"
                            data-bs-target="#prescriptionModal{{ $treatment->id }}">
                            Create Prescription
                         </button>
@@ -105,7 +132,7 @@
 
                               <div class="modal-header justify-content-between">
                                  <h5 class="modal-title" id="modalLabel{{ $treatment->id }}">
-                                    Create Prescription for {{ $appointment->patient->user->first_name }}
+                                    Prescription for {{ $appointment->patient->user->first_name }}
                                     {{ $appointment->patient->user->last_name }}
                                     ({{ $appointment->service->service_name ?? 'N/A' }})
                                  </h5>
@@ -116,7 +143,7 @@
                               <div class="modal-body mt-3">
                                  <div class="mb-3">
                                     <label class="form-label">Medication</label>
-                                    <input type="text" name="medication" class="form-control"
+                                    <input type="text" name="medication" class="form-control p-2"
                                        style="background-color: #d9d9d9" required>
                                  </div>
 
@@ -128,7 +155,17 @@
                               </div>
 
                               <div class="modal-footer">
-                                 <button type="submit" class="btn btn-success">Save Prescription</button>
+                                 <div class="row w-100 gap-2 pt-2">
+                                    <div class="col">
+                                       <button type="button" class="btn admin-staff-cancel-btn w-100 p-1"
+                                          data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="col">
+                                       <button type="submit" class="btn admin-staff-btn p-1 w-100 text-white">Save
+                                          Prescription</button>
+                                    </div>
+                                 </div>
+
                               </div>
                            </form>
                         </div>
