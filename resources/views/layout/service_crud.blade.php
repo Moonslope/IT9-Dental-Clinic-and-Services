@@ -210,31 +210,34 @@ $searchRoute = route('admin.service');
                <div class="row mb-3">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="text" id="ServiceName" name="service_name"
-                        placeholder="Service Name" class="form-control p-2 @error('service_name') is-invalid @enderror" value="{{ old('service_name') }}">
+                        placeholder="Service Name" class="form-control p-2 @error('service_name') is-invalid @enderror"
+                        value="{{ old('service_name') }}">
 
-                        @error('service_name')
-                           <div class="text-danger small">{{ $message }}</div>
-                        @enderror
+                     @error('service_name')
+                     <div class="text-danger small">{{ $message }}</div>
+                     @enderror
                   </div>
                </div>
 
                <div class="row gap-2 mb-3">
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="number" id="ServicePrice" name="base_price"
-                        placeholder="Base price" class="form-control p-2 @error('base_price') is-invalid @enderror" value="{{ old('base_price') }}">
+                        placeholder="Base price" class="form-control p-2 @error('base_price') is-invalid @enderror"
+                        value="{{ old('base_price') }}">
 
-                        @error('base_price')
-                           <div class="text-danger small">{{ $message }}</div>
-                        @enderror
+                     @error('base_price')
+                     <div class="text-danger small">{{ $message }}</div>
+                     @enderror
                   </div>
 
                   <div class="col">
                      <input style="background-color: #d9d9d9" type="number" id="ServicePrice" name="estimated_max_price"
-                        placeholder="Estimated max price" class="form-control p-2 @error('estimated_max_price') is-invalid @enderror">
+                        placeholder="Estimated max price"
+                        class="form-control p-2 @error('estimated_max_price') is-invalid @enderror">
 
-                        @error('estimated_max_price')
-                           <div class="text-danger small">{{ $message }}</div>
-                        @enderror
+                     @error('estimated_max_price')
+                     <div class="text-danger small">{{ $message }}</div>
+                     @enderror
                   </div>
                </div>
 

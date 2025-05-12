@@ -20,31 +20,43 @@ class AuthController extends Controller
     // login
     public function login(Request $request)
     {
+        // Validate the email and password input
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
+        // Find the user by email
         $user = User::where('email', $request->email)->first();
-        $errors = [];
 
+        $errors = [];
+        // If user not found, show error
         if (!$user) {
             $errors['email'] = 'This email is not registered.';
             $errors['password'] = 'Incorrect password.';
-        } elseif (!Hash::check($request->password, $user->password)) {
+        }
+        // If password does not match, show error
+        elseif (!Hash::check($request->password, $user->password)) {
             $errors['password'] = 'Incorrect password.';
         }
 
+        // If there are any errors, redirect back with input and error messages
         if (!empty($errors)) {
             return back()->withErrors($errors)->withInput();
         }
 
+        // Attempt to authenticate the user
         if (Auth::attempt($credentials)) {
+            // Regenerate session
             $request->session()->regenerate();
+
+            // Get the authenticated user
             $user = Auth::user();
 
+            // Flash success message to session
             $request->session()->flash('login_success', 'You have logged in successfully!');
 
+            // Redirect based on role
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } elseif ($user->role === 'patient') {

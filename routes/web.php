@@ -29,7 +29,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('/')->name('patient.')->middleware(['auth', 'role:patient'])->group(function () {
     Route::get('home', [PatientController::class, 'index'])->name('main');
     Route::get('home/profile', [PatientController::class, 'profile'])->name('profile');
-
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 });
 
