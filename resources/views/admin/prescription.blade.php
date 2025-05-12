@@ -136,43 +136,6 @@
         </div>
     </div>
 </div>
-<div class="container mt-4">
-    <h4 class="mb-3">All Prescriptions by Dentists</h4>
-
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>#</th>
-                    <th>Dentist</th>
-                    <th>Patient</th>
-                    <th>Date Issued</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($prescriptions as $prescription)
-                    <tr>
-                        <td>{{ $prescription->id }}</td>
-                        <td>{{ $prescription->treatment->appointment->dentist->user->first_name ?? 'N/A' }}</td>
-                        <td>{{ $prescription->patient->user->first_name }} {{ $prescription->patient->user->last_name }}</td>
-                        <td>{{ $prescription->created_at->format('F j, Y') }}</td>
-                        <td>
-                            <button class="btn btn-sm admin-staff-btn p-1 w-100 text-white" data-bs-toggle="modal"
-                                data-bs-target="#printmodal{{ $prescription->id }}">
-                                View
-                            </button>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center">No prescriptions available.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
 @endsection
 
 
