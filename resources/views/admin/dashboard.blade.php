@@ -12,145 +12,196 @@
 @endsection
 
 @section('adminContent')
+<div style="max-height: 550px !important; overflow-y: auto;">
+   <div class="row ps-3 py-3">
+      <h2 class="">Dashboard Overview</h2>
+   </div>
 
-<div class="row">
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-info">
-               <i class="bi bi-calendar-event fs-2 me-2 text-white"></i>
+   <div class="row mb-3">
+      <div class="col">
+         <div class="card m-2 shadow" style="overflow: hidden;">
+            <div class="d-flex gap-2">
+               <div class="d-flex justify-content-center align-items-center px-4 bg-info">
+                  <i class="bi bi-calendar-event fs-2 me-2 text-white"></i>
+               </div>
+
+               <div class="p-1">
+                  <p class="fs-5">Appointments Today</p>
+                  <p class="fs-3">{{$todayAppointments}}</p>
+               </div>
             </div>
+         </div>
+      </div>
 
-            <div class="p-1">
-               <p class="fs-5">Appointments Today</p>
-               <p class="fs-3">{{$todayAppointments}}</p>
+      <div class="col">
+         <div class="card m-2 shadow" style="overflow: hidden;">
+            <div class="d-flex gap-2">
+               <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
+                  <i class="bi bi-hourglass-split fs-2"></i>
+               </div>
+               <div class="p-1">
+                  <p class="fs-5">Pending Appointments</p>
+                  <p class="fs-3">{{$pendingAppointments}}</p>
+               </div>
             </div>
          </div>
       </div>
    </div>
 
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
-               <i class="bi bi-hourglass-split fs-2"></i>
+   <div class="row mb-4">
+      <div class="col">
+         <div class="card m-2 shadow" style="overflow: hidden;">
+            <div class="d-flex gap-2">
+               <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
+                  <i class="bi bi-person-lines-fill fs-2 text-white"></i>
+               </div>
+               <div class="p-1">
+                  <p class="fs-5">Patients</p>
+                  <p class="fs-3">{{$totalPatients}}</p>
+               </div>
             </div>
-            <div class="p-1">
-               <p class="fs-5">Pending Appointments</p>
-               <p class="fs-3">{{$pendingAppointments}}</p>
+         </div>
+      </div>
+
+      <div class="col">
+         <div class="card m-2 shadow" style="overflow: hidden;">
+            <div class="d-flex gap-2">
+               <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
+                  <i class="bi bi-person-gear fs-2"></i>
+               </div>
+
+               <div class="p-1">
+                  <p class="fs-5">Staffs</p>
+                  <p class="fs-3">{{$totalStaffs}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="col">
+         <div class="card m-2 shadow" style="overflow: hidden;">
+            <div class="d-flex gap-2">
+               <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
+                  <i class="bi bi-people-fill fs-2 text-white"></i>
+               </div>
+
+               <div class="p-1">
+                  <p class="fs-5">Dentists</p>
+                  <p class="fs-3">{{$totalDentists}}</p>
+               </div>
             </div>
          </div>
       </div>
    </div>
 
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-info">
-               <i class="bi bi-calendar-week fs-2 text-white"></i>
+   <div class="row mb-3 gap-4">
+      <hr>
+      <div class="col">
+         <div class="row">
+            <h3 class="ms-2 p-2">Revenue Trends</h3>
+         </div>
+         <div class="card m-2 shadow" style="overflow: hidden;">
+            <div style="height: 250px !important;" class="card-body p-1">
+               <canvas id="revenueChart" style="max-height: 350px;"></canvas>
             </div>
-            <div class="p-1">
-               <p class="fs-5">Upcoming Appointments</p>
-               <p class="fs-3">{{$upcomingAppointments}}</p>
+
+         </div>
+      </div>
+
+      <div class="col">
+         <div style="width:475px !important ;" class="row mt-5">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
+                     <i class="bi bi-calendar-week fs-2 text-white"></i>
+                  </div>
+                  <div class="p-1">
+                     <p class="fs-5">Upcoming Appointments</p>
+                     <p class="fs-3">{{$upcomingAppointments}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div style="width:475px !important ;" class="row mt-3">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-success">
+                     <i class="bi bi-list-check fs-2 text-white"></i>
+
+                  </div>
+                  <div class="p-1">
+                     <p class="fs-5">Completed Appointments</p>
+                     <p class="fs-3">{{$completedAppointments}}</p>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
    </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <div class="row pt-0 mt-0 gap-4">
+      <div style="margin-top: 50px !important;" class="col">
+         <div class="row mt-3 mb-3">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-info">
+                     <i class="bi bi-person-lines-fill fs-2 text-white"></i>
+                  </div>
+                  <div class="p-1">
+                     <p class="fs-5">Total Services</p>
+                     <p class="fs-3">{{$totalServices}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row mb-3">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-success">
+                     <i class="bi bi-box-fill fs-2 text-white"></i>
+                  </div>
+
+                  <div class="p-1">
+                     <p class="fs-5">Supplies</p>
+                     <p class="fs-3">{{$totalSupplies}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
+                     <i class="bi bi-people-fill fs-2 text-white"></i>
+                  </div>
+
+                  <div class="p-1">
+                     <p class="fs-5">Supplier</p>
+                     <p class="fs-3">{{$totalSuppliers}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="col">
+         <div class="row ps-3 py-2">
+            <h3 class=" p-2">Services Distribution</h3>
+         </div>
+         <div class="card m-2 shadow p-0">
+            <div class="card-body p-1">
+               <canvas id="servicesPieChart" style="max-height: 300px;"></canvas>
+            </div>
+         </div>
+      </div>
+
+   </div>
+   @include('layout.modals.login_success')
+   @include('layout.revenue')
+
 </div>
-
-<div class="row">
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
-               <i class="bi bi-file-earmark-medical fs-2"></i>
-            </div>
-            <div class="p-1">
-               <p class="fs-5">Treatments Completed</p>
-               <p class="fs-3">15</p>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-warning">
-               <i class="bi bi-person-gear fs-2"></i>
-            </div>
-
-            <div class="p-1">
-               <p class="fs-5">Staff</p>
-               <p class="fs-3">{{$totalStaffs}}</p>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <div class="col">
-      <div class="card m-2 shadow" style="overflow: hidden;">
-         <div class="d-flex gap-2">
-            <div class="d-flex justify-content-center align-items-center px-4 bg-success">
-               <i class="bi bi-people-fill fs-2 text-white"></i>
-            </div>
-
-            <div class="p-1">
-               <p class="fs-5">Dentist</p>
-               <p class="fs-3">{{$totalDentists}}</p>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<div class="row">
-   <div class="col-md-4">
-      <div class="card m-2 shadow">
-         <div class="card-header">
-            <p class="fs-5 mb-0 text-center">Services Distribution</p>
-         </div>
-         <div class="card-body" style="height: 300px;">
-            <canvas id="servicesPieChart"></canvas>
-         </div>
-      </div>
-   </div>
-</div>
-
-@include('layout.modals.login_success')
-<script>
-   const pieCtx = document.getElementById('servicesPieChart').getContext('2d');
-
-   const servicesPieChart = new Chart(pieCtx, {
-      type: 'pie',
-      data: {
-         labels: ['Cleaning', 'Tooth Extraction', 'Braces', 'Filling', 'Whitening'], // Services
-         datasets: [{
-            label: 'Service Count',
-            data: [40, 25, 15, 10, 10], // Replace with real data
-            backgroundColor: [
-               'rgba(255, 99, 132, 0.7)',
-               'rgba(54, 162, 235, 0.7)',
-               'rgba(255, 206, 86, 0.7)',
-               'rgba(75, 192, 192, 0.7)',
-               'rgba(153, 102, 255, 0.7)'
-            ],
-            borderColor: '#fff',
-            borderWidth: 1
-         }]
-      },
-      options: {
-         responsive: true,
-         plugins: {
-            legend: {
-               position: 'right'
-            }
-         }
-      }
-   });
-</script>
-
 @endsection

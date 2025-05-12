@@ -114,6 +114,7 @@ Route::put('/appointments/{appointment}', [AppointmentController::class, 'update
 Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 Route::put('/appointments/update/{appointment}', [AppointmentController::class, 'patient_update'])->name('appointments.patient_update');
 
+Route::post('/add/appointments', [AppointmentController::class, 'store_admin_staff'])->name('appointments.store');
 
 Route::post('/treatment-supply', [TreatmentSupplyController::class, 'store'])->name('treatment-supply.store');
 

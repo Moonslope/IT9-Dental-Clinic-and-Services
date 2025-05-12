@@ -19,7 +19,7 @@
             </div>
 
             <div class="col">
-               <div class="d-flex w-75 gap-2">
+               <div>
                   @php
                   $user = Auth::user();
                   $searchRoute = route('staff.patient');
@@ -29,9 +29,12 @@
                   @endphp
 
                   <form method="GET" action="{{ $searchRoute }}">
-                     <input type="text" name="search" class="form-control" placeholder="Search"
-                        value="{{ request('search') }}">
-                     <button type="submit" class="btn btn-primary mt-2">Search</button>
+                     <div class="d-flex w-75 gap-2">
+                        <input type="text" name="search" class="form-control p-1" placeholder="Search"
+                           value="{{ request('search') }}">
+                        <button type="submit" class="btn admin-staff-btn"><i
+                              class="bi bi-search fs-5 p-2 text-white"></i></button>
+                     </div>
                   </form>
                </div>
             </div>

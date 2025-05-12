@@ -132,7 +132,7 @@
                </div>
 
                @php
-               $servicePrice = $treatment->appointment->service->service_price;
+               $servicePrice = $treatment->appointment->service->base_price;
                $totalSupplies = 0;
                @endphp
                <div class="my-3">
@@ -183,7 +183,8 @@
                   </tbody>
                   <tfoot>
                      <tr style="font-size: 18px !important;" class="text-center ">
-                        <th style="background-color:#00a1df !important;" colspan="3" class="text-end text-white pe-5 p-1">
+                        <th style="background-color:#00a1df !important;" colspan="3"
+                           class="text-end text-white pe-5 p-1">
                            Total
                            Used
                            Supplies
@@ -198,16 +199,18 @@
                <hr>
 
                <p class="fs-5 py-2 mb-2">Service Price: <span class="float-end">₱{{ number_format($servicePrice, 2)
-                  }}</span>
+                     }}</span>
                </p>
 
                <hr>
-               <h5 class="my-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{ number_format($servicePrice +
-                  $totalSupplies, 2) }}</span></h5>
+               <h5 class="my-3">Grand Total: <span class="float-end text-primary fw-bold">₱{{
+                     number_format($servicePrice +
+                     $totalSupplies, 2) }}</span></h5>
 
             </div>
             <div class="row">
-               <button class="btn btn-secondary w-100" type="button" onclick="printDiv('printArea{{ $treatment->id }}')">Print</button>
+               <button class="btn btn-secondary w-100" type="button"
+                  onclick="printDiv('printArea{{ $treatment->id }}')">Print</button>
             </div>
          </div>
       </div>

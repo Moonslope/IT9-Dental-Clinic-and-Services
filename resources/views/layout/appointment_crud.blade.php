@@ -10,6 +10,9 @@
    }
 </style>
 
+@include('layout.modals.crud_success')
+@include('layout.modals.appointment_success')
+
 <div class="row m-2">
    <div class="card shadow">
       <div class="card-body d-flex justify-content-between">
@@ -19,7 +22,7 @@
             </div>
 
             <div class="col">
-               <div class="d-flex w-75 gap-2">
+               <div>
                   @php
                   $user = Auth::user();
                   $searchRoute = route('staff.appointment');
@@ -29,9 +32,12 @@
                   @endphp
 
                   <form action="{{ $searchRoute }}" method="GET" class="mb-3">
-                     <input type="text" name="search" class="form-control"
-                        placeholder="Search" value="{{ request('search') }}">
-                     <button type="submit" class="btn btn-primary mt-2">Search</button>
+                     <div class="d-flex w-75 gap-2">
+                        <input type="text" name="search" class="form-control p-1" placeholder="Search"
+                           value="{{ request('search') }}">
+                        <button type="submit" class="btn admin-staff-btn"><i
+                              class="bi bi-search fs-5 p-2 text-white"></i></button>
+                     </div>
                   </form>
                </div>
             </div>
@@ -39,6 +45,88 @@
             <div class="col col-1">
                <button class="btn admin-staff-btn w-100 p-1 text-white" data-bs-toggle="modal"
                   data-bs-target="#bookAppointmentModal">ADD <i class="ms-2 bi bi-plus-circle-fill"></i></button>
+
+               <div class="modal fade" id="bookAppointmentModal" tabindex="-1"
+                  aria-labelledby="bookAppointmentModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+
+                     <div class="modal-content">
+                        <div class="modal-header fw-semibold d-flex justify-content-between">
+                           <h5 class="modal-title" id="bookAppointmentModalLabel">ADD APPOINTMENT</h5>
+                           <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body mt-3">
+                           <form action="{{route('appointments.store')}}" method="POST">
+                              @csrf
+                              @method('POST')
+                              <div class="row gap-2 mb-2">
+                                 <div class="col">
+                                    <label for="services" class="mb-1  fw-semibold">Services</label>
+                                    <select style="background-color: #d9d9d9" name="service_id" id="services"
+                                       class="form-select p-2" required>
+                                       @if ($services->isEmpty())
+                                       <option value="" disabled>No services available</option>
+                                       @else
+                                       <option value="" disabled selected>Select a service</option>
+                                       @foreach ($services as $service)
+                                       <option name="service_id" value="{{ $service->id }}">{{ $service->service_name }}
+                                       </option>
+                                       @endforeach
+                                       @endif
+                                    </select>
+                                 </div>
+
+                                 <div class="col">
+                                    <label for="appointmentDate" class="mb-1  fw-semibold">Date and Time</label>
+                                    <input type="datetime-local" id="appointmentDate" name="appointment_date"
+                                       class="form-control p-2 @error('appointment_date') is-invalid @enderror"
+                                       style="background-color: #d9d9d9" required>
+
+                                    @error('appointment_date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                 </div>
+                              </div>
+
+                              <div class="row gap-2 mb-2">
+                                 <div class="col">
+                                    <label for="patients" class="mb-1  fw-semibold">Patient</label>
+                                    <select style="background-color: #d9d9d9" name="patient_id" id="patients"
+                                       class="form-select p-2" required>
+                                       @if ($patients->isEmpty())
+                                       <option value="" disabled>No patient available</option>
+                                       @else
+                                       <option value="" disabled selected>Select a patient</option>
+                                       @foreach ($patients as $patient)
+                                       <option name="patient_id" value="{{ $patient->id }}">{{
+                                          $patient->user->first_name}} {{
+                                          $patient->user->last_name}}
+                                       </option>
+                                       @endforeach
+                                       @endif
+                                    </select>
+                                 </div>
+                              </div>
+
+                              <div class="modal-footer row mt-3 gap-2 pt-3">
+                                 <div class="col">
+                                    <button class="btn admin-staff-cancel-btn fw-bold w-100 p-1" type="button"
+                                       data-bs-dismiss="modal">Cancel</button>
+                                 </div>
+                                 <div class="col">
+
+                                    <button class="btn admin-staff-btn w-100 fw-bold text-white p-1"
+                                       type="submit">Add</button>
+                                 </div>
+                              </div>
+
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
             </div>
          </div>
       </div>
@@ -47,7 +135,7 @@
 
 <div class="row m-2">
    <div class="card" style="overflow:hidden">
-      <div style="height: 465px !important; " class="card-body">
+      <div style="height: 450px !important; " class="card-body">
          <div class="row">
             <table>
                <thead>
@@ -425,8 +513,8 @@
 
                                              {{-- Submit Button --}}
                                              <div class="row">
-                                                <button class="btn w-100 fw-bold text-white p-1"
-                                                   style="background-color: #00a1df" type="submit">Confirm</button>
+                                                <button class="btn w-100 fw-bold text-white p-1 admin-staff-btn"
+                                                   type="submit">Confirm</button>
                                              </div>
                                           </form>
                                        </div>
@@ -437,7 +525,6 @@
                            </div>
                         </td>
                      </tr>
-
 
                      @endforeach
                   </tbody>
