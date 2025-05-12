@@ -46,23 +46,9 @@
             </div>
          </div>
       </div>
-
-      <div class="col">
-         <div class="card m-2 shadow" style="overflow: hidden;">
-            <div class="d-flex gap-2">
-               <div class="d-flex justify-content-center align-items-center px-4 bg-info">
-                  <i class="bi bi-calendar-week fs-2 text-white"></i>
-               </div>
-               <div class="p-1">
-                  <p class="fs-5">Upcoming Appointments</p>
-                  <p class="fs-3">{{$upcomingAppointments}}</p>
-               </div>
-            </div>
-         </div>
-      </div>
    </div>
 
-   <div class="row mb-3">
+   <div class="row mb-4">
       <div class="col">
          <div class="card m-2 shadow" style="overflow: hidden;">
             <div class="d-flex gap-2">
@@ -108,82 +94,95 @@
       </div>
    </div>
 
-   <div class="row mb-3">
+   <div class="row mb-3 gap-4">
       <div class="col">
+         <div class="row">
+            <h3 class="ms-2 p-2">Revenue Trends</h3>
+         </div>
          <div class="card m-2 shadow" style="overflow: hidden;">
-            <div class="d-flex gap-2">
-               <div class="d-flex justify-content-center align-items-center px-4 bg-success">
-                  <i class="bi bi-list-check fs-2 text-white"></i>
-
-               </div>
-               <div class="p-1">
-                  <p class="fs-5">Completed Appointments</p>
-                  <p class="fs-3">{{$completedAppointments}}</p>
-               </div>
+            <div style="height: 250px !important;" class="card-body p-1">
+               <canvas id="revenueChart" style="max-height: 350px;"></canvas>
             </div>
+
          </div>
       </div>
 
       <div class="col">
-         <div class="card m-2 shadow" style="overflow: hidden;">
-            <div class="d-flex gap-2">
-               <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
-                  <i class="bi bi-person-lines-fill fs-2 text-white"></i>
+         <div style="width:475px !important ;" class="row mt-5">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
+                     <i class="bi bi-calendar-week fs-2 text-white"></i>
+                  </div>
+                  <div class="p-1">
+                     <p class="fs-5">Upcoming Appointments</p>
+                     <p class="fs-3">{{$upcomingAppointments}}</p>
+                  </div>
                </div>
-               <div class="p-1">
-                  <p class="fs-5">Total Services</p>
-                  <p class="fs-3">{{$totalServices}}</p>
+            </div>
+         </div>
+
+         <div style="width:475px !important ;" class="row mt-3">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-success">
+                     <i class="bi bi-list-check fs-2 text-white"></i>
+
+                  </div>
+                  <div class="p-1">
+                     <p class="fs-5">Completed Appointments</p>
+                     <p class="fs-3">{{$completedAppointments}}</p>
+                  </div>
                </div>
             </div>
          </div>
       </div>
-
-   </div>
-
-   <div class="row">
-      <div class="col">
-         <div class="card m-2 shadow" style="overflow: hidden;">
-            <div class="d-flex gap-2">
-               <div class="d-flex justify-content-center align-items-center px-4 bg-success">
-                  <i class="bi bi-box-fill fs-2 text-white"></i>
-               </div>
-
-               <div class="p-1">
-                  <p class="fs-5">Supplies</p>
-                  <p class="fs-3">{{$totalSupplies}}</p>
-               </div>
-            </div>
-         </div>
-      </div>
-
-      <div class="col">
-         <div class="card m-2 shadow" style="overflow: hidden;">
-            <div class="d-flex gap-2">
-               <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
-                  <i class="bi bi-people-fill fs-2 text-white"></i>
-               </div>
-
-               <div class="p-1">
-                  <p class="fs-5">Supplier</p>
-                  <p class="fs-3">{{$totalSuppliers}}</p>
-               </div>
-            </div>
-         </div>
-      </div>
-
    </div>
 
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   <div class="row mt-4">
-      <hr>
-      <div class="col">
-         <div class="row ps-3 py-2">
-            <h3 class=" p-2">Revenue Trends</h3>
+   <div class="row gap-4">
+      <div style="margin-top: 50px !important;" class="col">
+         <div class="row mt-3 mb-3">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-info">
+                     <i class="bi bi-person-lines-fill fs-2 text-white"></i>
+                  </div>
+                  <div class="p-1">
+                     <p class="fs-5">Total Services</p>
+                     <p class="fs-3">{{$totalServices}}</p>
+                  </div>
+               </div>
+            </div>
          </div>
-         <div class="card m-2 shadow" style="overflow: hidden;">
-            <div style="height: 310px !important;" class="card-body p-1">
-               <canvas id="revenueChart" style="max-height: 350px;"></canvas>
+         <div class="row mb-3">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-success">
+                     <i class="bi bi-box-fill fs-2 text-white"></i>
+                  </div>
+
+                  <div class="p-1">
+                     <p class="fs-5">Supplies</p>
+                     <p class="fs-3">{{$totalSupplies}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="card m-2 shadow" style="overflow: hidden;">
+               <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center align-items-center px-4 bg-primary">
+                     <i class="bi bi-people-fill fs-2 text-white"></i>
+                  </div>
+
+                  <div class="p-1">
+                     <p class="fs-5">Supplier</p>
+                     <p class="fs-3">{{$totalSuppliers}}</p>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
@@ -198,8 +197,8 @@
             </div>
          </div>
       </div>
-   </div>
 
+   </div>
    @include('layout.modals.login_success')
    @include('layout.revenue')
 
