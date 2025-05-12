@@ -43,7 +43,7 @@
             </div>
 
             @if ($appointments->isEmpty())
-                <p class="alert text-center text-secondary">No prescriptions made.</p>
+            <p class="alert text-center text-secondary">No prescriptions made.</p>
             @else
             <div style="max-height: 380px; overflow-y: auto; overflow-x: hidden;">
                 <table class="table table-bordered">
@@ -53,13 +53,14 @@
                         @foreach ($treatment->prescriptions ?? [] as $prescription)
 
                         <tr>
-                            <td class="p-2 col-2">{{ $appointment->patient->user->first_name }} {{ $appointment->patient->user->last_name }}</td>
+                            <td class="p-2 col-2">{{ $appointment->patient->user->first_name }} {{
+                                $appointment->patient->user->last_name }}</td>
                             <td class="p-2 col-2">{{ $appointment->service->service_name }}</td>
                             <td class="p-2 col-2">{{ $prescription->medication }}</td>
                             <td class="p-2 col-2">{{ $prescription->instructions }}</td>
                             <td class="p-2 col-2">{{ $appointment->appointment_date }}</td>
                             <td class="p-2 col-2">
-                                <button class="btn btn-sm admin-staff-btn p-1 text-white" data-bs-toggle="modal"
+                                <button class="btn btn-sm admin-staff-btn p-1 w-100 text-white" data-bs-toggle="modal"
                                     data-bs-target="#printmodal{{ $prescription->id }}">
                                     View
                                 </button>
@@ -71,12 +72,14 @@
                             aria-labelledby="printModalLabel{{ $prescription->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content">
-                                    <form action="{{ route('dentist.prescription.update', $prescription->id) }}" method="POST">
+                                    <form action="{{ route('dentist.prescription.update', $prescription->id) }}"
+                                        method="POST">
                                         @csrf
                                         @method('PUT')
 
                                         <div class="modal-header justify-content-between">
-                                            <h5 class="modal-title" id="printModalLabel{{ $prescription->id }}">Prescription
+                                            <h5 class="modal-title" id="printModalLabel{{ $prescription->id }}">
+                                                Prescription
                                                 Details</h5>
                                             <button class="btn-close" type="button" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
@@ -87,33 +90,39 @@
                                                 style="font-family:Arial, Helvetica, sans-serif">
 
                                                 <div class="text-center mb-4">
-                                                    <img height="65" width="65" src="{{ asset('images/final_logo.svg') }}"
-                                                        alt="Clinic logo">
+                                                    <img height="65" width="65"
+                                                        src="{{ asset('images/final_logo.svg') }}" alt="Clinic logo">
                                                     <h3>Dental Clinic and Services</h3>
                                                     <hr style="border-top:2px solid #000; margin-top:20px;">
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <p><strong>Date Issued:</strong> {{ $prescription->created_at->format('F j,
+                                                    <p><strong>Date Issued:</strong> {{
+                                                        $prescription->created_at->format('F j,
                                                         Y') }}</p>
                                                     <p><strong>Dentist:</strong> {{ Auth::user()->first_name }} {{
                                                         Auth::user()->last_name }}</p>
-                                                    <p><strong>Name:</strong> {{ $appointment->patient->user->first_name }} {{
+                                                    <p><strong>Name:</strong> {{ $appointment->patient->user->first_name
+                                                        }} {{
                                                         $appointment->patient->user->last_name }}</p>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <p><strong>Service:</strong> {{ $appointment->service->service_name }}</p>
+                                                    <p><strong>Service:</strong> {{ $appointment->service->service_name
+                                                        }}</p>
                                                     <p><strong>Medication:</strong> {{ $prescription->medication }}</p>
-                                                    <p><strong>Instructions:</strong> {{ $prescription->instructions }}</p>
-                                                    <p><strong>Appointment Date:</strong> {{ $appointment->created_at->format('F
+                                                    <p><strong>Instructions:</strong> {{ $prescription->instructions }}
+                                                    </p>
+                                                    <p><strong>Appointment Date:</strong> {{
+                                                        $appointment->created_at->format('F
                                                         j, Y') }}</p>
                                                 </div>
 
                                                 <div class="row text-end mt-5">
                                                     <p>__________________________</p>
                                                     <div class="pe-5">
-                                                        <p>Dr. {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</p>
+                                                        <p>Dr. {{ Auth::user()->first_name }} {{ Auth::user()->last_name
+                                                            }}</p>
                                                     </div>
                                                 </div>
                                             </div>

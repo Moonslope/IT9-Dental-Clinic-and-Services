@@ -79,10 +79,31 @@
                         $appointment->patient->user->last_name ?? '' }}</td>
                      <td class="p-2">{{ $appointment->appointment_date }}</td>
                      <td class="p-2">
-                        @if ($appointment->status==="Completed")
-                        <span class="bg-success rounded-pill px-2 py-1 text-white">{{ $appointment->status }}</span>
-                        @elseif($appointment->status==="Approved")
-                        <span class="bg-info rounded-pill px-2 py-1 text-white">{{ $appointment->status }}</span>
+                        @if ($appointment->status === 'Approved')
+                        <span style="padding-inline: 16px !important; padding-block: 3px !important;"
+                           class="bg-info fw-semibold  rounded-pill">{{
+                           ($appointment->status)
+                           }}</span>
+                        @elseif ($appointment->status === 'Completed')
+                        <span style="padding-inline: 12px !important; padding-block: 3px !important;"
+                           class="bg-success fw-semibold rounded-pill text-white">{{
+                           ($appointment->status)
+                           }}</span>
+                        @elseif ($appointment->status === 'Ongoing')
+                        <span style="padding-inline: 20px !important; padding-block: 3px !important;"
+                           class="bg-primary fw-semibold rounded-pill text-white pb-1">{{
+                           ($appointment->status)
+                           }}</span>
+                        @elseif ($appointment->status === 'Declined')
+                        <span style="padding-inline: 20px !important; padding-block: 3px !important;"
+                           class="bg-danger fw-semibold rounded-pill text-white">{{
+                           ($appointment->status)
+                           }}</span>
+                        @else
+                        <span style="padding-inline: 22px !important; padding-block: 3px !important;"
+                           class="bg-warning fw-semibold rounded-pill">{{
+                           ($appointment->status)
+                           }}</span>
                         @endif
                      </td>
                   </tr>

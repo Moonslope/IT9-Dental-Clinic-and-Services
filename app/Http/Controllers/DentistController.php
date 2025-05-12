@@ -42,9 +42,44 @@ class DentistController extends Controller
 
     public function index()
     {
+        // Get the logged-in user
         $dentist = User::where('id', Auth::id())->first();
-        return view('dentist.dashboard',  ['dentist' => $dentist]);
+
+        // Get the dentist ID from the dentists table
+        $dentistId = Dentist::where('user_id', Auth::id())->value('id');
+
+        // Count the upcoming appointments
+        $upcomingAppointmentsCount = Appointment::where('dentist_id', $dentistId)
+        ->where('appointment_date', '>', today()) 
+        ->where('status', 'Approved')->count();
+
+        // Count the completed appointments
+        $completedAppointmentsCount = Appointment::where('dentist_id', $dentistId)
+        ->where('appointment_date', '>', today()) 
+        ->where('status', 'Completed')->count();
+
+        // Count today's appointments
+        $todayAppointmentsCount = Appointment::where('dentist_id', $dentistId)
+            ->whereDate('appointment_date', today())
+            ->where('status', 'Approved')->count();
+
+        // Count total patients this dentist
+        $totalPatientsHandled = Appointment::where('dentist_id', $dentistId)
+            ->whereIn('status', ['Completed', 'Approved'])
+            ->distinct('patient_id')->count();
+
+        $appointmentsAssigned = Appointment::where('dentist_id', $dentistId)->get()->unique('patient_id');
+
+        return view('dentist.dashboard', [
+            'dentist' => $dentist,
+            'appointmentsAssigned' => $appointmentsAssigned,
+            'todayAppointmentsCount' => $todayAppointmentsCount,
+            'totalPatientsHandled' => $totalPatientsHandled,
+            'upcomingAppointmentsCount'=> $upcomingAppointmentsCount,
+            'completedAppointmentsCount'=> $completedAppointmentsCount,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next, string $role)
     {
+        // Check if the user is authenticated
         if (Auth::check() && Auth::user()->role === $role) {
+            // Allow access to the route
             return $next($request);
         }
-        return redirect()->route('login')->with('error', 'Unauthorized access.');
+
+        // Redirect to login if not authorized
+        return redirect()->route('login');
     }
 }
+
