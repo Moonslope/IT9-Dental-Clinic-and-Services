@@ -20,16 +20,19 @@ class AppointmentController extends Controller
 
         $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
             ->when($search, function ($query, $search) {
-                $query->whereHas('patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('dentist.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('service', function ($q) use ($search) {
-                    $q->where('service_name', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('patient.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('dentist.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('service', function ($q2) use ($search) {
+                        $q2->where('service_name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
                 });
             })
             ->get();
@@ -48,16 +51,19 @@ class AppointmentController extends Controller
 
         $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
             ->when($search, function ($query, $search) {
-                $query->whereHas('patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('dentist.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('service', function ($q) use ($search) {
-                    $q->where('service_name', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('patient.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('dentist.user', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%{$search}%")
+                           ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('service', function ($q2) use ($search) {
+                        $q2->where('service_name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
                 });
             })
             ->get();
@@ -71,32 +77,6 @@ class AppointmentController extends Controller
             'dentists' => $dentists,
             'services' => $services,
             'patients' => $patients
-        ]);
-    }
-
-    public function dentist_appointments(Request $request)
-    {
-        $search = $request->input('search');
-
-        $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
-            ->where('dentist_id', Auth::user()->dentist->id ?? null)
-            ->when($search, function ($query, $search) {
-                $query->whereHas('patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('service', function ($q) use ($search) {
-                    $q->where('service_name', 'like', "%{$search}%");
-                });
-            })
-            ->get();
-
-        // Pass $appointments and $dentist to the view
-        $dentist = Auth::user()->dentist;
-
-        return view('dentist.appointments', [
-            'appointments' => $appointments,
-            'dentist' => $dentist
         ]);
     }
     
