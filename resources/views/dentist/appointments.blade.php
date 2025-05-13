@@ -1,8 +1,6 @@
 @extends('layout.dentist_nav_layout')
 
-@section('title', 'Dentist Dashboard')
-
-@section('user_type', 'Hi, ' . $dentist->first_name . ' ' . $dentist->last_name)
+@section('title', 'Appointments')
 
 @section('breadcrumb')
 

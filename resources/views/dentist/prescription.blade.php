@@ -1,8 +1,6 @@
 @extends('layout.dentist_nav_layout')
 
-@section('title', 'Dentist-treatment-lists')
-
-@section('user_type', 'Hi, ')
+@section('title', 'Prescriptions')
 
 @section('breadcrumb')
 <div class="px-4 py-2 text-secondary" style="font-size: 0.95rem;">

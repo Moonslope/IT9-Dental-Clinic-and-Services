@@ -74,16 +74,8 @@
                   </div>
                </div>
 
-               {{-- Optional Messege --}}
-               <div class="row mb-3">
-                  <label for="message" class="mb-1  fw-semibold">Message</label>
-                  <textarea name="message" id="message" class="form-control" cols="30" rows="4" placeholder="(Optional)"
-                     style="background-color: #d9d9d9"></textarea>
-
-               </div>
-
                {{-- Submit Button --}}
-               <div class="row">
+               <div class="row mt-4">
                   <button class="btn w-100 fw-bold text-white p-1" style="background-color: #00a1df"
                      type="submit">Submit Appointment</button>
                </div>

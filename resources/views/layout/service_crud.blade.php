@@ -130,7 +130,8 @@ $searchRoute = route('admin.service');
                      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                         <div class="modal-content">
                            <div class="modal-header fw-semibold d-flex justify-content-between">
-                              <h5 class="modal-title" id="editServiceModalLabel{{$service->id}}">EDIT Service</h5>
+                              <h5 class="modal-title" id="editServiceModalLabel{{$service->id}}">EDIT SERVICE DETAILS
+                              </h5>
                               <button class="btn-close" type="button" data-bs-dismiss="modal"
                                  aria-label="Close"></button>
                            </div>
