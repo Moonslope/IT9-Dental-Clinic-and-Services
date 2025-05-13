@@ -237,12 +237,18 @@
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="first_name" name="first_name"
-                           placeholder="First Name" class="form-control p-2">
+                           placeholder="First Name" class="form-control p-2 @error('first_name') is-invalid @enderror" value="{{ old('first_name') }}">
+                        @error('first_name')
+                        <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                      </div>
 
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="last_name" name="last_name"
-                           placeholder="Last Name" class="form-control p-2">
+                           placeholder="Last Name" class="form-control p-2 @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}">
+                        @error('last_name')
+                        <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                      </div>
 
                   </div>
@@ -250,14 +256,20 @@
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="contact_number" name="contact_number"
-                           placeholder="Contact Number" class="form-control p-2">
+                           placeholder="Contact Number" class="form-control p-2 @error('contact_number') is-invalid @enderror" value="{{ old('contact_number') }}">
+                        @error('contact_number')
+                        <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                      </div>
                   </div>
 
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="text" id="address" name="address"
-                           placeholder="Address" class="form-control p-2">
+                           placeholder="Address" class="form-control p-2 @error('address') is-invalid @enderror" value="{{ old('address') }}">
+                        @error('address')
+                        <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                      </div>
                   </div>
 
@@ -266,14 +278,20 @@
 
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="email" id="email" name="email"
-                           placeholder="Email" class="form-control p-2">
+                           placeholder="Email" class="form-control p-2 @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                        @error('email')
+                        <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                      </div>
                   </div>
 
                   <div class="row mb-3 gap-2">
                      <div class="col">
                         <input style="background-color: #d9d9d9" type="password" id="password" name="password"
-                           placeholder="Password" class="form-control p-2">
+                           placeholder="Password" class="form-control p-2 @error('password') is-invalid @enderror">
+                        @error('password')
+                        <div class="text-danger small">{{ $message }}</div>
+                        @enderror
                      </div>
                   </div>
 
@@ -294,4 +312,32 @@
       </div>
    </div>
    @include('layout.modals.crud_success')
+   <script>
+      // Auto-open modal on error (already present)
+      @if ($errors->any())
+         document.addEventListener('DOMContentLoaded', function(){
+            var myModal = new bootstrap.Modal(document.getElementById('addSuppliesModal'));
+            myModal.show();
+         });
+      @endif
+
+      // Clear errors when modal is closed
+      document.addEventListener('DOMContentLoaded', function() {
+         var addStaffModal = document.getElementById('addSuppliesModal');
+         if (addStaffModal) {
+            addStaffModal.addEventListener('hidden.bs.modal', function () {
+               // Remove all error messages
+               addStaffModal.querySelectorAll('.text-danger.small').forEach(function(el) {
+                  el.remove();
+               });
+               // Remove is-invalid class from all inputs
+               addStaffModal.querySelectorAll('.is-invalid').forEach(function(input) {
+                  input.classList.remove('is-invalid');
+               });
+               // Optionally, reset the form fields (uncomment if you want to clear all fields)
+               // addStaffModal.querySelector('form').reset();
+            });
+         }
+      });
+   </script>
    @endsection

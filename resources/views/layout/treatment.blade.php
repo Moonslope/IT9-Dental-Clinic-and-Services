@@ -81,7 +81,7 @@
                      </td>
                      <td class="pt-3 col-1 text-center">{{$treatment->status}}</td>
                      <td class="pt-3 col-2 text-center">₱{{ number_format($treatment->treatment_cost, 2) }}</td>
-                     <td class="p-2 col-1">
+                     <td class="pt-3 col-1">
                         <div class="d-flex justify-content-evenly gap-2">
                            @if($treatment->status === 'Paid')
                            <button class="btn admin-staff-btn px-2 py-1 text-white" data-bs-toggle="modal"
@@ -243,13 +243,24 @@
                   </div>
                   <div class="col">
                      <input type="number" name="supplies[{{ $supply->id }}][quantity]" class="form-control p-2" min="1"
-                        placeholder="Quantity">
+                        placeholder="Quantity" data-price="{{ $supply->supply_price }}">
                   </div>
                </div>
                @endforeach
+
+               <div class="text-end mt-3 fs-5">
+                  <strong>Total cost: ₱<span id="supplyTotal{{ $treatment->id }}"
+                     data-initial="{{ $treatment->treatment_cost }}"
+                     data-maxPrice="{{ $treatment->appointment->service->estimated_max_price }}">
+                     {{ number_format($treatment->treatment_cost, 2) }}</span></strong>
+
+                     <div class="text-danger small" id="supplyError{{ $treatment->id }}" style="display: none;">
+                        The total cost exceeds the maximum allowed for this treatment.
+                     </div>
+               </div>
             </div>
             <div class="modal-footer">
-               <button type="submit" class="btn admin-staff-btn text-white p-2">Add Selected Supplies</button>
+               <button type="submit"  id="addSuppliesButton{{ $treatment->id }}" class="btn admin-staff-btn text-white p-2">Add Selected Supplies</button>
             </div>
          </div>
       </form>
@@ -346,4 +357,51 @@
       document.body.innerHTML = originalContents;
       location.reload();
     }
+</script>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('[id^="usedSupplyModal"]').forEach(modal => {
+         const treatmentId = modal.id.replace("usedSupplyModal", "");
+         const totalDisplay = document.getElementById(`supplyTotal${treatmentId}`);
+         const errorDisplay = document.getElementById(`supplyError${treatmentId}`);
+         const addSuppliesButton = document.getElementById(`addSuppliesButton${treatmentId}`);
+
+         const initial = parseFloat(totalDisplay.dataset.initial || 0);
+         const maxPrice = parseFloat(totalDisplay.dataset.maxprice || Infinity);
+
+         const updateTotal = () => {
+            let total = initial;
+
+            modal.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+               const supplyId = checkbox.id.replace("supply", "");
+               const quantityInput = modal.querySelector(`input[name="supplies[${supplyId}][quantity]"]`);
+               const quantity = parseInt(quantityInput?.value || 0);
+               const price = parseFloat(quantityInput?.dataset.price || 0);
+
+               if (checkbox.checked && quantity > 0) {
+                  total += quantity * price;
+               }
+            });
+
+            totalDisplay.textContent = total.toLocaleString(undefined, {
+               minimumFractionDigits: 2,
+               maximumFractionDigits: 2
+            });
+
+            const exceeds = total > maxPrice;
+            errorDisplay.style.display = exceeds ? "block" : "none";
+            if (addSuppliesButton) {
+               addSuppliesButton.disabled = exceeds;
+            }
+         };
+
+         modal.querySelectorAll('input[type="checkbox"], input[type="number"]').forEach(input => {
+            input.addEventListener('input', updateTotal);
+            input.addEventListener('change', updateTotal);
+         });
+
+         updateTotal();
+      });
+   });
 </script>

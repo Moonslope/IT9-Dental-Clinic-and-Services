@@ -354,6 +354,7 @@
 </div>
 
 <script>
+   // Auto-open the correct modal on error (already present)
    @if ($errors->any()) 
       document.addEventListener('DOMContentLoaded', function() {
          const modalId = "{{ old('from_modal') }}";
@@ -366,4 +367,23 @@
          }
       });
    @endif
+
+   // Clear errors when any supply modal is closed
+   document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.modal').forEach(function(modal) {
+         modal.addEventListener('hidden.bs.modal', function () {
+            // Remove all error messages
+            modal.querySelectorAll('.text-danger.small').forEach(function(el) {
+               el.remove();
+            });
+            // Remove is-invalid class from all inputs
+            modal.querySelectorAll('.is-invalid').forEach(function(input) {
+               input.classList.remove('is-invalid');
+            });
+            // Optionally, reset the form fields (uncomment if you want to clear all fields)
+            // let form = modal.querySelector('form');
+            // if (form) form.reset();
+         });
+      });
+   });
 </script>
