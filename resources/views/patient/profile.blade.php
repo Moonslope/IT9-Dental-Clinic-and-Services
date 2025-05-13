@@ -39,13 +39,13 @@
 
          <div class="d-flex justify-content-start mx-3">
             <button type="button" class="btn text-white fw-semibold mt-3" data-bs-toggle="modal"
-               data-bs-target="#bookAppointmentModal"><i class="bi bi-calendar-event me-2 fs-5"></i>Book an
+               data-bs-target="#bookAppointmentModal"><i class="bi bi-journal-bookmark-fill me-2 fs-5"></i>Book an
                appointment</button>
          </div>
 
          <div class="d-flex justify content-center-start mx-3">
-            <a href="#" onclick="showsection('appointment')"
-               class="btn text-white fw-semibold mt-3 bg-none">Appointments</a>
+            <a href="#" onclick="showsection('appointment')" class="btn text-white fw-semibold mt-3 bg-none"><i
+                  class="bi bi-calendar-week me-2 fs-5"></i>Appointments</a>
          </div>
 
          <div class="d-flex justify content-center-start mx-3">
@@ -562,7 +562,7 @@
    </div>
 </div>
 
-   @include('layout.appointment_modal')
+@include('layout.appointment_modal')
 
 {{-- edit --}}
 <div class="modal fade" id="editPatientModal{{$user->id}}" tabindex="-1"
@@ -687,6 +687,6 @@
             myModal.show();
          })
       @endif
-   </script>
-   @include('layout.modals.crud_success')
+</script>
+@include('layout.modals.crud_success')
 @endsection

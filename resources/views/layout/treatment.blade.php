@@ -229,7 +229,7 @@
                <h5 class="modal-title">ADD USED SUPPLIES</h5>
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div style="height: 300px !important;" class="modal-body pt-3">
+            <div class="modal-body pt-3">
                @foreach($supplies as $supply)
                <div class="row mb-2 border-bottom pb-2 align-items-center">
                   <div class="col">

@@ -33,7 +33,7 @@
          <div class="row w-100 p-3">
             <div class="col col-3">
                <h3>Staff Lists</h3>
-               
+
             </div>
 
             <div class="col">
@@ -141,7 +141,7 @@
                      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                         <div class="modal-content">
                            <div class="modal-header fw-semibold d-flex justify-content-between">
-                              <h5 class="modal-title" id="editSuppliesModalLabel{{$user->id}}">EDIT SUPPLIES</h5>
+                              <h5 class="modal-title" id="editSuppliesModalLabel{{$user->id}}">EDIT STAFF</h5>
                               <button class="btn-close" type="button" data-bs-dismiss="modal"
                                  aria-label="Close"></button>
                            </div>

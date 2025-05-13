@@ -130,7 +130,8 @@ $searchRoute = route('admin.service');
                      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
                         <div class="modal-content">
                            <div class="modal-header fw-semibold d-flex justify-content-between">
-                              <h5 class="modal-title" id="editServiceModalLabel{{$service->id}}">EDIT Service</h5>
+                              <h5 class="modal-title" id="editServiceModalLabel{{$service->id}}">EDIT SERVICE DETAILS
+                              </h5>
                               <button class="btn-close" type="button" data-bs-dismiss="modal"
                                  aria-label="Close"></button>
                            </div>
@@ -270,4 +271,23 @@ $searchRoute = route('admin.service');
          myModal.show();
       });
    @endif
+
+   // Clear errors when Add Service modal is closed
+   document.addEventListener('DOMContentLoaded', function() {
+      var addServiceModal = document.getElementById('addServiceModal');
+      if (addServiceModal) {
+         addServiceModal.addEventListener('hidden.bs.modal', function () {
+            // Remove all error messages
+            addServiceModal.querySelectorAll('.text-danger.small').forEach(function(el) {
+               el.remove();
+            });
+            // Remove is-invalid class from all inputs
+            addServiceModal.querySelectorAll('.is-invalid').forEach(function(input) {
+               input.classList.remove('is-invalid');
+            });
+            // Optionally, reset the form fields (uncomment if you want to clear all fields)
+            // addServiceModal.querySelector('form').reset();
+         });
+      }
+   });
 </script>
