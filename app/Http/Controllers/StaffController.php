@@ -30,10 +30,10 @@ class StaffController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('contact_number', 'like', "%{$search}%")
-                      ->orWhere('address', 'like', "%{$search}%");
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('contact_number', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%");
                 });
             })
             ->get();
@@ -42,13 +42,18 @@ class StaffController extends Controller
     }
 
     public function index()
-    {   
-        $totalSupplies = Supply::count();
-        $totalSuppliers = Supplier::count();
-        $totalPatients = Patient::count();
-        $todayAppointments = Appointment::whereDate('appointment_date', Carbon::today())->count();
-        $upcomingAppointments = Appointment::whereDate('appointment_date', '>', Carbon::today())->where('status', 'approved')->count();
-        $pendingAppointments = Appointment::where('status', 'pending')->count();
+    {
+        // Basic counts
+        $totalSupplies          = Supply::count();
+        $totalSuppliers         = Supplier::count();
+        $totalPatients          = Patient::count();
+        $todayAppointments      = Appointment::whereDate('appointment_date', Carbon::today())->count();
+        $upcomingAppointments   = Appointment::whereDate('appointment_date', '>', Carbon::today())
+            ->where('status', 'approved')
+            ->count();
+        $pendingAppointments    = Appointment::where('status', 'pending')->count();
+
+        // Authenticated staff user
         $staff = User::where('id', Auth::id())->first();
 
         // Revenue for today
@@ -59,7 +64,7 @@ class StaffController extends Controller
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek()
         ])->sum('total_amount');
-            
+
         // Revenue for this month 
         $monthRevenue = Payment::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
@@ -68,27 +73,30 @@ class StaffController extends Controller
         // Revenue for this year 
         $yearRevenue = Payment::whereYear('created_at', Carbon::now()->year)->sum('total_amount');
 
-        $services = Service::withCount('appointments')->get();
 
+        // Service-wise appointment count
+        $services = Service::withCount('appointments')->get();
         $labels = $services->pluck('service_name');
         $data = $services->pluck('appointments_count');
 
-        return view('staff.dashboard',  
-        [
-        'staff' => $staff,
-        'totalSupplies' => $totalSupplies,
-        'totalSuppliers' => $totalSuppliers,
-        'totalPatients' => $totalPatients,
-        'todayAppointments' => $todayAppointments,
-        'upcomingAppointments' => $upcomingAppointments,
-        'pendingAppointments' => $pendingAppointments,
-        'todayRevenue' => $todayRevenue,
-        'weekRevenue' => $weekRevenue,
-        'monthRevenue' => $monthRevenue,
-        'yearRevenue' => $yearRevenue,
-        'labels' => $labels,
-        'data' => $data
-        ]);
+        return view(
+            'staff.dashboard',
+            [
+                'staff'                 => $staff,
+                'totalSupplies'         => $totalSupplies,
+                'totalSuppliers'        => $totalSuppliers,
+                'totalPatients'         => $totalPatients,
+                'todayAppointments'     => $todayAppointments,
+                'upcomingAppointments'  => $upcomingAppointments,
+                'pendingAppointments'   => $pendingAppointments,
+                'todayRevenue'          => $todayRevenue,
+                'weekRevenue'           => $weekRevenue,
+                'monthRevenue'          => $monthRevenue,
+                'yearRevenue'           => $yearRevenue,
+                'labels'                => $labels,
+                'data'                  => $data
+            ]
+        );
     }
 
     /**
@@ -113,7 +121,7 @@ class StaffController extends Controller
         }
 
         $user->update($data);
-        return redirect()->back()->with('updated_success','Successfully updated!');
+        return redirect()->back()->with('updated_success', 'Successfully updated!');
     }
 
     /**
@@ -122,8 +130,6 @@ class StaffController extends Controller
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        return redirect()->back()->with('deleted_success','Successfully deleted!');
+        return redirect()->back()->with('deleted_success', 'Successfully deleted!');
     }
-
-    
 }

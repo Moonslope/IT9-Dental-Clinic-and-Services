@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Treatment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+
 class PaymentController extends Controller
 {
     /**
@@ -31,6 +32,7 @@ class PaymentController extends Controller
     public function store(Request $request, Treatment $treatment)
     {
 
+        // Get the total amount from the treatment's cost
         $totalAmount = $treatment->treatment_cost;
 
         // Create the payment record

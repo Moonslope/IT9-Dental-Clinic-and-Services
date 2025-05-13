@@ -21,12 +21,15 @@ class AdminController extends Controller
 
     public function index()
     {
+        // Count totals for dashboard metrics
         $totalDentists = Dentist::count();
         $totalPatients = Patient::count();
         $totalServices = Service::count();
         $totalSupplies = Supply::count();
         $totalSuppliers = Supplier::count();
         $totalStaffs = User::where('role', 'staff')->count();
+
+        // Appointment statistics
         $todayAppointments = Appointment::whereDate('appointment_date', Carbon::today())->count();
         $upcomingAppointments = Appointment::whereDate('appointment_date', '>', Carbon::today())->where('status', 'approved')->count();
         $pendingAppointments = Appointment::where('status', 'pending')->count();
@@ -49,28 +52,30 @@ class AdminController extends Controller
         // Revenue for this year 
         $yearRevenue = Payment::whereYear('created_at', Carbon::now()->year)->sum('total_amount');
 
+
+        // Get all services with the count of their appointments
         $services = Service::withCount('appointments')->get();
 
         $labels = $services->pluck('service_name');
         $data = $services->pluck('appointments_count');
 
         return view('admin.dashboard', [
-            'totalDentists' => $totalDentists,
-            'totalPatients' => $totalPatients,
-            'totalStaffs' => $totalStaffs,
-            'totalServices' => $totalServices,
-            'totalSupplies' => $totalSupplies,
-            'totalSuppliers' => $totalSuppliers,
-            'todayAppointments' => $todayAppointments,
-            'upcomingAppointments' => $upcomingAppointments,
-            'pendingAppointments' => $pendingAppointments,
+            'totalDentists'         => $totalDentists,
+            'totalPatients'         => $totalPatients,
+            'totalStaffs'           => $totalStaffs,
+            'totalServices'         => $totalServices,
+            'totalSupplies'         => $totalSupplies,
+            'totalSuppliers'        => $totalSuppliers,
+            'todayAppointments'     => $todayAppointments,
+            'upcomingAppointments'  => $upcomingAppointments,
+            'pendingAppointments'   => $pendingAppointments,
             'completedAppointments' => $completedAppointments,
-            'todayRevenue' => $todayRevenue,
-            'weekRevenue' => $weekRevenue,
-            'monthRevenue' => $monthRevenue,
-            'yearRevenue' => $yearRevenue,
-            'labels' => $labels,
-            'data' => $data,
+            'todayRevenue'          => $todayRevenue,
+            'weekRevenue'           => $weekRevenue,
+            'monthRevenue'          => $monthRevenue,
+            'yearRevenue'           => $yearRevenue,
+            'labels'                => $labels,
+            'data'                  => $data,
         ]);
     }
 

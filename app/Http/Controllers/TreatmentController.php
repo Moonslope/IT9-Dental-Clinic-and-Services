@@ -26,14 +26,14 @@ class TreatmentController extends Controller
                 $query->whereHas('appointment.service', function ($q) use ($search) {
                     $q->where('service_name', 'like', "%{$search}%");
                 })
-                ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                });
+                    ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
+                        $q->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
+                        $q->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                    });
             })
             ->latest()
             ->get();
@@ -50,14 +50,14 @@ class TreatmentController extends Controller
                 $query->whereHas('appointment.service', function ($q) use ($search) {
                     $q->where('service_name', 'like', "%{$search}%");
                 })
-                ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%");
-                });
+                    ->orWhereHas('appointment.patient.user', function ($q) use ($search) {
+                        $q->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('appointment.dentist.user', function ($q) use ($search) {
+                        $q->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                    });
             })
             ->latest()
             ->get();
@@ -79,12 +79,14 @@ class TreatmentController extends Controller
      */
     public function store(Request $request, Appointment $appointment)
     {
+        // Create a new treatment record linked to the appointment
         $treatment = Treatment::create([
-            'appointment_id' => $appointment->id,
-            'treatment_cost' => $appointment->service->base_price ?? 0.00,
-            'status' => 'Unpaid',
+            'appointment_id'    => $appointment->id,
+            'treatment_cost'    => $appointment->service->base_price ?? 0.00,
+            'status'            => 'Unpaid',
         ]);
 
+        // Update the appointment status to 'Ongoing'
         $appointment->status = 'Ongoing';
         $appointment->save();
 

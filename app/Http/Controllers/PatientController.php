@@ -20,20 +20,31 @@ class PatientController extends Controller
      */
     public function profile()
     {
+        // Get the patient record linked to the logged-in user
         $patient = Patient::where('user_id', Auth::id())->first();
+
+        // Get the authenticated user object
         $user = Auth::user();
 
-        $appointments = $patient ? $patient->appointments()->with('service')->get() : collect();
-        $prescriptions = $patient ? $patient->prescriptions()->with('treatment.appointment.dentist.user')->get() : collect();
+        // Get appointments with related services if patient exists, otherwise return empty
+        $appointments = $patient
+            ? $patient->appointments()->with('service')->get()
+            : collect();
+
+        // Get prescriptions with nested relations (treatment → appointment → dentist → user)
+        $prescriptions = $patient
+            ? $patient->prescriptions()->with('treatment.appointment.dentist.user')->get()
+            : collect();
 
         $services = Service::all();
 
+        // Return data to the patient profile view
         return view('patient.profile', [
-            'patient' => $patient,
-            'appointments' => $appointments,
+            'patient'       => $patient,
+            'appointments'  => $appointments,
             'prescriptions' => $prescriptions,
-            'services' => $services,
-            'user' => $user
+            'services'      => $services,
+            'user'          => $user
         ]);
     }
 
@@ -56,8 +67,8 @@ class PatientController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
                 });
             })
             ->get();
@@ -67,19 +78,22 @@ class PatientController extends Controller
 
     public function staff_patient(Request $request)
     {
+        // Get the search input from the request
         $search = $request->input('search');
 
+        // Retrieve patients based on search criteria, if provided
         $users = User::with('patient')
             ->where('role', 'patient')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('first_name', 'like', "%{$search}%")
-                      ->orWhere('last_name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
                 });
             })
             ->get();
 
+        // Return the view with the retrieved users
         return view('staff.patient', ['users' => $users]);
     }
 
@@ -96,38 +110,43 @@ class PatientController extends Controller
      */
     public function store(Request $request, User $user)
     {
+        // Base validation rules for user input
         $baseValidation = [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-            'contact_number' => 'required|string',
-            'address' => 'required|string',
-            'role' => 'required|in:patient,dentist,staff,admin',
+            'first_name'        => 'required|string|max:255',
+            'last_name'         => 'required|string|max:255',
+            'email'             => 'required|email|unique:users,email',
+            'password'          => 'required|min:8',
+            'contact_number'    => 'required|string',
+            'address'           => 'required|string',
+            'role'              => 'required|in:patient,dentist,staff,admin',
         ];
 
+        // Additional validation for patient-specific fields
         if ($request->role === 'patient') {
-            $baseValidation['age'] = 'nullable|integer|min:1';
+            $baseValidation['age']    = 'nullable|integer|min:1';
             $baseValidation['gender'] = 'nullable|string|max:10';
         }
 
+        // Additional validation for patient-specific fields
         $data = $request->validate($baseValidation);
 
+        // Create the new user in the database
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'contact_number' => $data['contact_number'],
-            'address' => $data['address'],
-            'role' => $data['role'],
+            'first_name'        => $data['first_name'],
+            'last_name'         => $data['last_name'],
+            'email'             => $data['email'],
+            'password'          => Hash::make($data['password']),
+            'contact_number'    => $data['contact_number'],
+            'address'           => $data['address'],
+            'role'              => $data['role'],
         ]);
 
+        // If the user is a patient, create the corresponding patient record
         if ($user->role === 'patient') {
             Patient::create([
-                'user_id' => $user->id,
-                'age' => $data['age'],
-                'gender' => $data['gender'],
+                'user_id'   => $user->id,
+                'age'       => $data['age'],
+                'gender'    => $data['gender'],
             ]);
 
             return redirect()->back()->with('added_success', 'Successfully added!');
@@ -155,33 +174,38 @@ class PatientController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // Validate the incoming request data for the user update
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'contact_number' => 'required|string',
-            'address' => 'required|string',
-            'password' => 'nullable|min:8',
+            'first_name'        => 'required|string|max:255',
+            'last_name'         => 'required|string|max:255',
+            'email'             => 'required|email|unique:users,email,' . $user->id,
+            'contact_number'    => 'required|string',
+            'address'           => 'required|string',
+            'password'          => 'nullable|min:8',
         ]);
 
+        // If a password is provided, hash it, otherwise, remove it from the update data
         if (!empty($validatedData['password'])) {
             $validatedData['password'] = Hash::make($validatedData['password']);
         } else {
             unset($validatedData['password']);
         }
 
+        // Update the user record with the validated data
         $user->update($validatedData);
 
+        // If the user is a patient, validate and update patient-specific details
         if ($user->role === 'patient') {
             $request->validate([
-                'age' => 'nullable|integer|min:1',
-                'gender' => 'nullable|string|max:10'
+                'age'       => 'nullable|integer|min:1',
+                'gender'    => 'nullable|string|max:10'
             ]);
 
+            // If the user already has a related patient record, update the patient details
             if ($user->patient) {
                 $user->patient->update([
-                    'age' => $request->age,
-                    'gender' => $request->gender,
+                    'age'       => $request->age,
+                    'gender'    => $request->gender,
                 ]);
             }
         }

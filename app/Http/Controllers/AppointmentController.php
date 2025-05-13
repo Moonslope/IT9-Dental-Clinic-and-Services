@@ -16,23 +16,25 @@ class AppointmentController extends Controller
 {
     public function staff_appointments(Request $request)
     {
+        // Get the search input from the request
         $search = $request->input('search');
 
+        // Retrieve appointments with related service, patient, and dentist data
         $appointments = Appointment::with(['service', 'patient.user', 'dentist.user'])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->whereHas('patient.user', function ($q2) use ($search) {
                         $q2->where('first_name', 'like', "%{$search}%")
-                           ->orWhere('last_name', 'like', "%{$search}%");
+                            ->orWhere('last_name', 'like', "%{$search}%");
                     })
-                    ->orWhereHas('dentist.user', function ($q2) use ($search) {
-                        $q2->where('first_name', 'like', "%{$search}%")
-                           ->orWhere('last_name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('service', function ($q2) use ($search) {
-                        $q2->where('service_name', 'like', "%{$search}%");
-                    })
-                    ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
+                        ->orWhereHas('dentist.user', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('service', function ($q2) use ($search) {
+                            $q2->where('service_name', 'like', "%{$search}%");
+                        })
+                        ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
                 });
             })
             ->get();
@@ -41,11 +43,12 @@ class AppointmentController extends Controller
         $patients = Patient::latest()->get();
         $services = Service::all();
 
+        // Return the staff appointment view with the data
         return view('staff.appointment', [
-            'appointments' => $appointments,
-            'dentists' => $dentists,
-            'services' => $services,
-            'patients' => $patients
+            'appointments'  => $appointments,
+            'dentists'      => $dentists,
+            'services'      => $services,
+            'patients'      => $patients
         ]);
     }
 
@@ -58,16 +61,16 @@ class AppointmentController extends Controller
                 $query->where(function ($q) use ($search) {
                     $q->whereHas('patient.user', function ($q2) use ($search) {
                         $q2->where('first_name', 'like', "%{$search}%")
-                           ->orWhere('last_name', 'like', "%{$search}%");
+                            ->orWhere('last_name', 'like', "%{$search}%");
                     })
-                    ->orWhereHas('dentist.user', function ($q2) use ($search) {
-                        $q2->where('first_name', 'like', "%{$search}%")
-                           ->orWhere('last_name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('service', function ($q2) use ($search) {
-                        $q2->where('service_name', 'like', "%{$search}%");
-                    })
-                    ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
+                        ->orWhereHas('dentist.user', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('service', function ($q2) use ($search) {
+                            $q2->where('service_name', 'like', "%{$search}%");
+                        })
+                        ->orWhere('status', 'like', "%{$search}%"); // <-- search by status
                 });
             })
             ->get();
@@ -83,7 +86,7 @@ class AppointmentController extends Controller
             'patients' => $patients
         ]);
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -103,20 +106,23 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    
-    public function store_admin_staff(Request $request){
+
+    public function store_admin_staff(Request $request)
+    {
+        // Validate the incoming request data
         $request->validate([
-            'service_id' => 'required|exists:services,id',
-            'patient_id' => 'required|exists:patients,id',
-            'appointment_date' => 'required|date|after:today',
+            'service_id'        => 'required|exists:services,id',
+            'patient_id'        => 'required|exists:patients,id',
+            'appointment_date'  => 'required|date|after:today',
         ]);
 
+        // Create a new appointment with default status and no assigned dentist
         Appointment::create([
-        'service_id' => $request->service_id,
-        'patient_id' => $request->patient_id,
-        'dentist_id' => null,
-        'appointment_date' => $request->appointment_date,
-        'status' => 'Pending',
+            'service_id'        => $request->service_id,
+            'patient_id'        => $request->patient_id,
+            'dentist_id'        => null,
+            'appointment_date'  => $request->appointment_date,
+            'status'            => 'Pending',
         ]);
 
         return redirect()->back()->with('appointment_success', 'Appointment successfully added.');;
@@ -124,50 +130,57 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
+        // validate the input data
         $request->validate([
-            'service_id' => 'required|exists:services,id',
+            'service_id'       => 'required|exists:services,id',
             'appointment_date' => 'required|date|after:today',
-            'message' => 'nullable|string|max:255',
+            'message'          => 'nullable|string|max:255',
         ]);
 
+        // find the patient using the logged-in user ID
         $patient = Patient::where('user_id', Auth::id())->first();
+
         if (!$patient) {
             return redirect()->back()->withErrors(['error' => 'Patient record not found.']);
         }
 
+        // create a new appointment
         Appointment::create([
-            'service_id' => $request->service_id,
-            'patient_id' => $patient->id,
-            'dentist_id' => $request->dentist_id ?? null,
-            'appointment_date' => $request->appointment_date,
-            'status' => 'Pending',
-            // 'message' => $request->message,
+            'service_id'        => $request->service_id,
+            'patient_id'        => $patient->id,
+            'dentist_id'        => $request->dentist_id ?? null,
+            'appointment_date'  => $request->appointment_date,
+            'status'            => 'Pending',
         ]);
 
+        // redirect back with success message
         return redirect()->back()->with('appointment_success', 'Your appointment has been sent successfully! Please wait for approval.');
     }
 
-  
+
     public function update(Request $request, Appointment $appointment)
     {
+        // Validate the request data based on status
         $request->validate([
-            'status' => 'required|in:Approved,Declined',
-            'dentist_id' => 'required_if:status,Approved|exists:dentists,id',
-            'appointment_date' => 'required_if:status,Approved|date|after:today',
+            'status'            => 'required|in:Approved,Declined',
+            'dentist_id'        => 'required_if:status,Approved|exists:dentists,id',
+            'appointment_date'  => 'required_if:status,Approved|date|after:today',
         ]);
 
+        // If approved, assign dentist and appointment date
         if ($request->status === 'Approved') {
-        $appointment->dentist_id = $request->input('dentist_id');
-        $appointment->appointment_date = $request->input('appointment_date');
-
+            $appointment->dentist_id        = $request->input('dentist_id');
+            $appointment->appointment_date  = $request->input('appointment_date');
         } else {
+            // If declined, remove any assigned dentist
             $appointment->dentist_id = null;
         }
 
+        // Update the appointment status
         $appointment->status = $request->status;
         $appointment->save();
 
-        return redirect()->back()->with('updated_success', 'Appointment has been '. $request->status);
+        return redirect()->back()->with('updated_success', 'Appointment has been ' . $request->status);
     }
 
     public function patient_update(Request $request, Appointment $appointment)
@@ -181,7 +194,7 @@ class AppointmentController extends Controller
         // Update appointment details
         $appointment->service_id = $request->input('service_id');
         $appointment->appointment_date = $request->input('appointment_date');
-        $appointment->save(); 
+        $appointment->save();
 
         return redirect()->back()->with('updated_success', 'Appointment updated successfully.');
     }
@@ -193,6 +206,6 @@ class AppointmentController extends Controller
     {
         $appointment->delete();
 
-        return redirect()->back()->with('deleted_success','Appointment successfully deleted!');
+        return redirect()->back()->with('deleted_success', 'Appointment successfully deleted!');
     }
 }

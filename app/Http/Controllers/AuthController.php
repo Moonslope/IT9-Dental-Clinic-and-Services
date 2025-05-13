@@ -22,8 +22,8 @@ class AuthController extends Controller
     {
         // Validate the email and password input
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email'     => 'required|email',
+            'password'  => 'required',
         ]);
 
         // Find the user by email
@@ -32,7 +32,7 @@ class AuthController extends Controller
         $errors = [];
         // If user not found, show error
         if (!$user) {
-            $errors['email'] = 'This email is not registered.';
+            $errors['email']    = 'This email is not registered.';
             $errors['password'] = 'Incorrect password.';
         }
         // If password does not match, show error
@@ -77,6 +77,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // set basic validation rules for all users
         $baseValidation = [
             'first_name'      => 'required|string|max:255',
             'last_name'       => 'required|string|max:255',
@@ -87,12 +88,15 @@ class AuthController extends Controller
             'role'            => 'required|in:patient,dentist,staff,admin',
         ];
 
+        // if role is dentist, add specialization field
         if ($request->role === 'dentist') {
             $baseValidation['specialization'] = 'required|string';
         }
 
+        // validate input data
         $data = $request->validate($baseValidation);
 
+        // create new user
         $user = User::create([
             'first_name'     => $data['first_name'],
             'last_name'      => $data['last_name'],
@@ -103,18 +107,18 @@ class AuthController extends Controller
             'role'           => $data['role'],
         ]);
 
+        // if user is patient, create patient record and login
         if ($user->role === 'patient') {
             Patient::create([
                 'user_id' => $user->id,
-                'age' => null,
-                'gender' => null,
+                'age'     => null,
+                'gender'  => null,
             ]);
             Auth::login($user);
-
             return redirect()->route('patient.main');
         } elseif ($user->role === 'dentist') {
             Dentist::create([
-                'user_id' => $user->id,
+                'user_id'        => $user->id,
                 'specialization' => $data['specialization'],
             ]);
 

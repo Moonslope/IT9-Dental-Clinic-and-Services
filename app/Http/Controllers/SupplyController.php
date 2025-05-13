@@ -34,27 +34,24 @@ class SupplyController extends Controller
 
     public function staff_supply(Request $request)
     {
+        // Get the currently authenticated user
         $user = User::where('id', Auth::id())->first();
+
+        // Retrieve all suppliers
         $suppliers = Supplier::all();
 
+        // Get search keyword from request
         $search = $request->input('search');
         $supplies = Supply::when($search, function ($query, $search) {
             return $query->where('supply_name', 'like', "%{$search}%");
         })->latest()->get();
 
+        // Return the staff supply view with the supplies, suppliers, and user info
         return view('staff.supply', [
-            'supplies' => $supplies,
+            'supplies'  => $supplies,
             'suppliers' => $suppliers,
-            'user' => $user
+            'user'      => $user
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -62,26 +59,13 @@ class SupplyController extends Controller
      */
     public function store(SupplyRequest $request)
     {
+        // Create a new supply entry
         $newSupply = $request->validated();
+
+        // Redirect with success message
         Supply::create($newSupply);
 
-        return redirect()->back()->with('added_success','Successfully added');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Supply $supply)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Supply $supply)
-    {
-        //
+        return redirect()->back()->with('added_success', 'Successfully added');
     }
 
     /**
@@ -89,7 +73,10 @@ class SupplyController extends Controller
      */
     public function update(SupplyRequest $request, Supply $supply)
     {
+        // Validate and retrieve updated supply data
         $newSupply = $request->validated();
+
+        // Update the supply record
         $supply->update($newSupply);
 
         return redirect()->back()->with('updated_success', 'Successfully updated!');
